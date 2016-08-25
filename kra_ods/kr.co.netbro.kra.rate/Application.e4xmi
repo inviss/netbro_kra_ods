@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ASCII"?>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_kdmvQFO0EeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.application">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_NY4vEFO3EeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.trimmedwindow.0">
+    <tags>shellMaximized</tags>
+    <children xsi:type="basic:PartSashContainer" xmi:id="_O0picFO3EeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partsashcontainer.0">
+      <children xsi:type="basic:PartStack" xmi:id="_HLCmkFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partstack.0" containerData="27">
+        <children xsi:type="basic:Part" xmi:id="_YYW_4F-VEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.part.config" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.KraRateConfig" label="&#xacbd;&#xae30;&#xc124;&#xc815;"/>
+      </children>
+      <children xsi:type="basic:PartStack" xmi:id="_IBcDEFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partstack.1" containerData="73">
+        <children xsi:type="basic:Part" xmi:id="_Je6tsFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.part.1" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas1Part" label="&#xb2e8;&#xc5f0;.&#xc0bc;&#xbcf5;TOP"/>
+        <children xsi:type="basic:Part" xmi:id="_Jz_l0FPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.part.2" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas2Part" label="&#xbcf5;&#xc5f0;"/>
+        <children xsi:type="basic:Part" xmi:id="_KIWFMFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.part.3" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas3Part" label="&#xc30d;&#xc2b9;"/>
+        <children xsi:type="basic:Part" xmi:id="_47gwUFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.part.4" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas4Part" label="&#xbcf5;&#xc2b9;"/>
+        <children xsi:type="basic:Part" xmi:id="_zBy4kFkyEeaYpN7SHHmE3g" elementId="kr.co.netbro.kra.rate.part.5" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas5Part" label="&#xc0bc;&#xbcf5;"/>
+        <children xsi:type="basic:Part" xmi:id="_2Q8VIFkyEeaYpN7SHHmE3g" elementId="kr.co.netbro.kra.rate.part.6" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas6Part" label="&#xc0bc;&#xc30d;"/>
+        <children xsi:type="basic:Part" xmi:id="_6m5BsFkyEeaYpN7SHHmE3g" elementId="kr.co.netbro.kra.rate.part.7" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas7Part" label="&#xc0bc;&#xc30d;TOP"/>
+      </children>
+    </children>
+    <mainMenu xmi:id="_bFOl4F-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.menu.0">
+      <children xsi:type="menu:Menu" xmi:id="_sl7cgF-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.menu.1" label="&#xd658;&#xacbd;&#xc124;&#xc815;">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_ullnIF-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.handledmenuitem.0" label="&#xd1b5;&#xc2e0;&#xc124;&#xc815;" command="_hE5CQF-BEea8Er8dt13xEA"/>
+      </children>
+    </mainMenu>
+  </children>
+  <handlers xmi:id="_klPjkF-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.handler.0" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.handlers.PreferenceHandler" command="_hE5CQF-BEea8Er8dt13xEA"/>
+  <commands xmi:id="_hE5CQF-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.command.0" commandName="&#xc18c;&#xcf13;&#xc124;&#xc815;"/>
+  <addons xmi:id="_kdmvQVO0EeaqzICFqstAWA" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
+  <addons xmi:id="_kdmvQlO0EeaqzICFqstAWA" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
+  <addons xmi:id="_kdmvQ1O0EeaqzICFqstAWA" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
+  <addons xmi:id="_kdmvRFO0EeaqzICFqstAWA" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
+  <addons xmi:id="_kdmvRVO0EeaqzICFqstAWA" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
+  <addons xmi:id="_kdmvRlO0EeaqzICFqstAWA" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+  <addons xmi:id="_kdmvR1O0EeaqzICFqstAWA" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+  <addons xmi:id="_LxaY8FPNEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.addon.0" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.addons.UserPreferenceAddon"/>
+</application:Application>

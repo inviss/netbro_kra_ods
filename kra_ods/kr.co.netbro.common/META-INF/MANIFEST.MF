@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Common
+Bundle-SymbolicName: kr.co.netbro.common
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.codehaus.jackson;bundle-version="1.9.13",
+ org.apache.commons.lang;bundle-version="2.6.0",
+ org.eclipse.core.runtime;bundle-version="3.9.100"
+Import-Package: org.slf4j
+Export-Package: kr.co.netbro.common.exception,
+ kr.co.netbro.common.filters,
+ kr.co.netbro.common.json.converter,
+ kr.co.netbro.common.model,
+ kr.co.netbro.common.utils,
+ kr.co.netbro.common.xml.converter

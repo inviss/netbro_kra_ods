@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="kr.co.netbro.kra.socket">
+   <implementation class="kr.co.netbro.kra.socket.impl.RaceInfoServiceImpl"/>
+   <service>
+      <provide interface="kr.co.netbro.kra.model.IRaceInfoService"/>
+   </service>
+</scr:component>
