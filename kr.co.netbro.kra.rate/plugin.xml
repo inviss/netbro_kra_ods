@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="NetBroODS"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.e4.ui.workbench.swt.E4Application"
+            name="NetBro ODS">
+         <property
+               name="applicationXMI"
+               value="kr.co.netbro.kra.rate/Application.e4xmi">
+         </property>
+         <property
+               name="appName"
+               value="NetBro ODS">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="id1"
+         point="org.eclipse.e4.workbench.model">
+      <processor
+            beforefragment="false"
+            class="kr.co.netbro.kra.rate.processor.MakeActivedParts">
+      </processor>
+   </extension>
+
+</plugin>
