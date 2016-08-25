@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Common
 Bundle-SymbolicName: kr.co.netbro.common
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.codehaus.jackson;bundle-version="1.9.13",
  org.apache.commons.lang;bundle-version="2.6.0",
  org.eclipse.core.runtime;bundle-version="3.9.100"
