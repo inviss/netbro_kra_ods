@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Database
+Bundle-SymbolicName: kr.co.netbro.kra.database
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: .,
+ lib/hsqldb-2.3.2.jar
+Require-Bundle: javax.annotation;bundle-version="1.2.0",
+ javax.inject;bundle-version="1.0.0"
