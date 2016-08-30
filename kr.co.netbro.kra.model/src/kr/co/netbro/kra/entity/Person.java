@@ -11,8 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Person
-{
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -22,9 +21,7 @@ public class Person
     @Temporal(TemporalType.DATE)
     private GregorianCalendar dateOfBirth;
 
-    public Person()
-    {
-    }
+    public Person(){}
 
     public Person( String firstname, String lastname, GregorianCalendar dateOfBirth )
     {
