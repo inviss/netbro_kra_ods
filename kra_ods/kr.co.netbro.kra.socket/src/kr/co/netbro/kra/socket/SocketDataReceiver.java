@@ -2,6 +2,7 @@ package kr.co.netbro.kra.socket;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,9 +18,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import kr.co.netbro.kra.model.RaceInfo;
-import kr.co.netbro.kra.socket.maker.Packet;
-
 import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
@@ -27,6 +25,9 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.kra.socket.maker.Packet;
 
 @SuppressWarnings("restriction")
 @Creatable
@@ -120,8 +121,8 @@ public class SocketDataReceiver {
 				if(logger.isDebugEnabled()) {
 					logger.debug(ip+"로 부터 연결됨");
 				}
-				bis = new BufferedInputStream(socket.getInputStream());
-				//bis = new BufferedInputStream(new FileInputStream("D:/tmp/netbro/20160702_133105.dat"));
+				//bis = new BufferedInputStream(socket.getInputStream());
+				bis = new BufferedInputStream(new FileInputStream("D:/tmp/netbro/20160702_133105.dat"));
 				int c = 0;
 				int bufIndex = 0;
 				int offset = 0;
