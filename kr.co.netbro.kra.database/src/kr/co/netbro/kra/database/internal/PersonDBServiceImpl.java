@@ -27,7 +27,6 @@ public class PersonDBServiceImpl implements PersonDBService
 
     @SuppressWarnings("unchecked")
     protected void activate() {
-    	 System.out.println("activeted");
         @SuppressWarnings("rawtypes")
         Map map = new HashMap();
         map.put( PersistenceUnitProperties.CLASSLOADER, getClass().getClassLoader() );
