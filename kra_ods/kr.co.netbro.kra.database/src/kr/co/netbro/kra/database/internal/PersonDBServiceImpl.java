@@ -21,8 +21,10 @@ import kr.co.netbro.kra.entity.Person;
 
 public class PersonDBServiceImpl implements PersonDBService
 {
-    private EntityManagerFactory emf;
-    private EntityManager em;
+    private EntityManagerFactory h2emf;
+    private EntityManager h2em;
+    private EntityManagerFactory oracleEmf;
+    private EntityManager oracleEm;
     private List<IPersonDBChangeObserver> observers;
 
     @SuppressWarnings("unchecked")
@@ -31,9 +33,13 @@ public class PersonDBServiceImpl implements PersonDBService
         Map map = new HashMap();
         map.put( PersistenceUnitProperties.CLASSLOADER, getClass().getClassLoader() );
        
-        org.eclipse.persistence.jpa.PersistenceProvider persistenceProvider = new org.eclipse.persistence.jpa.PersistenceProvider();
-        emf = persistenceProvider.createEntityManagerFactory( "kra.hsql.jpa", map );
-        em = emf.createEntityManager();
+        org.eclipse.persistence.jpa.PersistenceProvider persistenceProvider1 = new org.eclipse.persistence.jpa.PersistenceProvider();
+        h2emf = persistenceProvider1.createEntityManagerFactory( "kra.h2.jpa", map );
+        h2em = h2emf.createEntityManager();
+        
+        org.eclipse.persistence.jpa.PersistenceProvider persistenceProvider2 = new org.eclipse.persistence.jpa.PersistenceProvider();
+        oracleEmf = persistenceProvider2.createEntityManagerFactory( "kra.h2.jpa", map );
+        oracleEm = h2emf.createEntityManager();
 
         observers = new LinkedList<>();
     }
@@ -41,51 +47,57 @@ public class PersonDBServiceImpl implements PersonDBService
     protected void deactivate()
     {
         observers = null;
-        em.close();
-        emf.close();
-        em = null;
-        emf = null;
+        h2em.close();
+        h2emf.close();
+        h2em = null;
+        h2emf = null;
+        
+        oracleEm.close();
+        oracleEmf.close();
+        oracleEm = null;
+        oracleEmf = null;
     }
 
     @Override
     public void addPerson( Person person )
     {
-        em.getTransaction().begin();
-        em.persist( person );
-        em.getTransaction().commit();
-        sendEvent( PersonEvent.ADDED, person );
+//        em.getTransaction().begin();
+//        em.persist( person );
+//        em.getTransaction().commit();
+//        sendEvent( PersonEvent.ADDED, person );
     }
 
     @Override
     public void modifyPerson( Person person )
     {
-        em.getTransaction().begin();
-        em.merge( person );
-        em.getTransaction().commit();
-        sendEvent( PersonEvent.CHANGED, person );
+//        em.getTransaction().begin();
+//        em.merge( person );
+//        em.getTransaction().commit();
+//        sendEvent( PersonEvent.CHANGED, person );
     }
 
     @Override
     public void removePersion( Person person )
     {
-        em.getTransaction().begin();
-        Person find = em.find( Person.class, person.getId() );
-        em.remove( find );
-        em.getTransaction().commit();
-        sendEvent( PersonEvent.REMOVED, person );
+//        em.getTransaction().begin();
+//        Person find = em.find( Person.class, person.getId() );
+//        em.remove( find );
+//        em.getTransaction().commit();
+//        sendEvent( PersonEvent.REMOVED, person );
     }
 
     @Override
     public List<Person> getPersons()
     {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Person> cq = cb.createQuery( Person.class );
-        Root<Person> rootEntry = cq.from( Person.class );
-        CriteriaQuery<Person> all = cq.select( rootEntry );
-        TypedQuery<Person> allQuery = em.createQuery( all );
-
-        List<Person> resultList = allQuery.getResultList();
-        return resultList;
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<Person> cq = cb.createQuery( Person.class );
+//        Root<Person> rootEntry = cq.from( Person.class );
+//        CriteriaQuery<Person> all = cq.select( rootEntry );
+//        TypedQuery<Person> allQuery = em.createQuery( all );
+//
+//        List<Person> resultList = allQuery.getResultList();
+//        return resultList;
+    	return null;
     }
 
     private void sendEvent( String eventID, Person affectedPerson )
