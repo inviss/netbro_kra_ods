@@ -31,13 +31,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.codehaus.jackson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="kr.co.netbro.kra.model"
          download-size="0"
          install-size="0"
@@ -61,6 +54,13 @@
 
    <plugin
          id="kr.co.netbro.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="kr.co.netbro.kra.database"
          download-size="0"
          install-size="0"
          version="0.0.0"
