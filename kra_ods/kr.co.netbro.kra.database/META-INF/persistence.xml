@@ -7,7 +7,14 @@
 	
 	<persistence-unit name="kra.h2.jpa" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>kr.co.netbro.kra.entity.Person</class>
+		
+		<class>kr.co.netbro.kra.entity.Cancel</class>
+		<class>kr.co.netbro.kra.entity.Change</class>
+		<class>kr.co.netbro.kra.entity.Final</class>
+		<class>kr.co.netbro.kra.entity.Result</class>
+		<!--  
+		<mapping-file>/META-INF/orm.xml</mapping-file>
+		-->
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:h2db/database" />
@@ -22,10 +29,15 @@
 	
 	<persistence-unit name="kra.oracle.jpa" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>kr.co.netbro.kra.entity.Person</class>
+		
+		<class>kr.co.netbro.kra.entity.Cancel</class>
+		<class>kr.co.netbro.kra.entity.Change</class>
+		<class>kr.co.netbro.kra.entity.Final</class>
+		<class>kr.co.netbro.kra.entity.Result</class>
+		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@210.180.44.113:1521:cms" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@210.180.44.113:1521:d2net" />
 			<property name="javax.persistence.jdbc.user" value="cms" />
 			<property name="javax.persistence.jdbc.password" value="cms" />
 
