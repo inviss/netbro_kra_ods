@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Rate
 Bundle-SymbolicName: kr.co.netbro.kra.rate;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: javax.inject;bundle-version="1.0.0",
  com.ibm.icu;bundle-version="50.1.1",
  org.eclipse.swt;bundle-version="3.102.1",
@@ -41,7 +41,7 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  kr.co.netbro.kra.socket;bundle-version="1.0.0",
  org.eclipse.draw2d;bundle-version="3.9.0",
  org.eclipse.jface.text;bundle-version="3.8.101",
- kr.co.netbro.kra.database;bundle-version="1.0.0",
  org.eclipse.equinox.util;bundle-version="1.0.500",
- org.eclipse.equinox.ds;bundle-version="1.4.300"
+ org.eclipse.equinox.ds;bundle-version="1.4.300",
+ kr.co.netbro.kra.database;bundle-version="0.0.1"
 Import-Package: org.slf4j
