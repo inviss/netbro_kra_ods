@@ -26,10 +26,11 @@
 
    <features>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="kr.co.netbro.kra.feature"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.e4.rcp"/>
+      <feature id="org.eclipse.persistence.jpa"/>
+      <feature id="kr.co.netbro.kra.feature"/>
    </features>
 
    <configurations>
