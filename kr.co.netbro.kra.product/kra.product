@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="NetBro ODS" uid="kr.co.netbro.kra.product" id="kr.co.netbro.kra.rate.NetBroODS" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="NetBro ODS" uid="kr.co.netbro.kra.product" id="kr.co.netbro.kra.rate.NetBroODS" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
