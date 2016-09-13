@@ -4,6 +4,8 @@ import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.model.RaceType;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -20,6 +22,8 @@ public class CustomWidget extends Canvas {
 	private String text;
 	private Point textExtent;
 	private PaintListener paintListener;
+	private DisposeListener disposeListener;
+	private RateViewer viewer;
 
 	public CustomWidget(Composite parent) {
 		super(parent, SWT.NONE);
@@ -44,14 +48,16 @@ public class CustomWidget extends Canvas {
 
 	public void setData(final RaceInfo raceInfo) {
 		checkWidget();
-		if(paintListener != null)
+		if(paintListener != null) {
 			removePaintListener(paintListener);
+			removeDisposeListener(disposeListener);
+		}
 		
 		paintListener = new PaintListener() {
 
 			@Override
 			public void paintControl(PaintEvent e) {
-				RateViewer viewer = null;
+				
 				if(logger.isDebugEnabled()) {
 					logger.debug("raceType=" + raceInfo.getGameType());
 				}
@@ -74,10 +80,17 @@ public class CustomWidget extends Canvas {
 			
 		};
 		
+		disposeListener = new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				if(viewer != null) viewer.dispose();
+			}
+		};
+		
 		addPaintListener(paintListener);
+		addDisposeListener(disposeListener);
 		
 		redraw();
 	}
-	
 	
 }
