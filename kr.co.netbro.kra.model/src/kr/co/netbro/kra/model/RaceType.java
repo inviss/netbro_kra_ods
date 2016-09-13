@@ -6,12 +6,15 @@ import java.util.Map;
 public enum RaceType {
 	
 	DAN(1, "단승식"), YON(2, "연승식"), BOKYON (3, "복연승식"), SSANG(4, "쌍승식"), 
-	BOK(5, "복승식"), SAMBOK(6, "삼복승식"), FINAL(9, "확정"), SAMSSANG(10, "삼쌍승식"),
+	//BOK(5, "복승식"), SAMBOK(6, "삼복승식"), FINAL(9, "확정"), SAMSSANG(10, "삼쌍승식"),
+	BOK(5, "복승식"), SAMBOK(6, "삼복승식"), SAMSSANG(10, "삼쌍승식"),
 	SAMBOK_TOP60(52, "삼복TOP"), SAMSSANG_TOP60(54, "삼쌍TOP");
 	
 	private int type;
 	private String name;
 	private static Map<Integer, String> mMap;
+	
+	public static final String[] SHORT_TYPE_NAME = { "단", "연", "복연", "쌍", "복", "삼복", "삼쌍", "삼복T", "삼쌍T" };
 	
 	private RaceType(int type, String name) {
 		this.type = type;
