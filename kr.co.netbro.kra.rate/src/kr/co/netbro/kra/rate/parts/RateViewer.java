@@ -16,11 +16,11 @@ public class RateViewer {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
-	protected static Color cr = new Color(Display.getCurrent(), 255, 100, 100);
-	protected static Color cg = new Color(Display.getCurrent(), 0, 200, 0);
-	protected static Color cb = new Color(Display.getCurrent(), 100, 100, 255);
-	protected static Color bl = new Color(Display.getCurrent(), 0, 0, 0);
-	protected static Color ye = new Color(Display.getCurrent(), 255, 255, 0);
+	protected Color cr = new Color(Display.getCurrent(), 255, 100, 100);
+	protected Color cg = new Color(Display.getCurrent(), 0, 200, 0);
+	protected Color cb = new Color(Display.getCurrent(), 100, 100, 255);
+	protected Color bl = new Color(Display.getCurrent(), 0, 0, 0);
+	protected Color ye = new Color(Display.getCurrent(), 255, 255, 0);
 
 	protected int X_POINT = 30;
 	protected int Y_POINT = 100;
@@ -33,21 +33,15 @@ public class RateViewer {
 	public RateViewer() {
 		fontRegistry.put("code", new FontData[]{new FontData("Dialog", 10, SWT.NORMAL)});
 	}
-/*
-	public void displayView(final GC gc, final RaceInfo raceInfo) {
-		if(raceInfo != null) {
-			if(RaceType.YON.getType() == raceInfo.getGameType()) {
-				X_POINT = 180;
-			} else {
-				X_POINT = 30;
-			}
-
-			String[][] rateData = makeData(raceInfo);
-			paintHeader(gc, raceInfo);
-			paintBody(gc, rateData, raceInfo);
-		}
+	
+	public void dispose() {
+		if(cr != null) cr.dispose();
+		if(cg != null) cg.dispose();
+		if(cb != null) cb.dispose();
+		if(bl != null) bl.dispose();
+		if(ye != null) ye.dispose();
 	}
-*/
+
 	public void paintHeader(GC gc, RaceInfo raceInfo) {
 		if(raceInfo != null) {
 			gc.setForeground(bl);

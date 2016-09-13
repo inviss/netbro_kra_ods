@@ -128,7 +128,8 @@ public class KraRateConfig {
 
 		g1canvas = new Canvas(group1, SWT.NONE);
 		GridData gd_g1canvas = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_g1canvas.widthHint = 150;
+		gd_g1canvas.widthHint = 300;
+		gd_g1canvas.heightHint = 80;
 		g1canvas.setLayoutData(gd_g1canvas);
 		g1canvas.addPaintListener(eventListener(null));
 
@@ -139,7 +140,7 @@ public class KraRateConfig {
 
 		GridLayout g1CompositeLayout = new GridLayout(1, false);
 		composite2.setLayout(g1CompositeLayout);
-
+/*
 		final Button myButton = new Button(composite2, SWT.TOGGLE);
 		myButton.setText("\uCEA1\uCC98\uC2DC\uC791");
 		myButton.setSelection(false);
@@ -174,7 +175,7 @@ public class KraRateConfig {
 				}
 			}
 		});
-
+*/
 		SelectionListener sceenListener = new SelectionAdapter () {
 			public void widgetSelected(SelectionEvent event) {
 				Button button = ((Button) event.widget);
@@ -476,16 +477,33 @@ public class KraRateConfig {
 				
 				int x = 0;
 				int y = 10;
+				for(String tName : RaceType.SHORT_TYPE_NAME) {
+					if(tName.length() == 1)
+						x += 0;
+					else if(tName.length() == 2)
+						x += -4;
+					else
+						x += -6;
+					
+					gc.drawString(tName, x, y);
+					
+					if(tName.length() == 1)
+						x += 30;
+					else if(tName.length() == 2)
+						x += 34;
+					else
+						x += 36;
+				}
+				y += 15;
 				for(int i=0; i < games.length; i++) {
 					x = 0;
 					for(int j=0; j < games[i].length; j++) {
-						x += 15;
 						if(games[i][j]) {
 							gc.drawString("★", x, y);
 						} else {
 							gc.drawString("☆", x, y);
 						}
-						
+						x += 30;
 					}
 					y += 15;
 				}
