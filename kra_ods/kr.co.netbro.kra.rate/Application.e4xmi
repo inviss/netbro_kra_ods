@@ -3,10 +3,11 @@
   <children xsi:type="basic:TrimmedWindow" xmi:id="_NY4vEFO3EeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.trimmedwindow.0">
     <tags>shellMaximized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_O0picFO3EeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partsashcontainer.0">
-      <children xsi:type="basic:PartStack" xmi:id="_HLCmkFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partstack.0" containerData="27">
-        <children xsi:type="basic:Part" xmi:id="_YYW_4F-VEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.part.config" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.KraRateConfig" label="&#xacbd;&#xae30;&#xc124;&#xc815;"/>
+      <children xsi:type="basic:PartStack" xmi:id="_HLCmkFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partstack.0" containerData="20">
+        <children xsi:type="basic:Part" xmi:id="_YYW_4F-VEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.part.config" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.RaceInfoPart" label="&#xacbd;&#xae30;&#xc124;&#xc815;"/>
+        <children xsi:type="basic:Part" xmi:id="_5NiCMIErEea52u3pvYwX2A" elementId="kr.co.netbro.kra.rate.part." contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.ChConfigPart" label="&#xcc44;&#xb110;&#xc124;&#xc815;"/>
       </children>
-      <children xsi:type="basic:PartStack" xmi:id="_IBcDEFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partstack.1" containerData="73">
+      <children xsi:type="basic:PartStack" xmi:id="_IBcDEFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.partstack.1" containerData="80">
         <children xsi:type="basic:Part" xmi:id="_Je6tsFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.part.1" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas1Part" label="&#xb2e8;&#xc5f0;.&#xc0bc;&#xbcf5;TOP"/>
         <children xsi:type="basic:Part" xmi:id="_Jz_l0FPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.part.2" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas2Part" label="&#xbcf5;&#xc5f0;"/>
         <children xsi:type="basic:Part" xmi:id="_KIWFMFPUEeaqzICFqstAWA" elementId="kr.co.netbro.kra.rate.part.3" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas3Part" label="&#xc30d;&#xc2b9;"/>
