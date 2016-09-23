@@ -13,6 +13,8 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -44,7 +46,7 @@ public class Canvas1Part extends RateViewer {
     
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
-
+		
 		Composite composite = new Composite(parent, SWT.NONE);
 		
 		FillLayout fillLayout = new FillLayout();
@@ -121,6 +123,19 @@ public class Canvas1Part extends RateViewer {
 		IObservableValue todoSummaryObservable = PojoProperties.value("summary").observe(raceInfo);
 		dbc.bindValue(customWidgetObservableValue, todoSummaryObservable);
 */
+		Object[] oo = parent.getDisplay().getDeviceData().objects;
+		int c = 0;
+		int f = 0;
+		for(Object o : oo) {
+			if(o instanceof Color) {
+				c++;
+			}
+			if(o instanceof Font) {
+				f++;
+			}
+		}
+		
+		logger.debug("color: "+c+", font: "+f);
 	}
 
 	@Focus

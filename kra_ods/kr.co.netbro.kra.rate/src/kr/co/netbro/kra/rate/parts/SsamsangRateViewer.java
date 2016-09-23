@@ -1,10 +1,11 @@
 package kr.co.netbro.kra.rate.parts;
 
-import kr.co.netbro.kra.model.RaceInfo;
-
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+
+import kr.co.netbro.kra.model.RaceInfo;
 
 public class SsamsangRateViewer extends RateViewer {
 	
@@ -50,7 +51,8 @@ public class SsamsangRateViewer extends RateViewer {
 	}
 	
 	@Override
-	public void paintBody(GC gc, String[][] rateData, RaceInfo raceInfo) {
+	public void paintBody(PaintEvent e, String[][] rateData, RaceInfo raceInfo) {
+		GC gc = e.gc;
 		int vgap = 20;
 
 		int x = 0;
@@ -63,7 +65,7 @@ public class SsamsangRateViewer extends RateViewer {
 			for (int j = 0; j < rateData[i].length; j++) {
 				boolean isRate = false;
 				if (!rateData[i][j].startsWith("#")) {
-					gc.setForeground(cb);
+					gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLUE));
 					gc.drawString(rateData[i][j], x, y);
 					isRate = true;
 				}
@@ -73,12 +75,11 @@ public class SsamsangRateViewer extends RateViewer {
 				String s = rateData[i][j];
 				
 				if (s.equals(raceInfo.getMinimum())) {
-					gc.setForeground(ye);
+					gc.setForeground(e.display.getSystemColor(SWT.COLOR_YELLOW));
 					gc.fillRectangle(x - 4, y - 13, 40, vgap - 4);
 				}
 				
-				Color color =  isRate ? bl : cr;
-				gc.setForeground(color);
+				gc.setForeground(isRate ? e.display.getSystemColor(SWT.COLOR_BLACK) : e.display.getSystemColor(SWT.COLOR_RED));
 				
 				x += 40;
 				gc.drawString(s, x - fm.getAverageCharWidth() - 35, y);

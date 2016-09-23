@@ -4,6 +4,7 @@ import kr.co.netbro.kra.model.RaceInfo;
 
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -16,11 +17,11 @@ public class RateViewer {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
-	protected Color cr = new Color(Display.getCurrent(), 255, 100, 100);
-	protected Color cg = new Color(Display.getCurrent(), 0, 200, 0);
-	protected Color cb = new Color(Display.getCurrent(), 100, 100, 255);
-	protected Color bl = new Color(Display.getCurrent(), 0, 0, 0);
-	protected Color ye = new Color(Display.getCurrent(), 255, 255, 0);
+	//protected Color cr = new Color(Display.getCurrent(), 255, 100, 100);
+	//protected Color cg = new Color(Display.getCurrent(), 0, 200, 0);
+	//protected Color cb = new Color(Display.getCurrent(), 100, 100, 255);
+	//protected Color bl = new Color(Display.getCurrent(), 0, 0, 0);
+	//protected Color ye = new Color(Display.getCurrent(), 255, 255, 0);
 
 	protected int X_POINT = 30;
 	protected int Y_POINT = 100;
@@ -35,16 +36,17 @@ public class RateViewer {
 	}
 	
 	public void dispose() {
-		if(cr != null) cr.dispose();
-		if(cg != null) cg.dispose();
-		if(cb != null) cb.dispose();
-		if(bl != null) bl.dispose();
-		if(ye != null) ye.dispose();
+		//if(cr != null) cr.dispose();
+		//if(cg != null) cg.dispose();
+		//if(cb != null) cb.dispose();
+		//if(bl != null) bl.dispose();
+		//if(ye != null) ye.dispose();
 	}
 
-	public void paintHeader(GC gc, RaceInfo raceInfo) {
+	public void paintHeader(PaintEvent e, RaceInfo raceInfo) {
+		GC gc = e.gc;
 		if(raceInfo != null) {
-			gc.setForeground(bl);
+			gc.setForeground(e.display.getSystemColor(SWT.COLOR_YELLOW));
 			gc.setFont(fontRegistry.get("code"));
 			gc.drawString(raceInfo.getZoneName()+" 제 "+raceInfo.getRaceNum()+" 경주 "+raceInfo.getTypeName(), X_POINT, 30);
 			String timeStr = "";
@@ -62,7 +64,8 @@ public class RateViewer {
 		}
 	}
 
-	public void paintBody(GC gc, String[][] rateData, RaceInfo raceInfo) {
+	public void paintBody(PaintEvent e, String[][] rateData, RaceInfo raceInfo) {
+		GC gc = e.gc;
 		if(raceInfo != null) {
 			int hgap = 45;
 			int vgap = 20;
@@ -75,20 +78,20 @@ public class RateViewer {
 					if(s != null) {
 						if(i == 0 || j == 0 || (raceInfo.getGameType() > 2 && i == j)) {
 							if (i == 0) {
-								gc.setForeground(cb);
+								gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLUE));
 							} else if (j == 0) {
-								gc.setForeground(cr);
+								gc.setForeground(e.display.getSystemColor(SWT.COLOR_RED));
 							} else {
-								gc.setForeground(cg);
+								gc.setForeground(e.display.getSystemColor(SWT.COLOR_GREEN));
 							}
 							int tx = (hgap - fm.getAverageCharWidth()) / 2;
 							gc.drawString(s, X_POINT + i * hgap + tx, Y_POINT + j * vgap);
 						} else {
 							if(s.equals(raceInfo.getMinimum())) {
-								gc.setForeground(ye);
+								gc.setForeground(e.display.getSystemColor(SWT.COLOR_YELLOW));
 								gc.fillRectangle(X_POINT + i * hgap + 5, Y_POINT + j * vgap - 13, hgap - 2, vgap - 2);
 							}
-							gc.setForeground(bl);
+							gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLACK));
 							gc.drawString(s, X_POINT + i * hgap, Y_POINT + j * vgap);
 						}
 					}
