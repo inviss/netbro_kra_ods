@@ -12,6 +12,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -53,7 +54,8 @@ public class Canvas6Part extends RateViewer{
 		formLayout.spacing = 5;
 		outer.setLayout( formLayout );
 
-		Composite innerRight = new Composite(outer, SWT.NONE );
+		ScrolledComposite scrolledComposite = new ScrolledComposite(outer, SWT.NONE);
+		Composite innerRight = new Composite(scrolledComposite, SWT.NONE );
 		innerRight.setLayout(new FillLayout());
 
 		FormData fData = new FormData();

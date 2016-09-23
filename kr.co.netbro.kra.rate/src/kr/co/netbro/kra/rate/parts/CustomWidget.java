@@ -1,19 +1,18 @@
 package kr.co.netbro.kra.rate.parts;
 
-import kr.co.netbro.kra.model.RaceInfo;
-import kr.co.netbro.kra.model.RaceType;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.kra.model.RaceType;
 
 public class CustomWidget extends Canvas {
 	
@@ -73,9 +72,8 @@ public class CustomWidget extends Canvas {
 				}
 				String[][] rateData = viewer.makeData(raceInfo);
 				
-				GC gc = e.gc;
-				viewer.paintHeader(gc, raceInfo);
-				viewer.paintBody(gc, rateData, raceInfo);
+				viewer.paintHeader(e, raceInfo);
+				viewer.paintBody(e, rateData, raceInfo);
 			}
 			
 		};
