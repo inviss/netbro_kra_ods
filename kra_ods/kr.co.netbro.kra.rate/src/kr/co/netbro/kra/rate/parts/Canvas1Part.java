@@ -134,8 +134,7 @@ public class Canvas1Part extends RateViewer {
 				f++;
 			}
 		}
-		
-		logger.debug("color: "+c+", font: "+f);
+
 	}
 
 	@Focus

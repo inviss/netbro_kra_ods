@@ -54,8 +54,9 @@ public class Canvas5Part extends RateViewer{
 		formLayout.spacing = 5;
 		outer.setLayout( formLayout );
 
-		ScrolledComposite scrolledComposite = new ScrolledComposite(outer, SWT.NONE);
-		Composite innerRight = new Composite(scrolledComposite, SWT.NONE );
+		//ScrolledComposite scrolledComposite = new ScrolledComposite(outer, SWT.NONE);
+		//Composite innerRight = new Composite(scrolledComposite, SWT.NONE );
+		Composite innerRight = new Composite(outer, SWT.NONE );
 		innerRight.setLayout(new FillLayout());
 
 		FormData fData = new FormData();

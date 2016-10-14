@@ -26,10 +26,12 @@ public class TopRateViewer extends RateViewer {
 	public void paintBody(PaintEvent e, String[][] rateData, RaceInfo raceInfo) {
 		GC gc = e.gc;
 		
-		int vgap = 20;
+		int vgap = 25;
 		row = 15;
 		FontMetrics fm = gc.getFontMetrics();
 		for (int i = 0; i < rateData.length; i++) {
+			gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
+			
 			int x = i / row * 150 + X_POINT;
 			int y = this.Y_POINT + vgap + i % this.row * vgap;
 
@@ -41,8 +43,8 @@ public class TopRateViewer extends RateViewer {
 			gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLUE));
 			String s = rateData[i][3];
 			if (s.equals(raceInfo.getMinimum())) {
-				gc.setForeground(e.display.getSystemColor(SWT.COLOR_YELLOW));
-				gc.fillRectangle(x + 83, y - 13, 40, vgap - 4);
+				gc.setBackground(e.display.getSystemColor(SWT.COLOR_YELLOW));
+				gc.fillRectangle(x + 77, y - 4, 35, vgap - 4);
 			}
 			gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLACK));
 			gc.drawString(s, x + 90 - fm.getAverageCharWidth(), y);

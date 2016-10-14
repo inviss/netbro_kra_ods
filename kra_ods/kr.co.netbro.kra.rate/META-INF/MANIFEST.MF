@@ -37,11 +37,11 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.equinox.p2.operations;bundle-version="2.3.0",
  org.eclipse.equinox.p2.engine;bundle-version="2.3.0",
  org.eclipse.ui,
- kr.co.netbro.kra.model;bundle-version="1.0.0",
- kr.co.netbro.kra.socket;bundle-version="1.0.0",
  org.eclipse.draw2d;bundle-version="3.9.0",
  org.eclipse.jface.text;bundle-version="3.8.101",
  org.eclipse.equinox.util;bundle-version="1.0.500",
  org.eclipse.equinox.ds;bundle-version="1.4.300",
+ kr.co.netbro.kra.model;bundle-version="1.0.0",
+ kr.co.netbro.kra.socket;bundle-version="1.0.0",
  kr.co.netbro.kra.database;bundle-version="0.0.1"
 Import-Package: org.slf4j

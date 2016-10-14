@@ -33,6 +33,8 @@ public class ChConfigPart {
 		Composite comp1 = new Composite(container, SWT.NONE );
 		comp1.setLayout( formLayout );
 		
+		String[] odsNames = {"삼쌍TOP", "단복승식", "연복연승식", "삼복승식", "삼복TOP", "쌍승식", "경주결과", "변경사항", "테스트"};
+		
 		int top = 10;
 		int left = 0;
 		int right = 10;
@@ -47,7 +49,7 @@ public class ChConfigPart {
 			//fData0.width = 50;
 
 			Label raceName = new Label(comp1, SWT.NONE);
-			raceName.setText("삼쌍TOP");
+			raceName.setText(odsNames[i]);
 			raceName.setLayoutData(fData0);
 
 			FormData fData1 = new FormData();
@@ -129,7 +131,7 @@ public class ChConfigPart {
 			//fData0.width = 50;
 
 			Label raceName = new Label(comp2, SWT.NONE);
-			raceName.setText("삼쌍TOP");
+			raceName.setText(odsNames[3+i]);
 			raceName.setLayoutData(fData0);
 
 			FormData fData1 = new FormData();
@@ -214,7 +216,7 @@ public class ChConfigPart {
 			//fData0.width = 50;
 
 			Label raceName = new Label(comp3, SWT.NONE);
-			raceName.setText("삼쌍TOP");
+			raceName.setText(odsNames[6+i]);
 			raceName.setLayoutData(fData0);
 
 			FormData fData1 = new FormData();

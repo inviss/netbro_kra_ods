@@ -73,6 +73,8 @@ public class SambokRateViewer extends RateViewer {
 			x = 30 + i / (this.row + 1) * (this.column * 45);
 			y = this.Y_POINT + vgap + i % (this.row + 1) * vgap;
 			for (int j = 0; j < rateData[i].length; j++) {
+				gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
+				
 				boolean isRate = false;
 				if (!rateData[i][j].startsWith("#")) {
 					gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLUE));
@@ -84,8 +86,8 @@ public class SambokRateViewer extends RateViewer {
 				j++;
 				String s = rateData[i][j];
 				if (s.equals(raceInfo.getMinimum())) {
-					gc.setForeground(e.display.getSystemColor(SWT.COLOR_YELLOW));
-					gc.fillRectangle(x - 4, y - 13, 40, vgap - 4);
+					gc.setBackground(e.display.getSystemColor(SWT.COLOR_YELLOW));
+					gc.fillRectangle(x - 7, y - 3, 40, vgap - 4);
 				}
 
 				gc.setForeground(isRate ? e.display.getSystemColor(SWT.COLOR_BLACK) : e.display.getSystemColor(SWT.COLOR_RED));

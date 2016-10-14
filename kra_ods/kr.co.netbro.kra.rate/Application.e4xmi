@@ -15,6 +15,11 @@
         <children xsi:type="basic:Part" xmi:id="_zBy4kFkyEeaYpN7SHHmE3g" elementId="kr.co.netbro.kra.rate.part.5" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas5Part" label="&#xc0bc;&#xbcf5;"/>
         <children xsi:type="basic:Part" xmi:id="_2Q8VIFkyEeaYpN7SHHmE3g" elementId="kr.co.netbro.kra.rate.part.6" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas6Part" label="&#xc0bc;&#xc30d;"/>
         <children xsi:type="basic:Part" xmi:id="_6m5BsFkyEeaYpN7SHHmE3g" elementId="kr.co.netbro.kra.rate.part.7" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.Canvas7Part" label="&#xc0bc;&#xc30d;TOP"/>
+        <children xsi:type="basic:Part" xmi:id="_nDBVQIoNEeawF8U4gY3b9g" elementId="kr.co.netbro.kra.rate.part." contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.GisuChangePart" label="&#xc120;&#xc218;&#xbcc0;&#xacbd;"/>
+        <children xsi:type="basic:Part" xmi:id="_FUIG0IoPEeawF8U4gY3b9g" elementId="kr.co.netbro.kra.rate.part." contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.ChulCancelPart" label="&#xcd9c;&#xc804;&#xcde8;&#xc18c;"/>
+        <children xsi:type="basic:Part" xmi:id="_H43PIIupEea3BNRSOtWtIA" elementId="kr.co.netbro.kra.rate.part." contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.RaceGradePart" label="&#xacbd;&#xc8fc;&#xc131;&#xc801;"/>
+        <children xsi:type="basic:Part" xmi:id="_1AT_UIupEea3BNRSOtWtIA" elementId="kr.co.netbro.kra.rate.part." contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.DeadHeatPart" label="&#xb3d9;&#xcc29;&#xacb0;&#xacfc;"/>
+        <children xsi:type="basic:Part" xmi:id="_b2gM0IuqEea3BNRSOtWtIA" elementId="kr.co.netbro.kra.rate.part.ods" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.parts.FixedResultPart" label="&#xd655;&#xc815;ODS"/>
       </children>
     </children>
     <mainMenu xmi:id="_bFOl4F-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.menu.0">
