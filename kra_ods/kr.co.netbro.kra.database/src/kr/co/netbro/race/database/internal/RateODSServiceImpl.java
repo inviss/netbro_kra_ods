@@ -16,10 +16,10 @@ import kr.co.netbro.kra.entity.Cancel;
 import kr.co.netbro.kra.entity.Change;
 import kr.co.netbro.kra.entity.Final;
 import kr.co.netbro.kra.entity.Result;
-import kr.co.netbro.race.database.RateODSService;
+import kr.co.netbro.race.database.IRateODSService;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class RateODSServiceImpl implements RateODSService {
+public class RateODSServiceImpl implements IRateODSService {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 	
