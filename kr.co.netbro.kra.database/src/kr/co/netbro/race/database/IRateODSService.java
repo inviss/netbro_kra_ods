@@ -7,7 +7,7 @@ import kr.co.netbro.kra.entity.Change;
 import kr.co.netbro.kra.entity.Final;
 import kr.co.netbro.kra.entity.Result;
 
-public interface RateODSService {
+public interface IRateODSService {
 	  List<Cancel> findCancels();
 	  List<Change> findChanges();
 	  List<Final> findFinals();
