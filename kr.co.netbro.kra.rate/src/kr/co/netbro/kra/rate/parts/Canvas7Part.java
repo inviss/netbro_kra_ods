@@ -34,28 +34,29 @@ public class Canvas7Part extends RateViewer{
 	private IRaceInfoService raceInfoService;
 
 	CustomWidget widget3;
-	
+
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		
+
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.marginHeight = 5;
 		fillLayout.marginWidth = 5;
 		composite.setLayout(fillLayout);
-		
+
 		Composite outer = new Composite(composite, SWT.NONE );
 		outer.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		
+
 		FormLayout formLayout = new FormLayout();
 		formLayout.marginHeight = 5;
 		formLayout.marginWidth = 5;
 		formLayout.spacing = 5;
 		outer.setLayout( formLayout );
 
-		ScrolledComposite scrolledComposite = new ScrolledComposite(outer, SWT.NONE);
-		Composite innerRight = new Composite(scrolledComposite, SWT.NONE );
+		//ScrolledComposite scrolledComposite = new ScrolledComposite(outer, SWT.NONE);
+		//Composite innerRight = new Composite(scrolledComposite, SWT.NONE );
+		Composite innerRight = new Composite(outer, SWT.NONE );
 		innerRight.setLayout(new FillLayout());
 
 		FormData fData = new FormData();
@@ -67,12 +68,12 @@ public class Canvas7Part extends RateViewer{
 
 		if(widget3 == null)
 			widget3 = new CustomWidget(innerRight);
-		
+
 		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.SAMSSANG_TOP60.getType());
 		if(raceInfo != null) {
 			eventBroker.post("ODS_RACE/54", raceInfo);
 		}
-/*
+		/*
 		//CustomWidgetObservableValue customWidgetObservableValue = new CustomWidgetObservableValue(widget);
 
 		DataBindingContext dbc = new DataBindingContext();
@@ -82,7 +83,7 @@ public class Canvas7Part extends RateViewer{
 		RaceInfo raceInfo = null;
 		IObservableValue todoSummaryObservable = PojoProperties.value("summary").observe(raceInfo);
 		dbc.bindValue(customWidgetObservableValue, todoSummaryObservable);
-*/
+		 */
 	}
 
 	@Focus

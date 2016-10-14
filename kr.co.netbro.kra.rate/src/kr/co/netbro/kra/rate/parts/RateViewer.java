@@ -46,7 +46,7 @@ public class RateViewer {
 	public void paintHeader(PaintEvent e, RaceInfo raceInfo) {
 		GC gc = e.gc;
 		if(raceInfo != null) {
-			gc.setForeground(e.display.getSystemColor(SWT.COLOR_YELLOW));
+			gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLACK));
 			gc.setFont(fontRegistry.get("code"));
 			gc.drawString(raceInfo.getZoneName()+" 제 "+raceInfo.getRaceNum()+" 경주 "+raceInfo.getTypeName(), X_POINT, 30);
 			String timeStr = "";
@@ -67,13 +67,14 @@ public class RateViewer {
 	public void paintBody(PaintEvent e, String[][] rateData, RaceInfo raceInfo) {
 		GC gc = e.gc;
 		if(raceInfo != null) {
-			int hgap = 45;
+			int hgap = 35;
 			int vgap = 20;
 			int max = raceInfo.getHorseNum()+1;
 
 			FontMetrics fm = gc.getFontMetrics();
 			for (int i = 0; i < rateData.length; i++) {
 				for(int j = 0; j < max; j++) {
+					gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
 					String s = rateData[i][j];
 					if(s != null) {
 						if(i == 0 || j == 0 || (raceInfo.getGameType() > 2 && i == j)) {
@@ -88,8 +89,8 @@ public class RateViewer {
 							gc.drawString(s, X_POINT + i * hgap + tx, Y_POINT + j * vgap);
 						} else {
 							if(s.equals(raceInfo.getMinimum())) {
-								gc.setForeground(e.display.getSystemColor(SWT.COLOR_YELLOW));
-								gc.fillRectangle(X_POINT + i * hgap + 5, Y_POINT + j * vgap - 13, hgap - 2, vgap - 2);
+								gc.setBackground(e.display.getSystemColor(SWT.COLOR_YELLOW));
+								gc.fillRectangle(X_POINT + i * hgap - 7, Y_POINT + j * vgap - 3, hgap - 2, vgap - 2);
 							}
 							gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLACK));
 							gc.drawString(s, X_POINT + i * hgap, Y_POINT + j * vgap);

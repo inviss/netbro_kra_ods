@@ -8,12 +8,12 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 
 import kr.co.netbro.kra.entity.Change;
-import kr.co.netbro.race.database.RateODSService;
+import kr.co.netbro.race.database.IRateODSService;
 
 public class TestConn {
 	@Optional
 	@Inject
-	private RateODSService rateODSService;
+	private IRateODSService rateODSService;
 	
 	@Execute
     public void execute() {
