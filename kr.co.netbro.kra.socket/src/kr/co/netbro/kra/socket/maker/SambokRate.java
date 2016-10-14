@@ -1,6 +1,7 @@
 package kr.co.netbro.kra.socket.maker;
 
 public class SambokRate {
+	
 	public int i;
 	public int j;
 	public int k;

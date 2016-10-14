@@ -1,6 +1,7 @@
 package kr.co.netbro.kra.socket.maker;
 
 public class SamssangPage {
+	
 	public static final int DEFUALT_ROW = 17;
 	public static final int DEFUALT_COLUMN = 16;
 	public static int ROW_SIZE;

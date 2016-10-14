@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class Util {
+	
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd.(E)", Locale.KOREAN);
 	private static final SimpleDateFormat munjaFormat = new SimpleDateFormat("yyyyMMdd");
 	private static Properties p;
