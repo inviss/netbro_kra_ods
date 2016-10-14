@@ -4,7 +4,9 @@ Bundle-Name: Model
 Bundle-SymbolicName: kr.co.netbro.kra.model
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: kr.co.netbro.kra.entity,
+Export-Package: kr.co.netbro.kra.dto,
+ kr.co.netbro.kra.entity,
  kr.co.netbro.kra.model
 Require-Bundle: org.apache.commons.lang;bundle-version="2.6.0",
- javax.persistence;bundle-version="2.1.1"
+ javax.persistence;bundle-version="2.1.1",
+ com.google.gson;bundle-version="2.2.4"
