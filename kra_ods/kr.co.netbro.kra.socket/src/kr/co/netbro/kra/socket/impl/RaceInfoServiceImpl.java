@@ -1,20 +1,40 @@
 package kr.co.netbro.kra.socket.impl;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import kr.co.netbro.kra.model.IRaceInfoService;
-import kr.co.netbro.kra.model.RaceInfo;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import kr.co.netbro.kra.model.IRaceInfoService;
+import kr.co.netbro.kra.model.RaceInfo;
 
 public class RaceInfoServiceImpl implements IRaceInfoService {
 	
 	final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private volatile Map<Integer, RaceInfo> infoMap = new HashMap<Integer, RaceInfo>();
-
+	
+	@Override
+	public void saveFinalRace(String fpath, byte[] data) {
+		FileWriter fw = null;
+		try {
+			//fw = new FileWriter("../masa/data/final.dat");
+			if (data != null) {
+				
+			}
+		} catch (Exception e) {
+			logger.error("saveFinalRace error", e);
+		} finally {
+			if(fw != null)
+				try {
+					fw.close();
+				} catch (IOException e) {}
+		}
+	}
+	
 	@Override
 	public void putRaceInfo(RaceInfo raceInfo) {
 		synchronized (infoMap) {
@@ -32,4 +52,5 @@ public class RaceInfoServiceImpl implements IRaceInfoService {
 	public void allRaceClear() {
 		infoMap.clear();
 	}
+
 }

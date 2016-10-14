@@ -2,18 +2,19 @@ package kr.co.netbro.kra.socket;
 
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Creatable;
+import org.eclipse.e4.core.di.extensions.Preference;
+import org.eclipse.e4.core.services.events.IEventBroker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import kr.co.netbro.kra.model.FinalInfo;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.model.RaceType;
 import kr.co.netbro.kra.model.RaceZone;
 import kr.co.netbro.kra.socket.maker.ODSRateMaker;
 import kr.co.netbro.kra.socket.maker.Util;
-
-import org.eclipse.e4.core.di.annotations.Creatable;
-import org.eclipse.e4.core.di.extensions.Preference;
-import org.eclipse.e4.core.services.events.IEventBroker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Creatable
 public class EventDataReceiver {
@@ -27,11 +28,21 @@ public class EventDataReceiver {
 	private IRaceInfoService raceInfoService;
 
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
+	@Inject @Preference(nodePath="kra.config.socket", value="final_path") String finalPath;
 
-	public void eventReceived(byte[] data) {
+	public void finalReceived(FinalInfo finalInfo) {
+		if(finalInfo != null) {
+			eventBroker.post("ODS_RACE/final", finalInfo);
 
-		if(data != null) {
-			char[] c = ODSRateMaker.makeData(data, 0, data.length);
+			// After the cursor seek until the end of file and append the data.
+			//raceInfoService.saveFinalRace(finalPath+"/"+finalInfo.getReqDate()+".dat", data); // need a final path
+		}
+	}
+
+	public void eventReceived(char[] c) {
+
+		if(c != null) {
+			//char[] c = ODSRateMaker.makeData(data, 0, data.length);
 
 			RaceInfo raceInfo = new RaceInfo();
 			raceInfo.setZone(toInt(c, 0, 1));
@@ -65,7 +76,7 @@ public class EventDataReceiver {
 					eventBroker.post("ODS_RACE/"+raceInfo.getGameType(), raceInfo);
 				}
 			}
-			
+
 			// 설정화면에는 zone 에 관계없이 정보를 보내야 함.
 			eventBroker.post("ODS_RACE/STATUS", raceInfo);
 

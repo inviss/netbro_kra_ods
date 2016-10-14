@@ -1,6 +1,6 @@
 package kr.co.netbro.kra.socket.maker;
 
-import java.util.List;
+import kr.co.netbro.kra.model.FinalInfo;
 
 public class Packet {
 	public int type = -1;
@@ -18,7 +18,7 @@ public class Packet {
 	public static final int SHORT = -18;
 	private char[] data;
 	public boolean[] valid;
-	public List<String> finalData;
+	public FinalInfo finalData;
 
 	public Packet() {
 		
@@ -60,6 +60,8 @@ public class Packet {
 			//                                                                                                                  >  >  >  >                                                                                                                  >  >  >  >
 			//[0, 1, 0, 1, 0, 0, 0, 16, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 0, 0, 16 , 0, 0, 0,   0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 0, 0, -35, 0, 0, 0, -35, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -35,
 			for (int i = 0; i < 4; i++) {
+				byte m = buf[(offset + 4 + i)];
+				byte n = buf[(offset + 44 + i)];
 				if (buf[(offset + 4 + i)] != buf[(offset + 44 + i)]) {
 					this.type = -1;
 					return len;
@@ -73,6 +75,8 @@ public class Packet {
 			int size = 0;
 			int pow = 1;
 			for (int i = 7; i >= 4; i--) {
+				int m = buf[(offset + i)];
+				int n = (0xFF & buf[(offset + i)]);
 				size += pow * (0xFF & buf[(offset + i)]);
 				pow *= 256;
 			}
@@ -113,7 +117,7 @@ public class Packet {
 				if (isRate()) { // {1, 2, 3, 4, 5, 6, 52, 10, 54} = rate, 9 = final
 					this.data = ODSRateMaker.makeData(buf, doff, plen + offset - doff); // 269 + 32 - 80
 				} else if (this.type == 9) { // final
-					//this.finalData = ODSFinalMaker.makeFinal(buf, doff, plen + offset - doff);
+					this.finalData = ODSRateMaker.makeFinal(buf, doff, plen + offset - doff);
 				} else {
 					this.type = -3;
 				}
@@ -132,7 +136,11 @@ public class Packet {
 	public char[] getData() {
 		return this.data;
 	}
-
+	
+	public FinalInfo getFinalData() {
+		return finalData;
+	}
+	
 	public boolean isRate() {
 		int rateIndex = getRateIndex(this.type);
 		return (rateIndex >= 0) && (rateIndex < 9);

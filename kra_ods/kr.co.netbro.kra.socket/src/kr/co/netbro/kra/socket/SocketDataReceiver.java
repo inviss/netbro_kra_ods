@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.socket.maker.Packet;
+import kr.co.netbro.race.database.IRateODSService;
 
 @SuppressWarnings("restriction")
 @Creatable
@@ -39,7 +40,7 @@ public class SocketDataReceiver {
 
 	private ExecutorService serverThread = Executors.newSingleThreadExecutor();
 	private ExecutorService clientThread = Executors.newSingleThreadExecutor();
-	
+
 	@Inject @Preference(nodePath="kra.config.socket", value="port") 
 	private Integer port;
 	@Inject @Preference(nodePath="kra.config.socket", value="timeout") 
@@ -48,12 +49,16 @@ public class SocketDataReceiver {
 	private boolean capture;
 	@Inject
 	EventDataReceiver dataReceiver;
-	
+
 	@Inject
 	private IEventBroker eventBroker;
-	
+
+	@Optional
+	@Inject
+	private IRateODSService rateODSService;
+
 	private FileOutputStream fos = null;
-	
+
 	@PostConstruct
 	public void serverConnect() {
 		port = (port == null || port == 0) ? 8000 : port;
@@ -66,6 +71,8 @@ public class SocketDataReceiver {
 				e.printStackTrace();
 			}
 		}
+
+		rateODSService.findCancels();
 	}
 
 	public class SocketReceiver implements Runnable {
@@ -79,7 +86,7 @@ public class SocketDataReceiver {
 		public void run() {
 			while(true) {
 				if(server == null || server.isClosed()) break;
-				
+
 				if(logger.isInfoEnabled()) {
 					logger.info("port "+port+" receiving stream...and the waiting time is "+timeout+" seconds.");
 				}
@@ -128,15 +135,19 @@ public class SocketDataReceiver {
 				int offset = 0;
 				boolean loop = true;
 				
+				boolean test = false;
 				while(loop) {
+					if(test) {
+						Thread.sleep(10000L);
+					}
 					int type = 0;
 					try {
 						if(bufIndex == 0 || c <= 0) {
 							c = bis.read(buf);
-							
+
 							bufIndex = 0;
 							this.totalBytes += c;
-							
+
 							if(c < 0) {
 								loop = false;
 								break;
@@ -144,43 +155,55 @@ public class SocketDataReceiver {
 							if(logger.isInfoEnabled()) {
 								logger.info(c+ "byte 수신");
 							}
-							
-							// 캡쳐 버튼을 클릭했다면 녹화시작
-							if(capture) {
-								if(fos != null)
-									fos.write(buf, 0, c);
+
+							/*
+							 * 수신받은 데이타를 모두 저장한다.
+							 */
+							if(fos == null) {
+								createOutputStream();
 							}
+							fos.write(buf, 0, c);
 						}
 
 						Packet p = new Packet();
 						int plen = p.makeData(buf, bufIndex, c);
-						
+
 						int pType = p.type;
 						if (pType == 0) {
 							RaceInfo raceInfo = new RaceInfo();
 							raceInfo.setGameType(0);
 							eventBroker.post("ODS_RACE/STATUS", raceInfo);
-						} else if (pType == 9) {
-							
-						} else if (p.isRate()) {
+						} else if (p.isRate() || pType == 9) {
 							byte[] raceinfo = new byte[(plen+bufIndex-(bufIndex+48))];
 							System.arraycopy(buf, bufIndex+48, raceinfo, 0, (plen+bufIndex-(bufIndex+48)));
-							
-							dataReceiver.eventReceived(raceinfo);
+
+							if(pType == 9) {
+								dataReceiver.finalReceived(p.getFinalData());
+								test = true;
+							} else
+								dataReceiver.eventReceived(p.getData());
+						} else if (pType == 222) {
+							logger.info("경주시작");
 						}
-						
+
 						if (pType == -18) {
 							if ((bufIndex > 1) || (c < 8192)) {
+								if(logger.isDebugEnabled()) {
+									logger.debug("남은 버퍼 이어붙이기 offset="+bufIndex);
+								}
 								byte[] nbuf = new byte[65536];
 								System.arraycopy(buf, bufIndex, nbuf, 0, plen);
 								System.arraycopy(nbuf, 0, buf, 1, plen);
 								int nc = bis.read(buf, 1 + plen, buf.length - (1 + plen));
 								this.totalBytes += nc;
-								
+
 								bufIndex = 1;
 								c = plen + nc;
 								if(logger.isInfoEnabled()) {
 									logger.info("이어붙인 결과 start="+bufIndex+", length="+c);
+								}
+								if(fos != null) {
+									fos.write(buf, 0, c);
 								}
 							} else {
 								if(logger.isInfoEnabled()) {
@@ -198,7 +221,8 @@ public class SocketDataReceiver {
 								c -= plen;
 							}
 							if(logger.isInfoEnabled()) {
-								logger.info(plen+" byte 사용, 남은 버퍼: "+c+" byte");
+								logger.info("bufIndex: "+bufIndex+", "+plen+" byte 사용, 남은 버퍼: "+c+" byte");
+								System.out.println("test");
 							}
 						}
 
@@ -254,10 +278,31 @@ public class SocketDataReceiver {
 			if(!clientThread.isShutdown()) {
 				clientThread.shutdownNow();
 			}
+			if(fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {}
+				fos = null;
+			}
 			if(server != null && !server.isClosed()) server.close();
 		} catch (Exception e) {}
 	}
-	
+
+	private void createOutputStream() {
+		if(fos == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+			String filename = sdf.format(new Date(System.currentTimeMillis()));
+
+			File f = new File("D:/tmp/netbro", filename+".dat");
+			if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
+			try {
+				fos = new FileOutputStream(f);
+			} catch (FileNotFoundException e) {
+				logger.error("capture file create error", e);
+			}
+		}
+	}
+
 	@Inject @Optional
 	public void  getEvent(@UIEventTopic("ODS_RACE/CAPTURE") final String captureYn) {
 		if(logger.isDebugEnabled()) {
@@ -267,7 +312,7 @@ public class SocketDataReceiver {
 			if(fos == null) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 				String filename = sdf.format(new Date(System.currentTimeMillis()));
-				
+
 				File f = new File("D:/tmp/netbro", filename+".dat");
 				if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
 				try {

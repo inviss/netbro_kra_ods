@@ -1,15 +1,227 @@
 package kr.co.netbro.kra.socket.maker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import kr.co.netbro.common.utils.DateUtils;
+import kr.co.netbro.kra.model.FinalInfo;
+import kr.co.netbro.kra.model.Pool;
+import kr.co.netbro.kra.model.RaceFinal;
+import kr.co.netbro.kra.model.RaceType;
+import kr.co.netbro.kra.model.RaceZone;
 
 public class ODSRateMaker {
+	
 	public static final int HEADER_SIZE = 25;
 	private static final char[] MAX_RATE = { '9', '9', '9', '9', '9' };
 	private static final char[] NULL_RATE = { '-', '-', '-', '-', '-' };
 	public static final String HORSE_MARKER = "##";
 	private static char[] topDataLen;
+
+	public static FinalInfo makeFinal(byte[] source, int offset, int len) {
+		char[] c = new String(source, offset, len).toCharArray();
+
+		//List<FinalInfo> finals = new ArrayList<FinalInfo>();
+		
+		RaceFinal f = new RaceFinal();
+		f.zone = c[2];
+		f.race = ((c[7] - '0') * 10 + (c[8] - '0'));
+		f.date = new String(c, 9, 8);
+		f.isForce = (c[18] == '1');
+		f.isFinal = (c[26] == '1');
+
+		System.arraycopy(c, 27, f.poolMap, 0, 10);
+
+		int index = 37;
+		for (int oi = 0; oi < f.order.length; oi++) {
+			int sameCount = c[(index++)] - '0';
+			f.order[oi] = new int[sameCount];
+			int i = 0;
+			for (int k = index; i < sameCount; k += 2) {
+				f.order[oi][i] = ((c[k] - '0') * 10 + (c[(k + 1)] - '0'));
+				index += 2;
+				i++;
+			}
+		}
+
+		Map<RaceType, String> result = new HashMap<RaceType, String>();
+		for (;;) {
+			Pool p = new Pool();
+			index = writePool(c, index, p);
+			f.pool[(p.type - '1')] = p;
+			
+			result.put(RaceType.getType((p.type - '0')), p.getValue());
+			
+			if ((c[index] == '9') && (c[(index + 1)] == '1')) {
+				break;
+			}
+		}
+		
+		f.canID = (c[(index++)] + "" + c[(index++)]);
+		int canSize = c[(index++)] - '0';
+		f.can = new int[canSize];
+		for (int i = 0; i < canSize; i++) {
+			f.can[i] = ((c[(index++)] - '0') * 10 + (c[(index++)] - '0'));
+		}
+		
+		FinalInfo info = new FinalInfo();
+		info.setZone(f.zone - '0');
+		info.setResult(result);
+		info.setReqDate(DateUtils.getToday("yyyy.MM.dd"));
+		info.setReqTime(DateUtils.getToday("HH:mm:ss"));
+		info.setZoneName(RaceZone.getZoneName(f.zone - '0'));
+		info.setFinal(f.isFinal);
+		
+		//List<String> list = new ArrayList<String>();
+		//String prefix = f.isFinal ? "FINAL" : "FWAIT";
+		info.setStatus(f.isFinal ? "확정" : "확정전");
+		int delayTime = f.isFinal ? 60 : 25;
+		info.setDelayTime(delayTime);
+
+		//list.add(prefix + f.zone + "_" + delayTime);
+		
+		info.setRace(f.race);
+		for (int i = 0; i < 3; i++) {
+			int j = 0;
+			String s = "";
+			if (f.order[i].length > 0) {
+				for (; j < f.order[i].length - 1; j++) {
+					s = s + f.order[i][j] + "|";
+				}
+				s = s + f.order[i][j];
+				//list.add(s);
+			} else {
+				//list.add("0");
+			}
+			
+			switch(i) {
+			case 0 :
+				info.setFirstDone(s);	
+					break;
+			case 1 :
+				info.setSecondDone(s);
+					break;
+			case 2 :
+				info.setThirdDone(s);
+					break;
+			}
+		}
+		
+		/*
+		 * [4] : 1|2|32.9  						<= 단승식
+		 * [5] : 2|2|14.73|1.6					<= 연승식
+		 * [6] : 3|2|3|12.4|2|4|14.8|3|4|2.2	<= 복연승식
+		 * [7] : 1|2|3|127.6					<= 쌍승식
+		 * [8] : 1|2|3|48.5						<= 복승식
+		 */
+		for (int i = 0; i <= 4; i++) {
+			Pool p = f.getPool(i);
+			
+			String s = "0";
+			if (p != null) {
+				s = p.getValue();
+			}
+			switch(i) {
+			case 0 :
+				info.addResult(RaceType.DAN, s);
+				break;
+			case 1 :
+				info.addResult(RaceType.YON, s);
+				break;
+			case 2 :
+				info.addResult(RaceType.BOKYON, s);
+				break;
+			case 3 :
+				info.addResult(RaceType.SSANG, s);
+				break;
+			case 4 :
+				info.addResult(RaceType.BOK, s);
+				break;
+			}
+		}
+		
+		String s = String.valueOf(f.can.length);
+		for (int i = 0; i < f.can.length; i++) {
+			s = s + "|" + f.can[i];
+		}
+		info.setCanString(s);
+		
+		//list.add(s);
+
+		//list.add(String.valueOf(f.race) + "|" + f.getMaxInt() + "|" + (f.getMaxInt() > 1000 ? "1" : "0"));
+
+		//list.add(String.valueOf(System.currentTimeMillis()));
+		//list.add(FinalChecker.getInstance().channelString(f.isFinal));
+		if (s.indexOf("|") == -1 || s.equals("0")) {
+			info.setCancel(null);
+		} else {
+			String[] ss = s.split("\\|");
+			info.setCancel(ss[1]);
+			for (int i = 2; i < ss.length; i++) {
+				info.setCancel(info.getCancel()+", "+ss[i]);
+			}
+		}
+			
+		if(f.getMaxInt() > 1000) {
+			info.setMessage(true);
+		}
+		
+		
+		/*
+		 * [13] : 1|2|3|4|38.0		<= 삼복승식
+		 * [14] : 1|2|3|4|186.0		<= 삼쌍승식
+		 */
+		for (int i = 5; i < 9; i++) {
+			Pool p = f.getPool(i);
+			String msg = "0";
+			if (p != null) {
+				msg = p.getValue();
+			}
+			switch(i) {
+			case 5 :
+				info.addResult(RaceType.SAMBOK, msg);
+				break;
+			case 7 :
+				info.addResult(RaceType.SAMSSANG, msg);
+				break;
+			}
+		}
+		
+		return info;
+	}
+
+	private static int writePool(char[] c, int k, Pool p) {
+		p.type = c[(k++)];
+		p.status = c[(k++)];
+
+		int size = (c[(k++)] - '0') * 10 + (c[(k++)] - '0');
+		p.num1 = new int[size];
+		p.num2 = new int[size];
+		p.num3 = new int[size];
+		p.rate = new String[size];
+		p.rateInt = new int[size];
+		
+		for (int i = 0; i < size; i++) {
+			p.num1[i] = ((c[(k++)] - '0') * 10 + (c[(k++)] - '0'));
+			if (p.type >= '3') {
+				p.num2[i] = ((c[(k++)] - '0') * 10 + (c[(k++)] - '0'));
+			}
+			if ((p.type == '6') || (p.type == '8')) {
+				p.num3[i] = ((c[(k++)] - '0') * 10 + (c[(k++)] - '0'));
+			}
+			p.rate[i] = new String(c, k, 8);
+			try {
+				p.rateInt[i] = Integer.parseInt(p.rate[i]);
+			} catch (Exception e) {
+				p.rateInt[i] = 0;
+			}
+			k += 8;
+		}
+		return k;
+	}
 
 	public static char[] makeData(byte[] source, int offset, int len) {
 		char[] c = new String(source, offset, len).toCharArray();
@@ -20,7 +232,7 @@ public class ODSRateMaker {
 		if(type == 52) {
 			System.out.println("byte len: "+len+", char len: "+c.length);
 		}
-		
+
 		char[] data = makeBody(type, horseNum, c, false);
 
 		data[0] = c[2];
