@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.race.database.IRateODSService;
 
 public class RaceInfoServiceImpl implements IRaceInfoService {
 	
@@ -17,6 +18,17 @@ public class RaceInfoServiceImpl implements IRaceInfoService {
 	
 	private volatile Map<Integer, RaceInfo> infoMap = new HashMap<Integer, RaceInfo>();
 	
+	private IRateODSService raceODSService;
+	
+	
+	public void setRaceODSService(IRateODSService raceODSService) {
+		this.raceODSService = raceODSService;
+	}
+	
+	public void unSetRateODSService(IRateODSService raceODSService) {
+		this.raceODSService = null;
+	}
+
 	@Override
 	public void saveFinalRace(String fpath, byte[] data) {
 		FileWriter fw = null;
