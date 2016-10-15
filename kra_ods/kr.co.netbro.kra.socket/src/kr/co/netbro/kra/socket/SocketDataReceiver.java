@@ -53,9 +53,9 @@ public class SocketDataReceiver {
 	@Inject
 	private IEventBroker eventBroker;
 
-	@Optional
-	@Inject
-	private IRateODSService rateODSService;
+	//@Optional
+	//@Inject
+	//private IRateODSService rateODSService;
 
 	private FileOutputStream fos = null;
 
@@ -72,7 +72,8 @@ public class SocketDataReceiver {
 			}
 		}
 
-		rateODSService.findCancels();
+		//if(rateODSService != null)
+			//rateODSService.findCancels();
 	}
 
 	public class SocketReceiver implements Runnable {
