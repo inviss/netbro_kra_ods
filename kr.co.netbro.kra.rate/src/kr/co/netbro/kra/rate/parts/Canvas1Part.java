@@ -3,10 +3,6 @@ package kr.co.netbro.kra.rate.parts;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import kr.co.netbro.kra.model.IRaceInfoService;
-import kr.co.netbro.kra.model.RaceInfo;
-import kr.co.netbro.kra.model.RaceType;
-
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -23,7 +19,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Canvas1Part extends RateViewer {
+import kr.co.netbro.kra.model.IRaceInfoService;
+import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.kra.model.RaceType;
+
+public class Canvas1Part {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
