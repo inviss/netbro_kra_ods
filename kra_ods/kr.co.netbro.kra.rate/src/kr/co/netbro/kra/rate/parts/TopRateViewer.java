@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Display;
 
 import kr.co.netbro.kra.model.RaceInfo;
 
@@ -23,30 +24,29 @@ public class TopRateViewer extends RateViewer {
 	}
 
 	@Override
-	public void paintBody(PaintEvent e, String[][] rateData, RaceInfo raceInfo) {
-		GC gc = e.gc;
+	public void paintBody(GC gc, String[][] rateData, RaceInfo raceInfo) {
 		
 		int vgap = 25;
 		row = 15;
 		FontMetrics fm = gc.getFontMetrics();
 		for (int i = 0; i < rateData.length; i++) {
-			gc.setBackground(e.display.getSystemColor(SWT.COLOR_WHITE));
+			gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 			
 			int x = i / row * 150 + X_POINT;
 			int y = this.Y_POINT + vgap + i % this.row * vgap;
 
-			gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLUE));
+			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
 			gc.drawString(rateData[i][0], x + 10, y);
 			gc.drawString(rateData[i][1], x + 30, y);
 			gc.drawString(rateData[i][2], x + 50, y);
 
-			gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLUE));
+			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
 			String s = rateData[i][3];
 			if (s.equals(raceInfo.getMinimum())) {
-				gc.setBackground(e.display.getSystemColor(SWT.COLOR_YELLOW));
+				gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW));
 				gc.fillRectangle(x + 77, y - 4, 35, vgap - 4);
 			}
-			gc.setForeground(e.display.getSystemColor(SWT.COLOR_BLACK));
+			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			gc.drawString(s, x + 90 - fm.getAverageCharWidth(), y);
 		}
 	}

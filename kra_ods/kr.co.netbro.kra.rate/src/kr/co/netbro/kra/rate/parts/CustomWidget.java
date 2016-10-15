@@ -72,8 +72,8 @@ public class CustomWidget extends Canvas {
 				}
 				String[][] rateData = viewer.makeData(raceInfo);
 				
-				viewer.paintHeader(e, raceInfo);
-				viewer.paintBody(e, rateData, raceInfo);
+				viewer.paintHeader(e.gc, raceInfo);
+				viewer.paintBody(e.gc, rateData, raceInfo);
 			}
 			
 		};
