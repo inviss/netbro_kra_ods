@@ -32,7 +32,7 @@ public class KraRateWidget extends Canvas {
 		addPaintListener(new PaintListener() {
 			@Override
             public void paintControl(PaintEvent e) {
-				paintBorderAndText(e.gc);
+				paintHeaderAndBody(e.gc);
 			}
 		});
 		
@@ -51,7 +51,7 @@ public class KraRateWidget extends Canvas {
 	}
 
 
-	protected void paintBorderAndText(GC gc) {
+	protected void paintHeaderAndBody(GC gc) {
 		if(logger.isDebugEnabled()) {
 			logger.debug("raceType=" + raceInfo.getGameType());
 		}
