@@ -71,6 +71,8 @@ public class KraRateWidget extends Canvas {
 		
 		viewer.paintHeader(gc, getRaceInfo());
 		viewer.paintBody(gc, viewer.makeData(getRaceInfo()), getRaceInfo());
+		
+		computeSize(viewer.getWidth(), viewer.getHeight(), true);
 	}
 	
 	
@@ -78,7 +80,7 @@ public class KraRateWidget extends Canvas {
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		checkWidget();
-		return textExtent != null ? textExtent : new Point(1, 1);
+		return textExtent != null ? textExtent : new Point(wHint, hHint);
 	}
 
 }

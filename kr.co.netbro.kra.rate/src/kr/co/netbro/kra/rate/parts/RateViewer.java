@@ -1,17 +1,16 @@
 package kr.co.netbro.kra.rate.parts;
 
-import kr.co.netbro.kra.model.RaceInfo;
-
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import kr.co.netbro.kra.model.RaceInfo;
 
 public class RateViewer {
 
@@ -28,6 +27,9 @@ public class RateViewer {
 
 	protected int row;
 	protected int column;
+	
+	public int width = 0;
+	public int height = 0;
 
 	public FontRegistry fontRegistry = new FontRegistry(Display.getCurrent());
 
@@ -146,4 +148,21 @@ public class RateViewer {
 
 		return new String(data, offset, len);
 	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
 }
