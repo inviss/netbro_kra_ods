@@ -20,6 +20,9 @@ public class TopRateViewer extends RateViewer {
 			rateData[i] = line[(i + 1)].trim().split("( )+");
 			rateData[i][3] = toRate(rateData[i][3].toCharArray(), 0, 5);
 		}
+		
+		setWidth((rateData.length / (this.row + 1) + 1) * 170 + 50);
+		setHeight(300);
 		return rateData;
 	}
 
