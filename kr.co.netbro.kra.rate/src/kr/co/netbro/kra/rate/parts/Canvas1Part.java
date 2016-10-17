@@ -40,9 +40,9 @@ public class Canvas1Part {
 	
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
 
-	CustomWidget widget1;
-	CustomWidget widget2;
-	CustomWidget widget3;
+	KraRateWidget widget1;
+	KraRateWidget widget2;
+	KraRateWidget widget3;
     
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
@@ -94,11 +94,11 @@ public class Canvas1Part {
 		innerRight.setLayoutData(fData);
 
 		if(widget1 == null)
-			widget1 = new CustomWidget(innerLeft1);
+			widget1 = new KraRateWidget(innerLeft1);
 		if(widget2 == null)
-			widget2 = new CustomWidget(innerLeft2);
+			widget2 = new KraRateWidget(innerLeft2);
 		if(widget3 == null)
-			widget3 = new CustomWidget(innerRight);
+			widget3 = new KraRateWidget(innerRight);
 		
 		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.DAN.getType());
 		if(raceInfo != null) {
@@ -149,11 +149,11 @@ public class Canvas1Part {
 			logger.debug("config zone: "+zone);
 		}
 		if(RaceType.DAN.getType() == raceInfo.getGameType()) {
-			widget1.setData(raceInfo);
+			widget1.setRaceInfo(raceInfo);
 		} else if(RaceType.YON.getType() == raceInfo.getGameType()) {
-			widget2.setData(raceInfo);
+			widget2.setRaceInfo(raceInfo);
 		} else if(RaceType.SAMBOK_TOP60.getType() == raceInfo.getGameType()) {
-			widget3.setData(raceInfo);
+			widget3.setRaceInfo(raceInfo);
 		}
 		
 	}

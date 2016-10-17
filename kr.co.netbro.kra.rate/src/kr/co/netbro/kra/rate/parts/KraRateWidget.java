@@ -32,7 +32,8 @@ public class KraRateWidget extends Canvas {
 		addPaintListener(new PaintListener() {
 			@Override
             public void paintControl(PaintEvent e) {
-				paintHeaderAndBody(e.gc);
+				if(raceInfo != null)
+					paintHeaderAndBody(e.gc);
 			}
 		});
 		
