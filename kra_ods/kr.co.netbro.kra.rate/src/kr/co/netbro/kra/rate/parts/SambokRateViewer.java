@@ -69,7 +69,7 @@ public class SambokRateViewer extends RateViewer {
 
 		FontMetrics fm = gc.getFontMetrics();
 		for (int i = 0; i < rateData.length; i++) {
-			x = 40 + i / (this.row + 1) * (this.column * 45);
+			x = 40 + i / (this.row + 1) * (this.column * 35);
 			y = this.Y_POINT + vgap + i % (this.row + 1) * vgap;
 			for (int j = 0; j < rateData[i].length; j++) {
 				gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
@@ -90,7 +90,7 @@ public class SambokRateViewer extends RateViewer {
 				}
 
 				gc.setForeground(isRate ? Display.getDefault().getSystemColor(SWT.COLOR_BLACK) : Display.getDefault().getSystemColor(SWT.COLOR_RED));
-				x += 40;
+				x += 45;
 				gc.drawString(s, x - fm.getAverageCharWidth() - 35, y);
 			}
 		}

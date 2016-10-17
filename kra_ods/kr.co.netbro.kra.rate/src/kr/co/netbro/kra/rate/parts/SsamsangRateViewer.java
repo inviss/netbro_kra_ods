@@ -53,7 +53,7 @@ public class SsamsangRateViewer extends RateViewer {
 	
 	@Override
 	public void paintBody(GC gc, String[][] rateData, RaceInfo raceInfo) {
-		int vgap = 25;
+		int vgap = 22;
 
 		int x = 0;
 		int y = 0;
