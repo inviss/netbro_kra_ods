@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
@@ -54,8 +55,10 @@ public class FinalSceneViewer extends Canvas {
 
 	public FinalSceneViewer(Composite parent) {
 		super(parent, SWT.NONE);
+		resourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
+		
 		fontRegistry = new FontRegistry(Display.getDefault());
-		fontRegistry.put("tv7", new FontData[]{new FontData("tvtest", 7, SWT.NONE)});
+		//fontRegistry.put("tv7", resourceManagercreateFont(FontDescriptor.createFrom("tvtest", 7, SWT.NONE));
 		fontRegistry.put("tv10", new FontData[]{new FontData("tvtest", 10, SWT.NONE)});
 		fontRegistry.put("tv12", new FontData[]{new FontData("tvtest", 12, SWT.NONE)});
 		fontRegistry.put("tv15", new FontData[]{new FontData("tvtest", 15, SWT.NONE)});
@@ -90,8 +93,6 @@ public class FinalSceneViewer extends Canvas {
 		fontRegistry.put("ts20", new FontData[]{new FontData("tsTv95", 20, SWT.NONE)});
 		fontRegistry.put("ts22", new FontData[]{new FontData("tsTv95", 22, SWT.NONE)});
 		fontRegistry.put("ts26", new FontData[]{new FontData("tsTv95", 26, SWT.NONE)});
-		
-		resourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 	}
 
 	public String getText() {
