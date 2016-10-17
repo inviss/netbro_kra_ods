@@ -35,7 +35,7 @@ public class Canvas2Part extends RateViewer{
 	//@Inject
 	//private EPartService partService;
 
-	CustomWidget widget3;
+	KraRateWidget widget3;
 	
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
@@ -66,7 +66,7 @@ public class Canvas2Part extends RateViewer{
 		innerRight.setLayoutData(fData);
 
 		if(widget3 == null)
-			widget3 = new CustomWidget(innerRight);
+			widget3 = new KraRateWidget(innerRight);
 		
 		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.BOKYON.getType());
 		if(raceInfo != null) {
@@ -95,6 +95,6 @@ public class Canvas2Part extends RateViewer{
 		if(logger.isDebugEnabled()) {
 			logger.debug("2part->type: "+type);
 		}
-		widget3.setData(raceInfo);
+		widget3.setRaceInfo(raceInfo);
 	}
 }

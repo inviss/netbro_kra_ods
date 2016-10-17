@@ -35,14 +35,6 @@ public class RateViewer {
 		fontRegistry.put("code", new FontData[]{new FontData("Dialog", 10, SWT.NORMAL)});
 	}
 	
-	public void dispose() {
-		//if(cr != null) cr.dispose();
-		//if(cg != null) cg.dispose();
-		//if(cb != null) cb.dispose();
-		//if(bl != null) bl.dispose();
-		//if(ye != null) ye.dispose();
-	}
-
 	public void paintHeader(GC gc, RaceInfo raceInfo) {
 		if(raceInfo != null) {
 			gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
@@ -65,8 +57,8 @@ public class RateViewer {
 
 	public void paintBody(GC gc, String[][] rateData, RaceInfo raceInfo) {
 		if(raceInfo != null) {
-			int hgap = 35;
-			int vgap = 20;
+			int hgap = 45;
+			int vgap = 22;
 			int max = raceInfo.getHorseNum()+1;
 
 			FontMetrics fm = gc.getFontMetrics();

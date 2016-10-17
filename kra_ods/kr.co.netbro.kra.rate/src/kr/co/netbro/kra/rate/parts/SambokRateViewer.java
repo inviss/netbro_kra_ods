@@ -62,14 +62,14 @@ public class SambokRateViewer extends RateViewer {
 
 	@Override
 	public void paintBody(GC gc, String[][] rateData, RaceInfo raceInfo) {
-		int vgap = 20;
+		int vgap = 22;
 
 		int x = 0;
 		int y = 0;
 
 		FontMetrics fm = gc.getFontMetrics();
 		for (int i = 0; i < rateData.length; i++) {
-			x = 30 + i / (this.row + 1) * (this.column * 45);
+			x = 40 + i / (this.row + 1) * (this.column * 45);
 			y = this.Y_POINT + vgap + i % (this.row + 1) * vgap;
 			for (int j = 0; j < rateData[i].length; j++) {
 				gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
@@ -80,7 +80,7 @@ public class SambokRateViewer extends RateViewer {
 					gc.drawString(rateData[i][j], x, y);
 					isRate = true;
 				}
-				x += 16;
+				x += 20;
 
 				j++;
 				String s = rateData[i][j];
