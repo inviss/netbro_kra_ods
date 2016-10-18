@@ -5,17 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -24,6 +22,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -33,15 +32,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.kra.model.FinalInfo;
+import kr.co.netbro.kra.model.MessageDef;
 import kr.co.netbro.kra.model.RaceType;
 
 public class FinalSceneViewer extends Canvas {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private String text;
-	private PaintListener paintListener;
-	private DisposeListener disposeListener;
 	private FontRegistry fontRegistry;
 	private ResourceManager resourceManager;
 
@@ -53,10 +50,12 @@ public class FinalSceneViewer extends Canvas {
 	private final Color[] NAME_COLOR = { new Color(Display.getDefault(), 120, 255, 255), new Color(Display.getDefault(), 255, 186, 2), 
 			new Color(Display.getDefault(), 173, 255, 107), new Color(Display.getDefault(), 255, 240, 24), new Color(Display.getDefault(), 27, 229, 0) };
 
+	private FinalInfo finalInfo = null;
+
 	public FinalSceneViewer(Composite parent) {
 		super(parent, SWT.NONE);
 		resourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
-		
+
 		fontRegistry = new FontRegistry(Display.getDefault());
 		//fontRegistry.put("tv7", resourceManagercreateFont(FontDescriptor.createFrom("tvtest", 7, SWT.NONE));
 		fontRegistry.put("tv10", new FontData[]{new FontData("tvtest", 10, SWT.NONE)});
@@ -93,51 +92,36 @@ public class FinalSceneViewer extends Canvas {
 		fontRegistry.put("ts20", new FontData[]{new FontData("tsTv95", 20, SWT.NONE)});
 		fontRegistry.put("ts22", new FontData[]{new FontData("tsTv95", 22, SWT.NONE)});
 		fontRegistry.put("ts26", new FontData[]{new FontData("tsTv95", 26, SWT.NONE)});
-	}
 
-	public String getText() {
-		checkWidget();
-		return text;
-	}
+		setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-	public void setText(String text) {
-		checkWidget();
-		this.text = text;
-		redraw();
-	}
-
-	public void setData(final FinalInfo finalInfo) {
-		paintListener = new PaintListener() {
+		addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
-				paint(e.gc, finalInfo);
+				paintHeaderAndBody(e.gc);
 			}
-		};
-		disposeListener = new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				// 선언된 Color를 모두 dispose 해야함.
-				// Image 객체를 dispose 해야함.
-			}
-		};
+		});
+	}
 
-		addPaintListener(paintListener);
-		addDisposeListener(disposeListener);
+	public FinalInfo getFinalInfo() {
+		checkWidget();
+		return finalInfo;
+	}
 
+	public void setFinalInfo(FinalInfo finalInfo) {
+		checkWidget();
+		this.finalInfo = finalInfo;
 		redraw();
 	}
 
-	private void paint(GC gc, final FinalInfo finalInfo) {
-		gc.drawImage(loadImage("images/final_"+finalInfo.getZone()+".jpg"), 960, 540);
-		gc.setFont(fontRegistry.get("tv52"));
-
-		String[] dan = finalInfo.getResult().get(RaceType.DAN).split("\\|");
-		String[] yon = finalInfo.getResult().get(RaceType.YON).split("\\|");
+	private void paintHeaderAndBody(GC gc) {
+		String[] dan = getFinalInfo().getResult().get(RaceType.DAN).split("\\|");
+		String[] yon = getFinalInfo().getResult().get(RaceType.YON).split("\\|");
 
 		/*
 		 * 1~3위까지 단.연승식의 마번 및 배당률을 할당한다.
 		 */
-		String[] rateT = {finalInfo.getFirstDone(), finalInfo.getSecondDone(), finalInfo.getThirdDone()};
+		String[] rateT = {getFinalInfo().getFirstDone(), getFinalInfo().getSecondDone(), getFinalInfo().getThirdDone()};
 		List<String[]> danYonList = new ArrayList<String[]>();
 		for(int i=0; i<rateT.length; i++) {
 			String[] t = null;
@@ -147,12 +131,12 @@ public class FinalSceneViewer extends Canvas {
 				for(int j=0; j<t.length; j++) {
 					rateArr[0] = String.valueOf(i+1);
 					rateArr[1] = t[j];
-					if(finalInfo.getResult().get(RaceType.DAN).equals("1|0|0.8")) {
+					if(getFinalInfo().getResult().get(RaceType.DAN).equals("1|0|0.8")) {
 						rateArr[2] = "0.8";
 					} else {
 						rateArr[2] = rateFromDanYon(dan, t[j]);
 					}
-					if(finalInfo.getResult().get(RaceType.YON).equals("1|0|0.8")) {
+					if(getFinalInfo().getResult().get(RaceType.YON).equals("1|0|0.8")) {
 						rateArr[3] = "0.8";
 					} else {
 						rateArr[3] = rateFromDanYon(yon, t[j]);
@@ -167,11 +151,56 @@ public class FinalSceneViewer extends Canvas {
 		 * 복, 쌍, 복연, 삼복, 삼쌍식에 대한 final 데이타를 추출한다.
 		 * 주의: 페이징 처리를 지원해야할 듯...
 		 */
-		List<String[]> bokList = doubleData(RaceType.BOK, finalInfo.getResult(), false);
-		List<String[]> ssangList = doubleData(RaceType.SSANG, finalInfo.getResult(), false);
-		List<String[]> bokyonList = doubleData(RaceType.BOKYON, finalInfo.getResult(), false);
-		List<String[]> sambokList = doubleData(RaceType.SAMBOK, finalInfo.getResult(), false);
-		List<String[]> samssangList = doubleData(RaceType.SAMSSANG, finalInfo.getResult(), false);
+		List<String[]> bokList = doubleData(RaceType.BOK, getFinalInfo().getResult(), false);
+		List<String[]> ssangList = doubleData(RaceType.SSANG, getFinalInfo().getResult(), false);
+		List<String[]> bokyonList = doubleData(RaceType.BOKYON, getFinalInfo().getResult(), false);
+		List<String[]> sambokList = doubleData(RaceType.SAMBOK, getFinalInfo().getResult(), false);
+		List<String[]> samssangList = doubleData(RaceType.SAMSSANG, getFinalInfo().getResult(), false);
+
+		/*************************************** GC drawing start *********************************************/
+
+		Color bgColor = null;
+		switch(getFinalInfo().getZone()) {
+		case 1:
+			bgColor = resourceManager.createColor(new RGB(12, 38, 89));
+			break;
+		case 2:
+			bgColor = resourceManager.createColor(new RGB(17, 3, 36));
+			break;
+		case 3:
+			bgColor = resourceManager.createColor(new RGB(21, 41, 22));
+			break;
+		}
+		setBackground(bgColor); // 경기장별 바탕색 지정
+
+		// 경기장별 바탕 이미지 설정
+		gc.drawImage(loadImage("images/final_"+finalInfo.getZone()+".jpg"), 960, 540);
+
+		// TOP 경기번호 폰트
+		gc.setFont(fontRegistry.get("tv46"));
+
+		// 경기번호 (1)
+		drawStringRight(gc, String.valueOf(getFinalInfo().getRace()), (960 / 2) - 20, 70);
+		// "경주", "(Race)"
+		drawStringCenterTitle(gc, MessageDef.RACE, (960 / 2) + 80, 65);
+
+		if(getFinalInfo().isFinal()) {
+			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv34"), fontRegistry.get("tv18")}, MessageDef.FINAL_OFFICIAL_DIVIDENDS, 790, 56);
+		} else {
+			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv24"), fontRegistry.get("tv16")}, MessageDef.FINAL_UNOFFICIAL_DIVIDENDS, 800, 43);
+			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv10"), fontRegistry.get("tv10")}, MessageDef.FINAL_UNOFFICIAL_DIVIDENDS_DETAIL, 900, 62);
+		}
+
+		if(bokList.isEmpty() && ssangList.isEmpty() && bokyonList.isEmpty() && sambokList.isEmpty() && samssangList.isEmpty()) {
+			String[] ZONE_NAME = { MessageDef.REGION_SEOUL[MessageDef.KOR], MessageDef.REGION_JEJU[MessageDef.KOR], MessageDef.REGION_PUSAN[MessageDef.KOR] };
+			gc.setFont(fontRegistry.get("tv36"));
+			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+
+			drawStringCenter(gc, ZONE_NAME[getFinalInfo().getZone()] + " "+ getFinalInfo().getRace() + MessageDef.FINAL_CANCELD_1[MessageDef.KOR], 960 / 2, 540 / 2);
+			drawStringCenter(gc, MessageDef.FINAL_CANCELD_2[MessageDef.KOR], 960 / 2, 540 / 2 + 50);
+
+			return;
+		}
 	}
 
 	private List<String[]> doubleData(RaceType raceType, Map<RaceType, String> results, boolean split) {
@@ -235,29 +264,54 @@ public class FinalSceneViewer extends Canvas {
 	}
 
 	protected void drawStringRight(GC gc, String str, int x, int y) {
+		gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		if ((str != null) && (str.length() > 0)) {
 			Point pt = gc.stringExtent(str);
 			gc.drawString(str, x - pt.x, y - pt.y);
 		}
 	}
 
-	protected void drawStringCenterTitle(GC gc, Font font, Color[] color, String[] message, int x, int y) {
-		gc.setFont(fontRegistry.get("tv42"));
+	protected void drawStringRightTitle(GC gc, Font[] fonts, String[] message, int x, int y) {
+		gc.setFont(fonts[0]);
+		gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW));
+
+		Point pt = gc.stringExtent(message[0]);
+		gc.drawString(message[0], x - pt.x, y - pt.y);
+
+		if(StringUtils.isNotBlank(message[1])) {
+			gc.setFont(fonts[1]);
+			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW));
+
+			pt = gc.stringExtent(message[1]);
+			gc.drawString(message[1], x, y - pt.y);
+		}
+	}
+
+	protected void drawStringCenterTitle(GC gc, String[] message, int x, int y) {
+		gc.setFont(fontRegistry.get("tv38"));
 		gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
-		gc.drawString(message[0], x - gc.getFontMetrics().getAverageCharWidth(), y);
+
+		Point pt = gc.stringExtent(message[0]);
+		gc.drawString(message[0], x - pt.x, y - pt.y);
 
 		gc.setFont(fontRegistry.get("tv18"));
 		gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
-		gc.drawString(message[1], x, y);
+
+		pt = gc.stringExtent(message[1]);
+		gc.drawString(message[1], x, y - pt.y);
+	}
+
+	protected void drawStringCenter(GC gc, String message, int x, int y) {
+		gc.drawString(message, x - gc.getFontMetrics().getAverageCharWidth() / 2 , y);
 	}
 
 	private Image loadImage(String url) {
 		Image image = null;
 		try {
 			Bundle bundle = FrameworkUtil.getBundle(getClass());
-	        URL imgUrl = FileLocator.find(bundle, new Path(url), null);
-	        ImageDescriptor imgDescriptor = ImageDescriptor.createFromURL(imgUrl);
-	        image = resourceManager.createImage(imgDescriptor);
+			URL imgUrl = FileLocator.find(bundle, new Path(url), null);
+			ImageDescriptor imgDescriptor = ImageDescriptor.createFromURL(imgUrl);
+			image = resourceManager.createImage(imgDescriptor);
 		} catch (Exception e) {
 			logger.error("Image Load error", e);
 		}
