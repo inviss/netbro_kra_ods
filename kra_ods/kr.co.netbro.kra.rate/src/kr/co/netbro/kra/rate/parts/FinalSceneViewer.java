@@ -115,35 +115,45 @@ public class FinalSceneViewer extends Canvas {
 	}
 
 	private void paintHeaderAndBody(GC gc) {
-		String[] dan = getFinalInfo().getResult().get(RaceType.DAN).split("\\|");
-		String[] yon = getFinalInfo().getResult().get(RaceType.YON).split("\\|");
+		String[] dan = getFinalInfo().getResult().get(RaceType.DAN).split("\\|"); // 단승
+		String[] yon = getFinalInfo().getResult().get(RaceType.YON).split("\\|"); // 연승
 
 		/*
 		 * 1~3위까지 단.연승식의 마번 및 배당률을 할당한다.
+		 * '0' 이 아닐경우에만 추가한다.
 		 */
-		String[] rateT = {getFinalInfo().getFirstDone(), getFinalInfo().getSecondDone(), getFinalInfo().getThirdDone()};
+		List<String> tmpList = new ArrayList<String>();
+		if(StringUtils.isNotBlank(getFinalInfo().getFirstDone()) && !getFinalInfo().getFirstDone().equals("0")) {
+			tmpList.add(getFinalInfo().getFirstDone());
+		}
+		if(StringUtils.isNotBlank(getFinalInfo().getSecondDone()) && !getFinalInfo().getSecondDone().equals("0")) {
+			tmpList.add(getFinalInfo().getSecondDone());
+		}
+		if(StringUtils.isNotBlank(getFinalInfo().getThirdDone()) && !getFinalInfo().getThirdDone().equals("0")) {
+			tmpList.add(getFinalInfo().getThirdDone());
+		}
+		String[] rateT = tmpList.toArray(new String[0]);
+
 		List<String[]> danYonList = new ArrayList<String[]>();
 		for(int i=0; i<rateT.length; i++) {
-			String[] t = null;
-			if(rateT[i] != null && !rateT[i].equals("0")) {
-				String[] rateArr = new String[4];
-				t = rateT[i].split("\\|");
-				for(int j=0; j<t.length; j++) {
-					rateArr[0] = String.valueOf(i+1);
-					rateArr[1] = t[j];
-					if(getFinalInfo().getResult().get(RaceType.DAN).equals("1|0|0.8")) {
-						rateArr[2] = "0.8";
-					} else {
-						rateArr[2] = rateFromDanYon(dan, t[j]);
-					}
-					if(getFinalInfo().getResult().get(RaceType.YON).equals("1|0|0.8")) {
-						rateArr[3] = "0.8";
-					} else {
-						rateArr[3] = rateFromDanYon(yon, t[j]);
-					}
+			String[] t = rateT[i].split("\\|");
 
-					danYonList.add(rateArr);
+			String[] rateArr = new String[4];
+			for(int j=0; j<t.length; j++) {
+				rateArr[0] = String.valueOf(i+1);
+				rateArr[1] = t[j];
+				if(getFinalInfo().getResult().get(RaceType.DAN).equals("1|0|0.8")) {
+					rateArr[2] = "0.8";
+				} else {
+					rateArr[2] = rateFromDanYon(dan, t[j]);
 				}
+				if(getFinalInfo().getResult().get(RaceType.YON).equals("1|0|0.8")) {
+					rateArr[3] = "0.8";
+				} else {
+					rateArr[3] = rateFromDanYon(yon, t[j]);
+				}
+
+				danYonList.add(rateArr);
 			}
 		}
 
@@ -182,7 +192,7 @@ public class FinalSceneViewer extends Canvas {
 		// 경기번호 (1)
 		drawStringRight(gc, String.valueOf(getFinalInfo().getRace()), (960 / 2) - 20, 70);
 		// "경주", "(Race)"
-		drawStringCenterTitle(gc, MessageDef.RACE, (960 / 2) + 80, 65);
+		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv38"), fontRegistry.get("tv18")}, MessageDef.RACE, (960 / 2) + 80, 65);
 
 		if(getFinalInfo().isFinal()) {
 			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv34"), fontRegistry.get("tv18")}, MessageDef.FINAL_OFFICIAL_DIVIDENDS, 790, 56);
@@ -200,6 +210,15 @@ public class FinalSceneViewer extends Canvas {
 			drawStringCenter(gc, MessageDef.FINAL_CANCELD_2[MessageDef.KOR], 960 / 2, 540 / 2 + 50);
 
 			return;
+		}
+
+		// 1 ~ 3위가 존재한다면
+		if(rateT != null && rateT.length > 0) {
+			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv36"), fontRegistry.get("tv18")}, new Color[] {getDisplay().getSystemColor(SWT.COLOR_GREEN), getDisplay().getSystemColor(SWT.COLOR_GREEN)}, MessageDef.FINAL_PLACING, 164, 110);
+
+			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv36"), fontRegistry.get("tv18")}, new Color[] {getDisplay().getSystemColor(SWT.COLOR_BLUE), getDisplay().getSystemColor(SWT.COLOR_BLUE)}, MessageDef.FINAL_TYPE_DAN, 580, 110);
+
+			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv36"), fontRegistry.get("tv18")}, new Color[] {getDisplay().getSystemColor(SWT.COLOR_BLUE), getDisplay().getSystemColor(SWT.COLOR_BLUE)}, MessageDef.FINAL_TYPE_YON, 860, 110);
 		}
 	}
 
@@ -287,14 +306,28 @@ public class FinalSceneViewer extends Canvas {
 		}
 	}
 
-	protected void drawStringCenterTitle(GC gc, String[] message, int x, int y) {
-		gc.setFont(fontRegistry.get("tv38"));
+	protected void drawStringCenterTitle(GC gc, Font[] font, Color[] color, String[] message, int x, int y) {
+		gc.setFont(font[0]);
+		gc.setForeground(color[0]);
+
+		Point pt = gc.stringExtent(message[0]);
+		gc.drawString(message[0], x - pt.x, y - pt.y);
+
+		gc.setFont(font[1]);
+		gc.setForeground(color[1]);
+
+		pt = gc.stringExtent(message[1]);
+		gc.drawString(message[1], x, y - pt.y);
+	}
+	
+	protected void drawStringCenterTitle(GC gc, Font[] font, String[] message, int x, int y) {
+		gc.setFont(font[0]);
 		gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 
 		Point pt = gc.stringExtent(message[0]);
 		gc.drawString(message[0], x - pt.x, y - pt.y);
 
-		gc.setFont(fontRegistry.get("tv18"));
+		gc.setFont(font[1]);
 		gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 
 		pt = gc.stringExtent(message[1]);
