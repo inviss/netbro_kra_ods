@@ -33,57 +33,30 @@ public class Canvas6Part extends RateViewer{
 	@Inject
 	private IRaceInfoService raceInfoService;
 
-	KraRateWidget widget3;
+	private KraRateWidget widget3;
+	private ScrolledComposite scrolled;
+	private Composite composite;
 
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
 
-		Composite composite = new Composite(parent, SWT.NONE);
-
-		FillLayout fillLayout = new FillLayout();
-		fillLayout.marginHeight = 5;
-		fillLayout.marginWidth = 5;
-		composite.setLayout(fillLayout);
-
-		Composite outer = new Composite(composite, SWT.NONE );
-		outer.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-
-		FormLayout formLayout = new FormLayout();
-		formLayout.marginHeight = 5;
-		formLayout.marginWidth = 5;
-		formLayout.spacing = 5;
-		outer.setLayout( formLayout );
-
-		//ScrolledComposite scrolledComposite = new ScrolledComposite(outer, SWT.NONE);
-		//Composite innerRight = new Composite(scrolledComposite, SWT.NONE );
-		Composite innerRight = new Composite(outer, SWT.NONE );
-		innerRight.setLayout(new FillLayout());
-
-		FormData fData = new FormData();
-		fData.top = new FormAttachment(0);
-		fData.left = new FormAttachment(0);
-		fData.right = new FormAttachment(100);
-		fData.bottom = new FormAttachment(100);
-		innerRight.setLayoutData(fData);
-
+		scrolled = new ScrolledComposite(parent, SWT.H_SCROLL);
+		scrolled.setLayout(new FillLayout());
+		scrolled.setExpandHorizontal(true);
+		scrolled.setExpandVertical(true);
+		
+		composite = new Composite(scrolled, SWT.NONE);
+		composite.setLayout(new FillLayout());
+		
 		if(widget3 == null)
-			widget3 = new KraRateWidget(innerRight);
+			widget3 = new KraRateWidget(composite);
 
 		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.SAMSSANG.getType());
 		if(raceInfo != null) {
 			eventBroker.post("ODS_RACE/10", raceInfo);
 		}
-		/*
-		//CustomWidgetObservableValue customWidgetObservableValue = new CustomWidgetObservableValue(widget);
-
-		DataBindingContext dbc = new DataBindingContext();
-		CustomWidgetProperty customWidgetProperty = new CustomWidgetProperty();
-		ISWTObservableValue customWidgetObservableValue = customWidgetProperty.observe(widget);
-
-		RaceInfo raceInfo = null;
-		IObservableValue todoSummaryObservable = PojoProperties.value("summary").observe(raceInfo);
-		dbc.bindValue(customWidgetObservableValue, todoSummaryObservable);
-		 */
+		
+		scrolled.setContent(composite);
 	}
 
 	@Focus
@@ -97,5 +70,8 @@ public class Canvas6Part extends RateViewer{
 			logger.debug("6part->type: "+type);
 		}
 		widget3.setRaceInfo(raceInfo);
+		
+		if(widget3.getPoint() != null)
+			scrolled.setMinSize(composite.computeSize(widget3.getPoint().x, widget3.getPoint().y));
 	}
 }

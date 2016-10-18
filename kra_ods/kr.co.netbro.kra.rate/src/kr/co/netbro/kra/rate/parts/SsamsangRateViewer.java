@@ -49,7 +49,7 @@ public class SsamsangRateViewer extends RateViewer {
 		}
 		
 		setWidth((rateData.length / (this.row + 1) + 1) * (this.column * 30) + 50);
-		setHeight(300);
+		setHeight(200);
 		
 		return rateData;
 	}

@@ -23,12 +23,13 @@ public class KraRateWidget extends Canvas {
 	private Point textExtent;
 	private ResourceManager resourceManager;
 	private RaceInfo raceInfo;
+	private Point point;
 
 	public KraRateWidget(Composite parent) {
 		super(parent, SWT.NONE);
 		
 		resourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
-		
+		setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		addPaintListener(new PaintListener() {
 			@Override
             public void paintControl(PaintEvent e) {
@@ -72,15 +73,18 @@ public class KraRateWidget extends Canvas {
 		viewer.paintHeader(gc, getRaceInfo());
 		viewer.paintBody(gc, viewer.makeData(getRaceInfo()), getRaceInfo());
 		
-		computeSize(viewer.getWidth(), viewer.getHeight(), true);
+		point = computeSize(viewer.getWidth(), viewer.getHeight(), true);
 	}
 	
-	
+	public Point getPoint() {
+		return this.point;
+	}
 
 	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		checkWidget();
-		return textExtent != null ? textExtent : new Point(wHint, hHint);
+		Point initialSize = super.computeSize (wHint, wHint, changed);
+		return initialSize;
 	}
 
 }

@@ -32,15 +32,13 @@ public class Canvas2Part extends RateViewer{
 	@Inject
 	private IRaceInfoService raceInfoService;
 
-	//@Inject
-	//private EPartService partService;
-
-	KraRateWidget widget3;
+	private KraRateWidget widget3;
 	
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
-		
+		composite.setLayout(new FillLayout());
+/*
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.marginHeight = 5;
 		fillLayout.marginWidth = 5;
@@ -64,25 +62,15 @@ public class Canvas2Part extends RateViewer{
 		fData.right = new FormAttachment(100);
 		fData.bottom = new FormAttachment(100);
 		innerRight.setLayoutData(fData);
-
+*/
 		if(widget3 == null)
-			widget3 = new KraRateWidget(innerRight);
+			widget3 = new KraRateWidget(composite);
 		
 		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.BOKYON.getType());
 		if(raceInfo != null) {
 			eventBroker.post("ODS_RACE/3", raceInfo);
 		}
-/*
-		//CustomWidgetObservableValue customWidgetObservableValue = new CustomWidgetObservableValue(widget);
 
-		DataBindingContext dbc = new DataBindingContext();
-		CustomWidgetProperty customWidgetProperty = new CustomWidgetProperty();
-		ISWTObservableValue customWidgetObservableValue = customWidgetProperty.observe(widget);
-
-		RaceInfo raceInfo = null;
-		IObservableValue todoSummaryObservable = PojoProperties.value("summary").observe(raceInfo);
-		dbc.bindValue(customWidgetObservableValue, todoSummaryObservable);
-*/
 	}
 
 	@Focus
