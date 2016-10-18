@@ -9,8 +9,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -35,14 +33,11 @@ public class Canvas1Part {
 	@Inject
 	private IRaceInfoService raceInfoService;
 
-	//@Inject
-	//private EPartService partService;
-	
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
 
-	KraRateWidget widget1;
-	KraRateWidget widget2;
-	KraRateWidget widget3;
+	private KraRateWidget widget1;
+	private KraRateWidget widget2;
+	private KraRateWidget widget3;
     
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
@@ -50,17 +45,17 @@ public class Canvas1Part {
 		Composite composite = new Composite(parent, SWT.NONE);
 		
 		FillLayout fillLayout = new FillLayout();
-		fillLayout.marginHeight = 5;
-		fillLayout.marginWidth = 5;
+		//fillLayout.marginHeight = 5;
+		//fillLayout.marginWidth = 5;
 		composite.setLayout(fillLayout);
 		
 		Composite outer = new Composite(composite, SWT.NONE );
-		outer.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		//outer.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		
 		FormLayout formLayout = new FormLayout();
-		formLayout.marginHeight = 5;
-		formLayout.marginWidth = 5;
-		formLayout.spacing = 5;
+		//formLayout.marginHeight = 5;
+		//formLayout.marginWidth = 5;
+		//formLayout.spacing = 5;
 		outer.setLayout( formLayout );
 
 		Composite innerLeft1 = new Composite(outer, SWT.NONE );
@@ -111,28 +106,6 @@ public class Canvas1Part {
 		raceInfo = raceInfoService.getRaceInfo(RaceType.SAMBOK_TOP60.getType());
 		if(raceInfo != null) {
 			eventBroker.post("ODS_RACE/1252", raceInfo);
-		}
-		
-		//CustomWidgetObservableValue customWidgetObservableValue = new CustomWidgetObservableValue(widget);
-/*
-		DataBindingContext dbc = new DataBindingContext();
-		CustomWidgetProperty customWidgetProperty = new CustomWidgetProperty();
-		ISWTObservableValue customWidgetObservableValue = customWidgetProperty.observe(widget);
-
-		RaceInfo raceInfo = null;
-		IObservableValue todoSummaryObservable = PojoProperties.value("summary").observe(raceInfo);
-		dbc.bindValue(customWidgetObservableValue, todoSummaryObservable);
-*/
-		Object[] oo = parent.getDisplay().getDeviceData().objects;
-		int c = 0;
-		int f = 0;
-		for(Object o : oo) {
-			if(o instanceof Color) {
-				c++;
-			}
-			if(o instanceof Font) {
-				f++;
-			}
 		}
 
 	}

@@ -37,7 +37,8 @@ public class Canvas3Part extends RateViewer{
 	public void createPartControl(final Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		
+		composite.setLayout(new FillLayout());
+/*
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.marginHeight = 5;
 		fillLayout.marginWidth = 5;
@@ -61,9 +62,9 @@ public class Canvas3Part extends RateViewer{
 		fData.right = new FormAttachment(100);
 		fData.bottom = new FormAttachment(100);
 		innerRight.setLayoutData(fData);
-
+*/
 		if(widget3 == null)
-			widget3 = new KraRateWidget(innerRight);
+			widget3 = new KraRateWidget(composite);
 		
 		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.SSANG.getType());
 		if(raceInfo != null) {
