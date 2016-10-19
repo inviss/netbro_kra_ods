@@ -269,8 +269,6 @@ public class FinalSceneViewer extends Canvas {
 		
 		y += 5;
 		
-		Color[] NAME_COLOR = { BLUE, ORANGE, GREEN, YELLOW, GREEN2 };
-		String[][] NAME = { MessageDef.FINAL_TYPE_BOK, MessageDef.FINAL_TYPE_SSANG, MessageDef.FINAL_TYPE_BOKYON, MessageDef.FINAL_TYPE_SAMBOK, MessageDef.FINAL_TYPE_SAMSSANG };
 		/*********** 복승 ****************/
 		gc.setFont(fontRegistry.get("tv28"));
 		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv26"), fontRegistry.get("tv15")}, new Color[]{BLUE, BLUE}, MessageDef.FINAL_TYPE_BOK, 164, y);
