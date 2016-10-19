@@ -5,6 +5,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -29,8 +30,10 @@ public class FinalSceneDialog extends Dialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite container = (Composite) super.createDialogArea(parent);
+		container.setLayout(new FillLayout());
+		
 		FinalSceneViewer viewer = new FinalSceneViewer(container);
-		viewer.setData(finalInfo);
+		viewer.setFinalInfo(finalInfo);
 		return container;
 	}
 
@@ -42,7 +45,7 @@ public class FinalSceneDialog extends Dialog {
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(960, 540);
+		return new Point(960, 600);
 	}
 
 	@Override
