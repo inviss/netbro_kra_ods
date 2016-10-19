@@ -51,7 +51,9 @@ public class FinalSceneViewer extends Canvas {
 			new Color(Display.getDefault(), 173, 255, 107), new Color(Display.getDefault(), 255, 240, 24), new Color(Display.getDefault(), 27, 229, 0) };
 
 	private FinalInfo finalInfo = null;
-
+	private final int WIDHT = 960;
+	private final int HEIGHT = 600;
+	
 	public FinalSceneViewer(Composite parent) {
 		super(parent, SWT.NONE);
 		resourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
@@ -115,6 +117,20 @@ public class FinalSceneViewer extends Canvas {
 	}
 
 	private void paintHeaderAndBody(GC gc) {
+		
+		Color WHITE = resourceManager.createColor(new RGB(235, 235, 235));
+		Color YELLOW = resourceManager.createColor(new RGB(255, 240, 24));
+		Color GREEN = resourceManager.createColor(new RGB(173, 255, 107));
+		Color BLUE = resourceManager.createColor(new RGB(120, 255, 255));
+		Color ORANGE = resourceManager.createColor(new RGB(255, 186, 2));
+		Color PINK = resourceManager.createColor(new RGB(255, 165, 255));
+		Color GREEN2 = resourceManager.createColor(new RGB(27, 229, 0));
+		Color MUNJA_COLOR_1 = resourceManager.createColor(new RGB(5, 5, 50));
+		Color MUNJA_COLOR_2 = resourceManager.createColor(new RGB(100, 100, 200));
+		Color MUNJA_COLOR_4 = resourceManager.createColor(new RGB(0, 0, 45));
+		Color MUNJA_COLOR_5 = resourceManager.createColor(new RGB(255, 60, 0));
+		Color MUNJA_COLOR_6 = resourceManager.createColor(new RGB(27, 229, 0));
+		
 		String[] dan = getFinalInfo().getResult().get(RaceType.DAN).split("\\|"); // 단승
 		String[] yon = getFinalInfo().getResult().get(RaceType.YON).split("\\|"); // 연승
 
@@ -184,21 +200,21 @@ public class FinalSceneViewer extends Canvas {
 		setBackground(bgColor); // 경기장별 바탕색 지정
 
 		// 경기장별 바탕 이미지 설정
-		gc.drawImage(loadImage("images/final_"+finalInfo.getZone()+".jpg"), 960, 540);
+		gc.drawImage(loadImage("images/final_"+finalInfo.getZone()+".jpg"), WIDHT, HEIGHT);
 
 		// TOP 경기번호 폰트
 		gc.setFont(fontRegistry.get("tv46"));
 
 		// 경기번호 (1)
-		drawStringRight(gc, String.valueOf(getFinalInfo().getRace()), (960 / 2) - 20, 70);
+		drawStringRight(gc, String.valueOf(getFinalInfo().getRace()), (WIDHT / 2) - 20, 70);
 		// "경주", "(Race)"
-		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv38"), fontRegistry.get("tv18")}, MessageDef.RACE, (960 / 2) + 80, 65);
+		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv38"), fontRegistry.get("tv18")}, MessageDef.RACE, (WIDHT / 2) + 80, 65);
 
 		if(getFinalInfo().isFinal()) {
-			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv34"), fontRegistry.get("tv18")}, MessageDef.FINAL_OFFICIAL_DIVIDENDS, 790, 56);
+			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv34"), fontRegistry.get("tv18")}, new Color[]{YELLOW, YELLOW}, MessageDef.FINAL_OFFICIAL_DIVIDENDS, 790, 56);
 		} else {
-			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv24"), fontRegistry.get("tv16")}, MessageDef.FINAL_UNOFFICIAL_DIVIDENDS, 800, 43);
-			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv10"), fontRegistry.get("tv10")}, MessageDef.FINAL_UNOFFICIAL_DIVIDENDS_DETAIL, 900, 62);
+			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv24"), fontRegistry.get("tv15")}, new Color[]{YELLOW, YELLOW}, MessageDef.FINAL_UNOFFICIAL_DIVIDENDS, 800, 43);
+			drawStringRightTitle(gc, new Font[]{fontRegistry.get("tv10"), fontRegistry.get("tv10")}, new Color[]{YELLOW, YELLOW}, MessageDef.FINAL_UNOFFICIAL_DIVIDENDS_DETAIL, 900, 62);
 		}
 
 		if(bokList.isEmpty() && ssangList.isEmpty() && bokyonList.isEmpty() && sambokList.isEmpty() && samssangList.isEmpty()) {
@@ -206,20 +222,172 @@ public class FinalSceneViewer extends Canvas {
 			gc.setFont(fontRegistry.get("tv36"));
 			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 
-			drawStringCenter(gc, ZONE_NAME[getFinalInfo().getZone()] + " "+ getFinalInfo().getRace() + MessageDef.FINAL_CANCELD_1[MessageDef.KOR], 960 / 2, 540 / 2);
-			drawStringCenter(gc, MessageDef.FINAL_CANCELD_2[MessageDef.KOR], 960 / 2, 540 / 2 + 50);
+			drawStringCenter(gc, ZONE_NAME[getFinalInfo().getZone()] + " "+ getFinalInfo().getRace() + MessageDef.FINAL_CANCELD_1[MessageDef.KOR], WIDHT / 2, HEIGHT / 2);
+			drawStringCenter(gc, MessageDef.FINAL_CANCELD_2[MessageDef.KOR], WIDHT / 2, HEIGHT / 2 + 50);
 
 			return;
 		}
 
 		// 1 ~ 3위가 존재한다면
-		if(rateT != null && rateT.length > 0) {
-			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv36"), fontRegistry.get("tv18")}, new Color[] {getDisplay().getSystemColor(SWT.COLOR_GREEN), getDisplay().getSystemColor(SWT.COLOR_GREEN)}, MessageDef.FINAL_PLACING, 164, 110);
+		int y = 110;
+		if(!danYonList.isEmpty()) {
+			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv28"), fontRegistry.get("tv15")}, new Color[] {GREEN, GREEN}, MessageDef.FINAL_PLACING, 164, 110);
 
-			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv36"), fontRegistry.get("tv18")}, new Color[] {getDisplay().getSystemColor(SWT.COLOR_BLUE), getDisplay().getSystemColor(SWT.COLOR_BLUE)}, MessageDef.FINAL_TYPE_DAN, 580, 110);
+			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv28"), fontRegistry.get("tv15")}, new Color[] {BLUE, BLUE}, MessageDef.FINAL_TYPE_DAN, 580, 110);
 
-			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv36"), fontRegistry.get("tv18")}, new Color[] {getDisplay().getSystemColor(SWT.COLOR_BLUE), getDisplay().getSystemColor(SWT.COLOR_BLUE)}, MessageDef.FINAL_TYPE_YON, 860, 110);
+			drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv28"), fontRegistry.get("tv15")}, new Color[] {BLUE, BLUE}, MessageDef.FINAL_TYPE_YON, 860, 110);
 		}
+		
+		y = 155;
+		for(int i=0; i < danYonList.size(); i++) {
+			String[] plasing = null;
+			String[] dy = danYonList.get(i);
+			switch(dy[0]) {
+			case "1" : 
+				plasing = MessageDef.FINAL_1ST;
+				break;
+			case "2" :
+				plasing = MessageDef.FINAL_2ND;
+				break;
+			case "3" :
+				plasing = MessageDef.FINAL_3RD;
+				break;
+			}
+			drawStringPlace(gc, new Font[]{fontRegistry.get("tv26"), fontRegistry.get("tv15"), fontRegistry.get("tv10")}, new Color[] {GREEN, GREEN}, plasing, 
+					110, y);
+			
+			gc.setFont(fontRegistry.get("tv24"));
+			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+			
+			drawStringCenter(gc, dy[1], 320, y);
+			
+			drawStringRight(gc, dy[2], 600, y);
+			drawStringRight(gc, dy[3], 880, y);
+			
+			y += 40;
+		}
+		
+		y += 5;
+		
+		Color[] NAME_COLOR = { BLUE, ORANGE, GREEN, YELLOW, GREEN2 };
+		String[][] NAME = { MessageDef.FINAL_TYPE_BOK, MessageDef.FINAL_TYPE_SSANG, MessageDef.FINAL_TYPE_BOKYON, MessageDef.FINAL_TYPE_SAMBOK, MessageDef.FINAL_TYPE_SAMSSANG };
+		/*********** 복승 ****************/
+		gc.setFont(fontRegistry.get("tv28"));
+		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv26"), fontRegistry.get("tv15")}, new Color[]{BLUE, BLUE}, MessageDef.FINAL_TYPE_BOK, 164, y);
+		for(String[] bok : bokList) {
+			if(true) { // split 값 체크 (페이징 처리인듯)
+				drawStringRight(gc, BLUE, bok[2], 600, y);
+				drawStringRight(gc, BLUE, bok[3], 880, y);
+			}
+		}
+		
+		y += 40;
+		/*********** 쌍승 ****************/
+		gc.setFont(fontRegistry.get("tv28"));
+		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv26"), fontRegistry.get("tv15")}, new Color[]{ORANGE, ORANGE}, MessageDef.FINAL_TYPE_SSANG, 164, y);
+		for(String[] ssang : ssangList) {
+			if(true) { // split 값 체크 (페이징 처리인듯)
+				drawStringRight(gc, ORANGE, ssang[2], 600, y);
+				drawStringRight(gc, ORANGE, ssang[3], 880, y);
+			}
+		}
+		
+		y += 40;
+		/*********** 복연승 **************/
+		gc.setFont(fontRegistry.get("tv28"));
+		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv26"), fontRegistry.get("tv15")}, new Color[]{GREEN, GREEN}, MessageDef.FINAL_TYPE_BOKYON, 164, y);
+		for(int i = 0; i < bokyonList.size(); i++) {
+			String[] bokyon = bokyonList.get(i);
+			if(Integer.parseInt(bokyon[4]) == 1) { // split 값 체크 (페이징 처리인듯)
+				drawStringRight(gc, GREEN, bokyon[2], 600, y);
+				drawStringRight(gc, GREEN, bokyon[3], 880, y);
+			} else {
+				int x1 = i % 2 == 0 ? 340 : 640;
+				int x2 = i % 2 == 0 ? 580 : 880;
+				
+				int yy = y + 38 * (i / 2);
+				gc.setForeground(GREEN);
+				
+				Point pt = gc.stringExtent(bokyon[2]);
+				gc.drawString(bokyon[2], x1 - pt.x, yy - pt.y);
+				
+				gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+				drawStringRight(gc, bokyon[3], x2, yy);
+			}
+		}
+		
+		y += 80;
+		/*********** 삼복승 **************/
+		gc.setFont(fontRegistry.get("tv28"));
+		gc.setForeground(YELLOW);
+		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv26"), fontRegistry.get("tv15")}, new Color[]{YELLOW, YELLOW}, MessageDef.FINAL_TYPE_SAMBOK, 164, y);
+		
+		for(int i = 0; i < sambokList.size(); i++) {
+			String[] sambok = sambokList.get(i);
+			if(Integer.parseInt(sambok[5]) == 1) {
+				drawStringRight(gc, YELLOW, sambok[3], 600, y);
+				drawStringRight(gc, YELLOW, sambok[4], 880, y);
+			} else {
+				int x1 = i % 2 == 0 ? 340 : 640;
+				int x2 = i % 2 == 0 ? 580 : 880;
+				
+				int yy = y + 38 * (i / 2);
+				gc.setForeground(YELLOW);
+				
+				Point pt = gc.stringExtent(sambok[3]);
+				gc.drawString(sambok[4], x1 - pt.x, yy - pt.y);
+				
+				gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+				drawStringRight(gc, sambok[3], x2, yy);
+			}
+		}
+		
+		y += 40;
+		/*********** 삼쌍승 **************/
+		gc.setFont(fontRegistry.get("tv28"));
+		gc.setForeground(GREEN2);
+		drawStringCenterTitle(gc, new Font[]{fontRegistry.get("tv26"), fontRegistry.get("tv15")}, new Color[]{GREEN2, GREEN2}, MessageDef.FINAL_TYPE_SAMSSANG, 164, y);
+		
+		for(int i = 0; i < samssangList.size(); i++) {
+			String[] samssang = samssangList.get(i);
+			if(Integer.parseInt(samssang[5]) == 1) {
+				drawStringRight(gc, GREEN2, samssang[3], 600, y);
+				drawStringRight(gc, GREEN2, samssang[4], 880, y);
+			} else {
+				int x1 = i % 2 == 0 ? 340 : 640;
+				int x2 = i % 2 == 0 ? 580 : 880;
+				
+				int yy = y + 38 * (i / 2);
+				gc.setForeground(GREEN);
+				
+				Point pt = gc.stringExtent(samssang[3]);
+				gc.drawString(samssang[4], x1 - pt.x, yy - pt.y);
+				
+				gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+				drawStringRight(gc, samssang[4], x2, yy);
+			}
+		}
+
+	}
+	
+	protected void drawStringPlace(GC gc, Font[] font, Color[] color, String[] message, int x, int y) {
+		gc.setFont(font[0]);
+		gc.setForeground(color[0]);
+
+		Point pt = gc.stringExtent(message[0]);
+		gc.drawString(message[0], x, y - pt.y);
+
+		gc.setFont(font[1]);
+		gc.setForeground(color[1]);
+
+		pt = gc.stringExtent(message[1]);
+		gc.drawString(message[1].substring(0,  2), x + pt.x + 10, y - pt.y);
+		
+		gc.setFont(font[2]);
+		gc.drawString(message[1].substring(2,  4), x + pt.x + 30, y - pt.y);
+		
+		gc.setFont(font[1]);
+		gc.drawString(message[1].substring(4,  5), x + pt.x + 50, y - pt.y);
 	}
 
 	private List<String[]> doubleData(RaceType raceType, Map<RaceType, String> results, boolean split) {
@@ -235,23 +403,25 @@ public class FinalSceneViewer extends Canvas {
 		for(int i=0; i < size; i++) {
 			String[] t = null;
 			if(raceType == RaceType.SAMBOK || raceType == RaceType.SAMSSANG) {
-				t = new String[5];
+				t = new String[6];
 
 				t[0] = strArr[index++];
 				t[1] = strArr[index++];
 				t[2] = strArr[index++];
 				t[3] = t[0]+"-"+t[1]+"-"+t[2];
 				t[4] = strArr[index++];
+				t[5] = String.valueOf(split(size, false));
 				if(logger.isDebugEnabled()) {
 					logger.debug(raceType.getName()+" - t[0]: "+t[0]+", t[1]: "+t[1]+", t[2]: "+t[2]+", t[3]: "+t[3]+", t[4]: "+t[4]);
 				}
 			} else {
-				t = new String[4];
+				t = new String[5];
 
 				t[0] = strArr[index++];
 				t[1] = strArr[index++];
 				t[2] = t[0]+"-"+t[1];
 				t[3] = strArr[index++];
+				t[4] = String.valueOf(split(size, false));
 				if(logger.isDebugEnabled()) {
 					logger.debug(raceType.getName()+" - t[0]: "+t[0]+", t[1]: "+t[1]+", t[2]: "+t[2]+", t[3]: "+t[3]);
 				}
@@ -289,17 +459,25 @@ public class FinalSceneViewer extends Canvas {
 			gc.drawString(str, x - pt.x, y - pt.y);
 		}
 	}
+	
+	protected void drawStringRight(GC gc, Color color, String str, int x, int y) {
+		gc.setForeground(color);
+		if ((str != null) && (str.length() > 0)) {
+			Point pt = gc.stringExtent(str);
+			gc.drawString(str, x - pt.x, y - pt.y);
+		}
+	}
 
-	protected void drawStringRightTitle(GC gc, Font[] fonts, String[] message, int x, int y) {
+	protected void drawStringRightTitle(GC gc, Font[] fonts, Color[] colors, String[] message, int x, int y) {
 		gc.setFont(fonts[0]);
-		gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW));
+		gc.setForeground(colors[0]);
 
 		Point pt = gc.stringExtent(message[0]);
 		gc.drawString(message[0], x - pt.x, y - pt.y);
 
 		if(StringUtils.isNotBlank(message[1])) {
 			gc.setFont(fonts[1]);
-			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW));
+			gc.setForeground(colors[1]);
 
 			pt = gc.stringExtent(message[1]);
 			gc.drawString(message[1], x, y - pt.y);
@@ -335,7 +513,8 @@ public class FinalSceneViewer extends Canvas {
 	}
 
 	protected void drawStringCenter(GC gc, String message, int x, int y) {
-		gc.drawString(message, x - gc.getFontMetrics().getAverageCharWidth() / 2 , y);
+		Point pt = gc.stringExtent(message);
+		gc.drawString(message, x - pt.x , y - pt.y);
 	}
 
 	private Image loadImage(String url) {
