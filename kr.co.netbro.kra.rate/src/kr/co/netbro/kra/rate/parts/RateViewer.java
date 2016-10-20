@@ -1,26 +1,18 @@
 package kr.co.netbro.kra.rate.parts;
 
-import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.kra.rate.resource.Registries;
 
 public class RateViewer {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
-
-	//protected Color cr = new Color(Display.getCurrent(), 255, 100, 100);
-	//protected Color cg = new Color(Display.getCurrent(), 0, 200, 0);
-	//protected Color cb = new Color(Display.getCurrent(), 100, 100, 255);
-	//protected Color bl = new Color(Display.getCurrent(), 0, 0, 0);
-	//protected Color ye = new Color(Display.getCurrent(), 255, 255, 0);
 
 	protected int X_POINT = 30;
 	protected int Y_POINT = 100;
@@ -31,16 +23,10 @@ public class RateViewer {
 	public int width = 0;
 	public int height = 0;
 
-	public FontRegistry fontRegistry = new FontRegistry(Display.getCurrent());
-
-	public RateViewer() {
-		fontRegistry.put("code", new FontData[]{new FontData("Dialog", 10, SWT.NORMAL)});
-	}
-	
 	public void paintHeader(GC gc, RaceInfo raceInfo) {
 		if(raceInfo != null) {
 			gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-			gc.setFont(fontRegistry.get("code"));
+			gc.setFont(Registries.getInstance().getFont("dialog10"));
 			gc.drawString(raceInfo.getZoneName()+" 제 "+raceInfo.getRaceNum()+" 경주 "+raceInfo.getTypeName(), X_POINT, 30);
 			String timeStr = "";
 			if(raceInfo.getTime().equals("xx")) {
