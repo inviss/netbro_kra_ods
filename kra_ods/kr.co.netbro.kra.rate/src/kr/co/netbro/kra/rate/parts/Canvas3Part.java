@@ -38,31 +38,7 @@ public class Canvas3Part extends RateViewer{
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
-/*
-		FillLayout fillLayout = new FillLayout();
-		fillLayout.marginHeight = 5;
-		fillLayout.marginWidth = 5;
-		composite.setLayout(fillLayout);
-		
-		Composite outer = new Composite(composite, SWT.NONE );
-		outer.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		
-		FormLayout formLayout = new FormLayout();
-		formLayout.marginHeight = 5;
-		formLayout.marginWidth = 5;
-		formLayout.spacing = 5;
-		outer.setLayout( formLayout );
 
-		Composite innerRight = new Composite(outer, SWT.NONE );
-		innerRight.setLayout(new FillLayout());
-
-		FormData fData = new FormData();
-		fData.top = new FormAttachment(0);
-		fData.left = new FormAttachment(0);
-		fData.right = new FormAttachment(100);
-		fData.bottom = new FormAttachment(100);
-		innerRight.setLayoutData(fData);
-*/
 		if(widget3 == null)
 			widget3 = new KraRateWidget(composite);
 		
@@ -70,17 +46,6 @@ public class Canvas3Part extends RateViewer{
 		if(raceInfo != null) {
 			eventBroker.post("ODS_RACE/4", raceInfo);
 		}
-/*
-		//CustomWidgetObservableValue customWidgetObservableValue = new CustomWidgetObservableValue(widget);
-
-		DataBindingContext dbc = new DataBindingContext();
-		CustomWidgetProperty customWidgetProperty = new CustomWidgetProperty();
-		ISWTObservableValue customWidgetObservableValue = customWidgetProperty.observe(widget);
-
-		RaceInfo raceInfo = null;
-		IObservableValue todoSummaryObservable = PojoProperties.value("summary").observe(raceInfo);
-		dbc.bindValue(customWidgetObservableValue, todoSummaryObservable);
-*/
 	}
 
 	@Focus
