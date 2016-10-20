@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.co.netbro.common.utils.DateUtils;
-import kr.co.netbro.kra.model.FixedInfo;
+import kr.co.netbro.kra.model.DecidedRate;
 import kr.co.netbro.kra.model.Pool;
 import kr.co.netbro.kra.model.RaceFinal;
 import kr.co.netbro.kra.model.RaceType;
@@ -21,7 +21,7 @@ public class ODSRateMaker {
 	public static final String HORSE_MARKER = "##";
 	private static char[] topDataLen;
 
-	public static FixedInfo makeFinal(byte[] source, int offset, int len) {
+	public static DecidedRate makeFinal(byte[] source, int offset, int len) {
 		char[] c = new String(source, offset, len).toCharArray();
 
 		//List<FinalInfo> finals = new ArrayList<FinalInfo>();
@@ -67,7 +67,7 @@ public class ODSRateMaker {
 			f.can[i] = ((c[(index++)] - '0') * 10 + (c[(index++)] - '0'));
 		}
 		
-		FixedInfo info = new FixedInfo();
+		DecidedRate info = new DecidedRate();
 		info.setZone(f.zone - '0');
 		info.setResult(result);
 		info.setReqDate(DateUtils.getToday("yyyy.MM.dd"));

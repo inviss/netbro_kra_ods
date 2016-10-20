@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.netbro.kra.model.FixedInfo;
+import kr.co.netbro.kra.model.DecidedRate;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.rate.dialogs.FinalSceneDialog;
 
@@ -64,7 +64,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getReqDate();
+				return ((DecidedRate) element).getReqDate();
 			}
 		});
 		columnIndex++;
@@ -76,7 +76,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getReqTime();
+				return ((DecidedRate) element).getReqTime();
 			}
 		});
 		columnIndex++;
@@ -88,7 +88,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getStatus();
+				return ((DecidedRate) element).getStatus();
 			}
 		});
 		columnIndex++;
@@ -100,7 +100,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getZoneName();
+				return ((DecidedRate) element).getZoneName();
 			}
 		});
 		columnIndex++;
@@ -112,7 +112,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return "제"+((FixedInfo) element).getRace()+"경기";
+				return "제"+((DecidedRate) element).getRace()+"경기";
 			}
 		});
 		columnIndex++;
@@ -124,7 +124,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getFirstDone();
+				return ((DecidedRate) element).getFirstDone();
 			}
 		});
 		columnIndex++;
@@ -136,7 +136,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getSecondDone();
+				return ((DecidedRate) element).getSecondDone();
 			}
 		});
 		columnIndex++;
@@ -148,7 +148,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getThirdDone();
+				return ((DecidedRate) element).getThirdDone();
 			}
 		});
 		columnIndex++;
@@ -160,7 +160,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FixedInfo) element).getDelayTime()+"";
+				return ((DecidedRate) element).getDelayTime()+"";
 			}
 		});
 		columnIndex++;
@@ -169,7 +169,7 @@ public class FixedResultPart {
 		column.getColumn().setText("데이터보기");
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
-		
+
 		final int btn1Index = columnIndex++;
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -180,15 +180,16 @@ public class FixedResultPart {
 				buttonPane.setLayout(new FillLayout());
 
 				final Button button = new Button(buttonPane, SWT.NONE);
+				//final DecidedRate[] decideRate = new DecidedRate[1];
 				button.setText("\uB370\uC774\uD130\uBCF4\uAE30"); // 데이터보기
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						FixedInfo FixedInfo = (FixedInfo)item.getData();
-						openDialogBox(0, FixedInfo);
+						Dialog dialog = new FinalSceneDialog(shell);
+						dialog.open();
 					}
 				});
-				
+
 				final TableEditor editor = new TableEditor(tableViewer.getTable());
 				editor.grabHorizontal  = true;
 				editor.grabVertical = true;
@@ -201,7 +202,7 @@ public class FixedResultPart {
 		column.getColumn().setText("\uD654\uBA74\uBCF4\uAE30"); //화면보기
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
-		
+
 		final int btn2Index = columnIndex++;
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -216,8 +217,8 @@ public class FixedResultPart {
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						final FixedInfo FixedInfo = (FixedInfo)item.getData();
-						openDialogBox(1, FixedInfo);
+						Dialog dialog = new FinalSceneDialog(shell, (DecidedRate)item.getData());
+						dialog.open();
 					}
 				});
 
@@ -242,13 +243,13 @@ public class FixedResultPart {
 			}
 		});
 	}
-	
-	private void openDialogBox(int type, final FixedInfo FixedInfo) {
+
+	private void openDialogBox(int type, final DecidedRate DecidedRate) {
 		Dialog dialog = null;
 		if(type == 0) { // 수신내용
 			dialog = new FinalSceneDialog(shell);
 		} else {		// 확정 배당률
-			dialog = new FinalSceneDialog(shell, FixedInfo);
+			dialog = new FinalSceneDialog(shell, DecidedRate);
 		}
 		dialog.open();
 	}
@@ -258,13 +259,13 @@ public class FixedResultPart {
 	}
 
 	@Inject @Optional
-	public void  getEvent(@UIEventTopic("ODS_RACE/final") final FixedInfo FixedInfo) {
-		String zone = FixedInfo.getZoneName();
+	public void  getEvent(@UIEventTopic("ODS_RACE/final") final DecidedRate DecidedRate) {
+		String zone = DecidedRate.getZoneName();
 		if(logger.isDebugEnabled()) {
 			logger.debug("Final->zone: "+zone);
 		}
 		if(tableViewer != null) {
-			tableViewer.add(FixedInfo);
+			tableViewer.add(DecidedRate);
 		}
 	}
 }
