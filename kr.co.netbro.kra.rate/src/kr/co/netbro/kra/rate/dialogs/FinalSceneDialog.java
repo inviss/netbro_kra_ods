@@ -10,19 +10,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import kr.co.netbro.kra.model.FixedInfo;
+import kr.co.netbro.kra.model.DecidedRate;
 import kr.co.netbro.kra.rate.parts.FinalSceneViewer;
 
 public class FinalSceneDialog extends Dialog {
 	private Shell shell;
-	private FixedInfo finalInfo;
+	private DecidedRate finalInfo;
 	
 	public FinalSceneDialog(final Shell parentShell) {
 		super(parentShell);
 		this.shell = parentShell;
 	}
 	
-	public FinalSceneDialog(final Shell parentShell, final FixedInfo finalInfo) {
+	public FinalSceneDialog(final Shell parentShell, final DecidedRate finalInfo) {
 		super(parentShell);
 		this.finalInfo = finalInfo;
 	}
@@ -33,7 +33,7 @@ public class FinalSceneDialog extends Dialog {
 		container.setLayout(new FillLayout());
 		
 		FinalSceneViewer viewer = new FinalSceneViewer(container);
-		viewer.setFixedInfo(finalInfo);
+		viewer.setDecidedRate(finalInfo);
 		return container;
 	}
 

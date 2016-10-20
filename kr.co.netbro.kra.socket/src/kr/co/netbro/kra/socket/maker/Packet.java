@@ -1,6 +1,6 @@
 package kr.co.netbro.kra.socket.maker;
 
-import kr.co.netbro.kra.model.FixedInfo;
+import kr.co.netbro.kra.model.DecidedRate;
 
 public class Packet {
 	public int type = -1;
@@ -18,7 +18,7 @@ public class Packet {
 	public static final int SHORT = -18;
 	private char[] data;
 	public boolean[] valid;
-	public FixedInfo finalData;
+	public DecidedRate finalData;
 
 	public Packet() {
 		
@@ -137,7 +137,7 @@ public class Packet {
 		return this.data;
 	}
 	
-	public FixedInfo getFinalData() {
+	public DecidedRate getDecidedRate() {
 		return finalData;
 	}
 	

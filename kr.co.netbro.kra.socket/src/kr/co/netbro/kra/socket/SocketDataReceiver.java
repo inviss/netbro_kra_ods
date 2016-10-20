@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.socket.maker.Packet;
-import kr.co.netbro.race.database.IRateODSService;
 
 @SuppressWarnings("restriction")
 @Creatable
@@ -179,7 +178,7 @@ public class SocketDataReceiver {
 							System.arraycopy(buf, bufIndex+48, raceinfo, 0, (plen+bufIndex-(bufIndex+48)));
 
 							if(pType == 9) {
-								dataReceiver.finalReceived(p.getFinalData());
+								dataReceiver.finalReceived(p.getDecidedRate());
 								test = true;
 							} else
 								dataReceiver.eventReceived(p.getData());

@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.netbro.kra.model.FixedInfo;
+import kr.co.netbro.kra.model.DecidedRate;
 import kr.co.netbro.kra.model.MessageDef;
 import kr.co.netbro.kra.model.RaceType;
 import kr.co.netbro.kra.rate.resource.Registries;
@@ -27,7 +27,7 @@ public class FinalSceneViewer extends Canvas {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private FixedInfo finalInfo = null;
+	private DecidedRate finalInfo = null;
 	private final int WIDHT = 960;
 	private final int HEIGHT = 620;
 	
@@ -42,12 +42,12 @@ public class FinalSceneViewer extends Canvas {
 		});
 	}
 
-	public FixedInfo getFixedInfo() {
+	public DecidedRate getDecidedRate() {
 		checkWidget();
 		return finalInfo;
 	}
 
-	public void setFixedInfo(FixedInfo finalInfo) {
+	public void setDecidedRate(DecidedRate finalInfo) {
 		checkWidget();
 		this.finalInfo = finalInfo;
 		redraw();
@@ -63,22 +63,22 @@ public class FinalSceneViewer extends Canvas {
 		Color PINK 		= Registries.getInstance().getColor("pink");
 		Color GREEN2 	= Registries.getInstance().getColor("green2");
 		
-		String[] dan = getFixedInfo().getResult().get(RaceType.DAN).split("\\|"); // 단승
-		String[] yon = getFixedInfo().getResult().get(RaceType.YON).split("\\|"); // 연승
+		String[] dan = getDecidedRate().getResult().get(RaceType.DAN).split("\\|"); // 단승
+		String[] yon = getDecidedRate().getResult().get(RaceType.YON).split("\\|"); // 연승
 
 		/*
 		 * 1~3위까지 단.연승식의 마번 및 배당률을 할당한다.
 		 * '0' 이 아닐경우에만 추가한다.
 		 */
 		List<String> tmpList = new ArrayList<String>();
-		if(StringUtils.isNotBlank(getFixedInfo().getFirstDone()) && !getFixedInfo().getFirstDone().equals("0")) {
-			tmpList.add(getFixedInfo().getFirstDone());
+		if(StringUtils.isNotBlank(getDecidedRate().getFirstDone()) && !getDecidedRate().getFirstDone().equals("0")) {
+			tmpList.add(getDecidedRate().getFirstDone());
 		}
-		if(StringUtils.isNotBlank(getFixedInfo().getSecondDone()) && !getFixedInfo().getSecondDone().equals("0")) {
-			tmpList.add(getFixedInfo().getSecondDone());
+		if(StringUtils.isNotBlank(getDecidedRate().getSecondDone()) && !getDecidedRate().getSecondDone().equals("0")) {
+			tmpList.add(getDecidedRate().getSecondDone());
 		}
-		if(StringUtils.isNotBlank(getFixedInfo().getThirdDone()) && !getFixedInfo().getThirdDone().equals("0")) {
-			tmpList.add(getFixedInfo().getThirdDone());
+		if(StringUtils.isNotBlank(getDecidedRate().getThirdDone()) && !getDecidedRate().getThirdDone().equals("0")) {
+			tmpList.add(getDecidedRate().getThirdDone());
 		}
 		String[] rateT = tmpList.toArray(new String[0]);
 
@@ -90,12 +90,12 @@ public class FinalSceneViewer extends Canvas {
 			for(int j=0; j<t.length; j++) {
 				rateArr[0] = String.valueOf(i+1);
 				rateArr[1] = t[j];
-				if(getFixedInfo().getResult().get(RaceType.DAN).equals("1|0|0.8")) {
+				if(getDecidedRate().getResult().get(RaceType.DAN).equals("1|0|0.8")) {
 					rateArr[2] = "0.8";
 				} else {
 					rateArr[2] = rateFromDanYon(dan, t[j]);
 				}
-				if(getFixedInfo().getResult().get(RaceType.YON).equals("1|0|0.8")) {
+				if(getDecidedRate().getResult().get(RaceType.YON).equals("1|0|0.8")) {
 					rateArr[3] = "0.8";
 				} else {
 					rateArr[3] = rateFromDanYon(yon, t[j]);
@@ -109,14 +109,14 @@ public class FinalSceneViewer extends Canvas {
 		 * 복, 쌍, 복연, 삼복, 삼쌍식에 대한 final 데이타를 추출한다.
 		 * 주의: 페이징 처리를 지원해야할 듯...
 		 */
-		List<String[]> bokList = doubleData(RaceType.BOK, getFixedInfo().getResult(), false);
-		List<String[]> ssangList = doubleData(RaceType.SSANG, getFixedInfo().getResult(), false);
-		List<String[]> bokyonList = doubleData(RaceType.BOKYON, getFixedInfo().getResult(), false);
-		List<String[]> sambokList = doubleData(RaceType.SAMBOK, getFixedInfo().getResult(), false);
-		List<String[]> samssangList = doubleData(RaceType.SAMSSANG, getFixedInfo().getResult(), false);
+		List<String[]> bokList = doubleData(RaceType.BOK, getDecidedRate().getResult(), false);
+		List<String[]> ssangList = doubleData(RaceType.SSANG, getDecidedRate().getResult(), false);
+		List<String[]> bokyonList = doubleData(RaceType.BOKYON, getDecidedRate().getResult(), false);
+		List<String[]> sambokList = doubleData(RaceType.SAMBOK, getDecidedRate().getResult(), false);
+		List<String[]> samssangList = doubleData(RaceType.SAMSSANG, getDecidedRate().getResult(), false);
 
 		/*************************************** GC drawing start *********************************************/
-		setBackground(Registries.getInstance().getColor("bg_"+getFixedInfo().getZone())); // 경기장별 바탕색 지정
+		setBackground(Registries.getInstance().getColor("bg_"+getDecidedRate().getZone())); // 경기장별 바탕색 지정
 		
 		//setBackground(getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
 		
@@ -129,11 +129,11 @@ public class FinalSceneViewer extends Canvas {
 		gc.setFont(Registries.getInstance().getFont("tv46"));
 
 		// 경기번호 (1)
-		drawStringRight(gc, String.valueOf(getFixedInfo().getRace()), (WIDHT / 2) - 20, 70);
+		drawStringRight(gc, String.valueOf(getDecidedRate().getRace()), (WIDHT / 2) - 20, 70);
 		// "경주", "(Race)"
 		drawStringCenterTitle(gc, new Font[]{Registries.getInstance().getFont("tv38"), Registries.getInstance().getFont("tv18")}, MessageDef.RACE, (WIDHT / 2) + 80, 65);
 
-		if(getFixedInfo().isFinal()) {
+		if(getDecidedRate().isFinal()) {
 			drawStringRightTitle(gc, new Font[]{Registries.getInstance().getFont("tv34"), Registries.getInstance().getFont("tv18")}, new Color[]{YELLOW, YELLOW}, MessageDef.FINAL_OFFICIAL_DIVIDENDS, 790, 56);
 		} else {
 			drawStringRightTitle(gc, new Font[]{Registries.getInstance().getFont("tv24"), Registries.getInstance().getFont("tv15")}, new Color[]{YELLOW, YELLOW}, MessageDef.FINAL_UNOFFICIAL_DIVIDENDS, 800, 43);
@@ -145,7 +145,7 @@ public class FinalSceneViewer extends Canvas {
 			gc.setFont(Registries.getInstance().getFont("tv36"));
 			gc.setForeground(WHITE);
 
-			drawStringCenter(gc, ZONE_NAME[getFixedInfo().getZone()] + " "+ getFixedInfo().getRace() + MessageDef.FINAL_CANCELD_1[MessageDef.KOR], WIDHT / 2, HEIGHT / 2);
+			drawStringCenter(gc, ZONE_NAME[getDecidedRate().getZone()] + " "+ getDecidedRate().getRace() + MessageDef.FINAL_CANCELD_1[MessageDef.KOR], WIDHT / 2, HEIGHT / 2);
 			drawStringCenter(gc, MessageDef.FINAL_CANCELD_2[MessageDef.KOR], WIDHT / 2, HEIGHT / 2 + 50);
 
 			return;
@@ -289,9 +289,9 @@ public class FinalSceneViewer extends Canvas {
 			}
 		}
 		
-		if(getFixedInfo().isMessage()) {
+		if(getDecidedRate().isMessage()) {
 			Image overImage = null;
-			if(StringUtils.isNotBlank(getFixedInfo().getCancel())) {
+			if(StringUtils.isNotBlank(getDecidedRate().getCancel())) {
 				overImage = Registries.getInstance().getImage("over_"+finalInfo.getZone());
 				gc.drawImage(overImage, 0, 0, overImage.getBounds().width, overImage.getBounds().height, 500, 480, 440, 44);
 			} else {
@@ -301,11 +301,11 @@ public class FinalSceneViewer extends Canvas {
 			//gc.drawImage(overImage, 0, 0);
 		}
 		
-		if(StringUtils.isNotBlank(getFixedInfo().getCancel())) {
+		if(StringUtils.isNotBlank(getDecidedRate().getCancel())) {
 			drawStringCenterTitle(gc, new Font[]{Registries.getInstance().getFont("tv26"), Registries.getInstance().getFont("tv15")}, new Color[]{PINK, PINK}, MessageDef.FINAL_SCRATCHED, 120, 500);
 			gc.setFont(Registries.getInstance().getFont("tv28"));
 			gc.setForeground(WHITE);
-			gc.drawString(getFixedInfo().getCancel(), 230, 500);
+			gc.drawString(getDecidedRate().getCancel(), 230, 500);
 		}
 
 	}
