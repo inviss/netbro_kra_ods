@@ -6,6 +6,7 @@ import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -23,9 +24,12 @@ public class Registries {
 	private static Registries instance;
 	
 	private Registries() {
-		colorReg = new ColorRegistry();
-		fontReg = new FontRegistry();
-		imgReg = new ImageRegistry();
+		//colorReg = new ColorRegistry();
+		//fontReg = new FontRegistry();
+		//imgReg = new ImageRegistry();
+		colorReg = JFaceResources.getColorRegistry();
+		fontReg = JFaceResources.getFontRegistry();
+		imgReg = JFaceResources.getImageRegistry();
 	}
 	
 	/**
