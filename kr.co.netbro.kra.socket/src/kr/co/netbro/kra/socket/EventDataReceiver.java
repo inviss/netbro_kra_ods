@@ -13,6 +13,7 @@ import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.model.RaceType;
 import kr.co.netbro.kra.model.RaceZone;
+import kr.co.netbro.kra.socket.maker.JSONDataMaker;
 import kr.co.netbro.kra.socket.maker.Util;
 
 @Creatable
@@ -25,6 +26,8 @@ public class EventDataReceiver {
 
 	@Inject
 	private IRaceInfoService raceInfoService;
+	@Inject
+	private JSONDataMaker jsonDataMaker;
 
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
 	@Inject @Preference(nodePath="kra.config.socket", value="final_path") String finalPath;
@@ -81,6 +84,10 @@ public class EventDataReceiver {
 
 			// UI에서 화면 탭 클릭시 사용할 데이타를 맵에 저장함.
 			raceInfoService.putRaceInfo(raceInfo);
+			
+			if(raceInfo.getGameType() == 4) {
+				jsonDataMaker.makeRaceFile(raceInfo);
+			}
 		}
 	}
 
