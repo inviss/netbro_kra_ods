@@ -65,7 +65,7 @@ public class PasswordDialog extends Dialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("관리자 비밀번호");
+		newShell.setText("\uAD00\uB9AC\uC790\20\uBE44\uBC00\uBC88\uD638"); //관리자 비밀번호
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public class PasswordDialog extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, "확 인", true);
-		createButton(parent, IDialogConstants.CANCEL_ID, "취 소", false);
+		createButton(parent, IDialogConstants.OK_ID, "\uD655\20\uC778", true); //확 인
+		createButton(parent, IDialogConstants.CANCEL_ID, "\uCDE8\20\uC18C", false); //취 소
 	}
 
 	@Override

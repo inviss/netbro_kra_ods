@@ -43,7 +43,7 @@ public class ChulCancelPart {
 
 		int widths = 0;
 		TableViewerColumn column = new TableViewerColumn(tableViewer, SWT.CENTER);
-		column.getColumn().setText("경주");
+		column.getColumn().setText("\uACBD\uC8FC"); //경주
 		column.getColumn().setWidth(150);
 		widths += column.getColumn().getWidth();
 		
@@ -58,12 +58,12 @@ public class ChulCancelPart {
 		widths += column.getColumn().getWidth();
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("말이름");
+		column.getColumn().setText("\uB9D0\uC774\uB984"); //말이름
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("감독");
+		column.getColumn().setText("\uAC10\uB3C5"); //감독
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
 		
@@ -71,7 +71,7 @@ public class ChulCancelPart {
 		int screenWidth = monitor.getBounds().width;
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("사유");
+		column.getColumn().setText("\uC0AC\uC720"); //사유
 		column.getColumn().setWidth(screenWidth - widths);
 	}
 	

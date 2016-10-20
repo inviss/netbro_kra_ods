@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.netbro.kra.model.FinalInfo;
+import kr.co.netbro.kra.model.FixedInfo;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.rate.dialogs.FinalSceneDialog;
 
@@ -64,7 +64,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getReqDate();
+				return ((FixedInfo) element).getReqDate();
 			}
 		});
 		columnIndex++;
@@ -76,7 +76,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getReqTime();
+				return ((FixedInfo) element).getReqTime();
 			}
 		});
 		columnIndex++;
@@ -88,7 +88,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getStatus();
+				return ((FixedInfo) element).getStatus();
 			}
 		});
 		columnIndex++;
@@ -100,7 +100,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getZoneName();
+				return ((FixedInfo) element).getZoneName();
 			}
 		});
 		columnIndex++;
@@ -112,7 +112,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return "제"+((FinalInfo) element).getRace()+"경기";
+				return "제"+((FixedInfo) element).getRace()+"경기";
 			}
 		});
 		columnIndex++;
@@ -124,7 +124,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getFirstDone();
+				return ((FixedInfo) element).getFirstDone();
 			}
 		});
 		columnIndex++;
@@ -136,7 +136,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getSecondDone();
+				return ((FixedInfo) element).getSecondDone();
 			}
 		});
 		columnIndex++;
@@ -148,7 +148,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getThirdDone();
+				return ((FixedInfo) element).getThirdDone();
 			}
 		});
 		columnIndex++;
@@ -160,7 +160,7 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((FinalInfo) element).getDelayTime()+"";
+				return ((FixedInfo) element).getDelayTime()+"";
 			}
 		});
 		columnIndex++;
@@ -176,20 +176,20 @@ public class FixedResultPart {
 			public void update(ViewerCell cell) {
 				TableItem item = (TableItem)cell.getItem();
 
-				Composite buttonPane = new Composite(tableViewer.getTable(), SWT.NONE);
+				final Composite buttonPane = new Composite(tableViewer.getTable(), SWT.NONE);
 				buttonPane.setLayout(new FillLayout());
 
-				Button button = new Button(buttonPane, SWT.NONE);
-				button.setText("데이터보기");
+				final Button button = new Button(buttonPane, SWT.NONE);
+				button.setText("\uB370\uC774\uD130\uBCF4\uAE30"); // 데이터보기
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						FinalInfo finalInfo = (FinalInfo)item.getData();
-						openDialogBox(0, finalInfo);
+						FixedInfo FixedInfo = (FixedInfo)item.getData();
+						openDialogBox(0, FixedInfo);
 					}
 				});
 				
-				TableEditor editor = new TableEditor(tableViewer.getTable());
+				final TableEditor editor = new TableEditor(tableViewer.getTable());
 				editor.grabHorizontal  = true;
 				editor.grabVertical = true;
 				editor.setEditor(buttonPane, item, btn1Index);
@@ -198,7 +198,7 @@ public class FixedResultPart {
 		});
 
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("화면보기");
+		column.getColumn().setText("\uD654\uBA74\uBCF4\uAE30"); //화면보기
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
 		
@@ -206,22 +206,22 @@ public class FixedResultPart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public void update(ViewerCell cell) {
-				TableItem item = (TableItem)cell.getItem();
+				final TableItem item = (TableItem)cell.getItem();
 
-				Composite buttonPane = new Composite(tableViewer.getTable(), SWT.NONE);
+				final Composite buttonPane = new Composite(tableViewer.getTable(), SWT.NONE);
 				buttonPane.setLayout(new FillLayout());
 
-				Button button = new Button(buttonPane, SWT.NONE);
-				button.setText("화면보기");
+				final Button button = new Button(buttonPane, SWT.NONE);
+				button.setText("\uD654\uBA74\uBCF4\uAE30"); // 화면보기
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						FinalInfo finalInfo = (FinalInfo)item.getData();
-						openDialogBox(1, finalInfo);
+						final FixedInfo FixedInfo = (FixedInfo)item.getData();
+						openDialogBox(1, FixedInfo);
 					}
 				});
 
-				TableEditor editor = new TableEditor(tableViewer.getTable());
+				final TableEditor editor = new TableEditor(tableViewer.getTable());
 				editor.grabHorizontal  = true;
 				editor.grabVertical = true;
 				editor.setEditor(buttonPane, item, btn2Index);
@@ -243,12 +243,12 @@ public class FixedResultPart {
 		});
 	}
 	
-	private void openDialogBox(int type, FinalInfo finalInfo) {
+	private void openDialogBox(int type, final FixedInfo FixedInfo) {
 		Dialog dialog = null;
 		if(type == 0) { // 수신내용
 			dialog = new FinalSceneDialog(shell);
 		} else {		// 확정 배당률
-			dialog = new FinalSceneDialog(shell, finalInfo);
+			dialog = new FinalSceneDialog(shell, FixedInfo);
 		}
 		dialog.open();
 	}
@@ -258,13 +258,13 @@ public class FixedResultPart {
 	}
 
 	@Inject @Optional
-	public void  getEvent(@UIEventTopic("ODS_RACE/final") final FinalInfo finalInfo) {
-		String zone = finalInfo.getZoneName();
+	public void  getEvent(@UIEventTopic("ODS_RACE/final") final FixedInfo FixedInfo) {
+		String zone = FixedInfo.getZoneName();
 		if(logger.isDebugEnabled()) {
 			logger.debug("Final->zone: "+zone);
 		}
 		if(tableViewer != null) {
-			tableViewer.add(finalInfo);
+			tableViewer.add(FixedInfo);
 		}
 	}
 }

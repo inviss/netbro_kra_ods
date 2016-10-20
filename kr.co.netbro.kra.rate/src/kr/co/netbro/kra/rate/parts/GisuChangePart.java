@@ -44,7 +44,7 @@ public class GisuChangePart {
 
 		int widths = 0;
 		TableViewerColumn column = new TableViewerColumn(tableViewer, SWT.CENTER);
-		column.getColumn().setText("경주");
+		column.getColumn().setText("\uACBD\uC8FC"); // 경주
 		column.getColumn().setWidth(150);
 		widths += column.getColumn().getWidth();
 		
@@ -59,22 +59,22 @@ public class GisuChangePart {
 		widths += column.getColumn().getWidth();
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("변경전");
+		column.getColumn().setText("\uBCC0\uACBD\uC804"); // 변경전
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("중량");
+		column.getColumn().setText("\uC911\uB7C9"); // 중량
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("변경후");
+		column.getColumn().setText("\uBCC0\uACBD\uD6C4"); //변경후
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("중량");
+		column.getColumn().setText("\uC911\uB7C9"); //중량
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
 
@@ -82,7 +82,7 @@ public class GisuChangePart {
 		int screenWidth = monitor.getBounds().width;
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
-		column.getColumn().setText("사유");
+		column.getColumn().setText("\uC0AC\uC720"); //사유
 		column.getColumn().setWidth(screenWidth - widths);
 
 	}
