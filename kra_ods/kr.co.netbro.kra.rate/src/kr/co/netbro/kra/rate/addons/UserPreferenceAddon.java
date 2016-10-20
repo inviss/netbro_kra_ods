@@ -4,11 +4,15 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import kr.co.netbro.kra.model.IRaceInfoService;
+import kr.co.netbro.kra.rate.resource.RateRegistriesConfiguration;
+import kr.co.netbro.kra.rate.resource.Registries;
 import kr.co.netbro.kra.socket.SocketDataReceiver;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.extensions.Preference;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.prefs.BackingStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +89,9 @@ public class UserPreferenceAddon {
 		
 		flushNode(pref2);
 		logger.debug("context addon");
+		
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		Registries.getInstance(bundle).init(new RateRegistriesConfiguration());
 	}
 	
 	private void flushNode(final IEclipsePreferences pref) {

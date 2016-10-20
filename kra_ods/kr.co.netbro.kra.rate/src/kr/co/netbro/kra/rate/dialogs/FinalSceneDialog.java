@@ -10,19 +10,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import kr.co.netbro.kra.model.FinalInfo;
+import kr.co.netbro.kra.model.FixedInfo;
 import kr.co.netbro.kra.rate.parts.FinalSceneViewer;
 
 public class FinalSceneDialog extends Dialog {
 	private Shell shell;
-	private FinalInfo finalInfo;
+	private FixedInfo finalInfo;
 	
-	public FinalSceneDialog(Shell parentShell) {
+	public FinalSceneDialog(final Shell parentShell) {
 		super(parentShell);
 		this.shell = parentShell;
 	}
 	
-	public FinalSceneDialog(Shell parentShell, FinalInfo finalInfo) {
+	public FinalSceneDialog(final Shell parentShell, final FixedInfo finalInfo) {
 		super(parentShell);
 		this.finalInfo = finalInfo;
 	}
@@ -33,19 +33,19 @@ public class FinalSceneDialog extends Dialog {
 		container.setLayout(new FillLayout());
 		
 		FinalSceneViewer viewer = new FinalSceneViewer(container);
-		viewer.setFinalInfo(finalInfo);
+		viewer.setFixedInfo(finalInfo);
 		return container;
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("확정데이타 표출");
+		newShell.setText("\uD655\uC815\uB370\uC774\uD0C0\20\uD45C\uCD9C"); //확정데이타 표출
 	}
 
 	@Override
 	protected Point getInitialSize() {
-		return new Point(960, 600);
+		return new Point(960, 620);
 	}
 
 	@Override
@@ -56,8 +56,8 @@ public class FinalSceneDialog extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, "화면표출", true);
-		createButton(parent, IDialogConstants.CANCEL_ID, "취 소", false);
+		createButton(parent, IDialogConstants.OK_ID, "\uD654\uBA74\uD45C\uCD9C", true); //화면표출
+		createButton(parent, IDialogConstants.CANCEL_ID, "\uCDE8\20\uC18C", false); //취 소
 	}
 
 	@Override
