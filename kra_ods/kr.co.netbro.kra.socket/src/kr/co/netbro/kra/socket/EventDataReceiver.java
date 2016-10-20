@@ -8,12 +8,11 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.netbro.kra.model.FinalInfo;
+import kr.co.netbro.kra.model.FixedInfo;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.model.RaceType;
 import kr.co.netbro.kra.model.RaceZone;
-import kr.co.netbro.kra.socket.maker.ODSRateMaker;
 import kr.co.netbro.kra.socket.maker.Util;
 
 @Creatable
@@ -30,7 +29,7 @@ public class EventDataReceiver {
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
 	@Inject @Preference(nodePath="kra.config.socket", value="final_path") String finalPath;
 
-	public void finalReceived(FinalInfo finalInfo) {
+	public void finalReceived(FixedInfo finalInfo) {
 		if(finalInfo != null) {
 			eventBroker.post("ODS_RACE/final", finalInfo);
 
