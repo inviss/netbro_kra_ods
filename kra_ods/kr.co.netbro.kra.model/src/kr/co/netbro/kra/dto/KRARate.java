@@ -1,5 +1,7 @@
 package kr.co.netbro.kra.dto;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -27,7 +29,7 @@ public class KRARate {
 	
 	@Expose
 	@SerializedName("money")
-	private Long money;
+	private String money;
 	
 	@Expose
 	@SerializedName("minimum")
@@ -74,14 +76,23 @@ public class KRARate {
 	}
 
 	public void setTime(String time) {
-		this.time = time;
+		if(StringUtils.isNotBlank(time)) {
+			if(time.equals("xx")) {
+				this.time = "마감";
+			} else if(time.equals("yy")) {
+				this.time = "분전";
+			} else {
+				this.time = "마감 "+time+"분전";
+			}
+		} else
+			this.time = time;
 	}
 
-	public Long getMoney() {
+	public String getMoney() {
 		return money;
 	}
 
-	public void setMoney(Long money) {
+	public void setMoney(String money) {
 		this.money = money;
 	}
 
