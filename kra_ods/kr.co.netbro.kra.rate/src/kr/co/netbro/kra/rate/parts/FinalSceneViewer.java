@@ -125,11 +125,6 @@ public class FinalSceneViewer extends Canvas {
 		Color ORANGE = resourceManager.createColor(new RGB(255, 186, 2));
 		Color PINK = resourceManager.createColor(new RGB(255, 165, 255));
 		Color GREEN2 = resourceManager.createColor(new RGB(27, 229, 0));
-		Color MUNJA_COLOR_1 = resourceManager.createColor(new RGB(5, 5, 50));
-		Color MUNJA_COLOR_2 = resourceManager.createColor(new RGB(100, 100, 200));
-		Color MUNJA_COLOR_4 = resourceManager.createColor(new RGB(0, 0, 45));
-		Color MUNJA_COLOR_5 = resourceManager.createColor(new RGB(255, 60, 0));
-		Color MUNJA_COLOR_6 = resourceManager.createColor(new RGB(27, 229, 0));
 		
 		String[] dan = getFinalInfo().getResult().get(RaceType.DAN).split("\\|"); // 단승
 		String[] yon = getFinalInfo().getResult().get(RaceType.YON).split("\\|"); // 연승
@@ -515,8 +510,8 @@ public class FinalSceneViewer extends Canvas {
 		gc.drawString(message, x - pt.x , y - pt.y);
 	}
 
-	private Image loadImage(String url) {
-		Image image = null;
+	private Image loadImage(String path) {
+		/*Image image = null;
 		try {
 			Bundle bundle = FrameworkUtil.getBundle(getClass());
 			URL imgUrl = FileLocator.find(bundle, new Path(url), null);
@@ -526,7 +521,12 @@ public class FinalSceneViewer extends Canvas {
 			logger.error("Image Load error", e);
 		}
 
-		return image;
+		return image;*/
+		Bundle bundle = FrameworkUtil.getBundle(this.getClass());
+	    URL url = FileLocator.find(bundle, new Path(path), null);
+
+	    ImageDescriptor imageDescr = ImageDescriptor.createFromURL(url);
+	    return imageDescr.createImage();
 	}
 
 }
