@@ -3,7 +3,7 @@ package kr.co.netbro.kra.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FinalInfo {
+public class FixedInfo {
 	
 	private String reqDate;
 	private String reqTime;
