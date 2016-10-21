@@ -1,27 +1,28 @@
 package kr.co.netbro.kra.rate.parts;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.kra.rate.resource.Registries;
+
 public class RaceInfoPart {
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private Canvas g1Canvas;
-
+	private RaceStatusWidget statusWidget;
+	
 	@PostConstruct
 	public void createControls(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
@@ -37,7 +38,6 @@ public class RaceInfoPart {
 		
 		GridData gd_g1comp1 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_g1comp1.heightHint = 100;
-		//g1.setLayoutData(gd_g1comp1);
 		g1comp1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Button g1tb1 = new Button(g1comp1, SWT.TOGGLE);
@@ -54,12 +54,14 @@ public class RaceInfoPart {
 		new Label(g1comp1, SWT.NONE);
 
 		Composite g1comp2 = new Composite(g1, SWT.NONE);
-
-		g1Canvas = new Canvas(g1comp2, SWT.NONE);
+		g1comp2.setLayout(new GridLayout(1, false));
+		
 		GridData gd_g1canvas = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_g1canvas.widthHint = 300;
-		gd_g1canvas.heightHint = 70;
-		g1Canvas.setLayoutData(gd_g1canvas);
+		gd_g1canvas.heightHint = 80;
+		g1comp2.setLayoutData(gd_g1canvas);
+		
+		statusWidget = new RaceStatusWidget(g1comp2);
 
 		Group g2 = new Group(container, SWT.NONE);
 		g2.setText("\uACBD\uAE30\uC815\uBCF4");
@@ -70,39 +72,22 @@ public class RaceInfoPart {
 		g2comp1.setLayout(new GridLayout(3, false));
 		g2comp1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Color color = new Color(getDisplay(), 153, 204, 255);
-		
 		Label s_label = new Label(g2comp1, SWT.BORDER);
 		s_label.setText("\uC11C\uC6B8 \uC81C1\uACBD\uAE30 \uC885\uB8CC");
-		s_label.setBackground(color);
+		s_label.setBackground(Registries.getInstance().getColor("config1"));
 		s_label.setAlignment(SWT.CENTER);
-		s_label.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				if(!color.isDisposed()) color.dispose();
-			}
-		});
 		s_label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label b_label = new Label(g2comp1, SWT.BORDER);
 		b_label.setText("\uBD80\uACBD \uC81C1\uACBD\uAE30 \uC9C4\uD589");
-		b_label.setBackground(color);
+		b_label.setBackground(Registries.getInstance().getColor("config1"));
 		b_label.setAlignment(SWT.CENTER);
-		b_label.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				if(!color.isDisposed()) color.dispose();
-			}
-		});
 		b_label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label j_label = new Label(g2comp1, SWT.BORDER);
 		j_label.setText("\uC81C\uC8FC \uC81C1\uACBD\uAE30 \uC885\uB8CC");
-		j_label.setBackground(color);
+		j_label.setBackground(Registries.getInstance().getColor("config1"));
 		j_label.setAlignment(SWT.CENTER);
-		j_label.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				if(!color.isDisposed()) color.dispose();
-			}
-		});
 		j_label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Composite g2comp2 = new Composite(g2comp1, SWT.NONE);
@@ -125,16 +110,19 @@ public class RaceInfoPart {
 		curr_label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label curr_label_val = new Label(g2comp2, SWT.NONE);
-		curr_label_val.setText("20-16.09.22 16:51:30");
+		curr_label_val.setText("2016.09.22 16:51:30");
 		curr_label_val.setAlignment(SWT.LEFT);
 		curr_label_val.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 	}
 
-	public static Display getDisplay() {
-		Display display = Display.getCurrent();
-		//may be null if outside the UI thread
-		if (display == null)
-			display = Display.getDefault();
-		return display;		
+	@Inject @Optional
+	public void  getEvent(@UIEventTopic("ODS_RACE/STATUS") final RaceInfo raceInfo) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Rate Config ->type: "+raceInfo.getGameType());
+		}
+		if(raceInfo != null) {
+			statusWidget.setRaceInfo(raceInfo);
+		}
 	}
+	
 }

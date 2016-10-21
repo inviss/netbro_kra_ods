@@ -1,8 +1,5 @@
 package kr.co.netbro.kra.rate.parts;
 
-import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.resource.LocalResourceManager;
-import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -20,16 +17,13 @@ public class KraRateWidget extends Canvas {
 	
 	final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private Point textExtent;
-	private ResourceManager resourceManager;
 	private RaceInfo raceInfo;
 	private Point point;
 
 	public KraRateWidget(Composite parent) {
 		super(parent, SWT.NONE);
-		
-		resourceManager = new LocalResourceManager(JFaceResources.getResources(), this);
 		setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
 		addPaintListener(new PaintListener() {
 			@Override
             public void paintControl(PaintEvent e) {
@@ -37,9 +31,7 @@ public class KraRateWidget extends Canvas {
 					paintHeaderAndBody(e.gc);
 			}
 		});
-		
 	}
-	
 	
 	public RaceInfo getRaceInfo() {
 		checkWidget();
@@ -51,7 +43,6 @@ public class KraRateWidget extends Canvas {
 		this.raceInfo = raceInfo;
 		redraw();
 	}
-
 
 	protected void paintHeaderAndBody(GC gc) {
 		if(logger.isDebugEnabled()) {
