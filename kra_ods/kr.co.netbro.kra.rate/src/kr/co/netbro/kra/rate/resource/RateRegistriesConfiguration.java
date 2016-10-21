@@ -62,6 +62,8 @@ public class RateRegistriesConfiguration implements IRegistriesConfiguration {
 		r.putColor("cg", 0, 200, 0);
 		r.putColor("cy", 255, 255, 0);
 		
+		r.putColor("config1", 153, 204, 255);
+		
 		// Images add
 		r.putImage("final_1", "images/final_1.jpg");
 		r.putImage("final_2", "images/final_2.jpg");
