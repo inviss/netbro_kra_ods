@@ -6,9 +6,8 @@ import java.util.Map;
 public enum RaceType {
 	
 	DAN(1, "단승식"), YON(2, "연승식"), BOKYON (3, "복연승식"), SSANG(4, "쌍승식"), 
-	BOK(5, "복승식"), SAMBOK(6, "삼복승식"), FINAL(9, "확정"), SAMSSANG(10, "삼쌍승식"),
-	//BOK(5, "복승식"), SAMBOK(6, "삼복승식"), SAMSSANG(10, "삼쌍승식"),
-	SAMBOK_TOP60(52, "삼복TOP"), SAMSSANG_TOP60(54, "삼쌍TOP"),
+	BOK(5, "복승식"), SAMBOK(6, "삼복승식"), SAMSSANG(10, "삼쌍승식"),
+	SAMBOK_TOP60(52, "삼복TOP"), SAMSSANG_TOP60(54, "삼쌍TOP"), FINAL(9, "확정"), 
 	GISU_CHANGE(60, "기수변경"), CHUL_CANCEL(61, "출전취소"), RACE_RATE(62, "경기성적"), DEAD_HEAT(63, "동착결과");
 	
 	private int type;
