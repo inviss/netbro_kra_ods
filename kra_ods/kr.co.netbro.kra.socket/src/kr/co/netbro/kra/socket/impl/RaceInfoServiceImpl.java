@@ -3,11 +3,16 @@ package kr.co.netbro.kra.socket.impl;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.kra.entity.Cancel;
+import kr.co.netbro.kra.entity.Change;
+import kr.co.netbro.kra.entity.Final;
+import kr.co.netbro.kra.entity.Result;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.race.database.IRateODSService;
@@ -26,7 +31,9 @@ public class RaceInfoServiceImpl implements IRaceInfoService {
 	}
 	
 	public void unSetRateODSService(IRateODSService raceODSService) {
-		this.raceODSService = null;
+		if(this.raceODSService != null && (this.raceODSService == raceODSService)) {
+			this.raceODSService = null;
+		}
 	}
 
 	@Override
@@ -64,5 +71,31 @@ public class RaceInfoServiceImpl implements IRaceInfoService {
 	public void allRaceClear() {
 		infoMap.clear();
 	}
+
+	@Override
+	public List<Cancel> findCancels(String zone, String date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Change> findChanges(String zone, String date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Final> findFinals(String zone, String date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Result> findResults(String zone, String date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }
