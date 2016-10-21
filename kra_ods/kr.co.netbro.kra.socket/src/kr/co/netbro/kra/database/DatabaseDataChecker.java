@@ -1,6 +1,7 @@
 package kr.co.netbro.kra.database;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,6 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.common.utils.DateUtils;
+import kr.co.netbro.kra.entity.Cancel;
+import kr.co.netbro.kra.entity.Change;
+import kr.co.netbro.kra.entity.Final;
+import kr.co.netbro.kra.entity.Result;
+import kr.co.netbro.kra.model.IRaceInfoService;
 
 @SuppressWarnings("restriction")
 @Creatable
@@ -31,6 +37,9 @@ public class DatabaseDataChecker {
 	
 	@Inject
 	private IEventBroker eventBroker;
+	@Inject
+	private IRaceInfoService raceInfoService;
+	
 	private String currentDate;
 	private String gradeDate;
 	private String changeDate;
@@ -57,11 +66,26 @@ public class DatabaseDataChecker {
 				// 현재일과 지난주 마지막 경기요일을 체크한다. 경마장별로 마지막 경기요일 체크 필요.
 				executeDateCheck();
 				
+				// 출전 취소
+				List<Cancel> cancels = raceInfoService.findCancels(String.format("%02d", zone.intValue()), changeDate);
+				
+				// 선수 변경
+				List<Change> changes = raceInfoService.findChanges(String.format("%02d", zone.intValue()), changeDate);
+				
+				// 경주 성적
+				List<Final> finals = raceInfoService.findFinals(String.format("%02d", zone.intValue()), gradeDate);
+				
+				// 동착 결과
+				List<Result> results = raceInfoService.findResults(String.format("%02d", zone.intValue()), gradeDate);
 				try {
 					Thread.sleep(5000L);
 				} catch (Exception e) {}
 			}
 		}
+	}
+	
+	public void eventTransfer(String eventId, List<?> data) {
+		
 	}
 
 	public void executeDateCheck() {
