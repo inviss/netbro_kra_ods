@@ -33,7 +33,7 @@ public class FinalSceneViewer extends Canvas {
 	
 	public FinalSceneViewer(Composite parent) {
 		super(parent, SWT.NONE);
-		setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		//setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -118,12 +118,9 @@ public class FinalSceneViewer extends Canvas {
 		/*************************************** GC drawing start *********************************************/
 		setBackground(Registries.getInstance().getColor("bg_"+getDecidedRate().getZone())); // 경기장별 바탕색 지정
 		
-		//setBackground(getDisplay().getSystemColor(SWT.COLOR_TRANSPARENT));
-		
 		// 경기장별 바탕 이미지 설정
 		Image image = Registries.getInstance().getImage("final_"+finalInfo.getZone());
 		gc.drawImage(image, 0, 0);
-		setBackgroundMode( SWT.INHERIT_DEFAULT );
 		
 		// TOP 경기번호 폰트
 		gc.setFont(Registries.getInstance().getFont("tv46"));
@@ -230,7 +227,7 @@ public class FinalSceneViewer extends Canvas {
 				gc.setForeground(GREEN);
 				
 				Point pt = gc.stringExtent(bokyon[2]);
-				gc.drawString(bokyon[2], x1 - pt.x, yy - pt.y);
+				gc.drawString(bokyon[2], x1 - pt.x, yy - pt.y, true);
 				
 				gc.setForeground(WHITE);
 				drawStringRight(gc, bokyon[3], x2, yy);
@@ -256,7 +253,7 @@ public class FinalSceneViewer extends Canvas {
 				gc.setForeground(YELLOW);
 				
 				Point pt = gc.stringExtent(sambok[3]);
-				gc.drawString(sambok[4], x1 - pt.x, yy - pt.y);
+				gc.drawString(sambok[4], x1 - pt.x, yy - pt.y, true);
 				
 				gc.setForeground(WHITE);
 				drawStringRight(gc, sambok[3], x2, yy);
@@ -282,7 +279,7 @@ public class FinalSceneViewer extends Canvas {
 				gc.setForeground(GREEN);
 				
 				Point pt = gc.stringExtent(samssang[3]);
-				gc.drawString(samssang[4], x1 - pt.x, yy - pt.y);
+				gc.drawString(samssang[4], x1 - pt.x, yy - pt.y, true);
 				
 				gc.setForeground(WHITE);
 				drawStringRight(gc, samssang[4], x2, yy);
@@ -298,36 +295,35 @@ public class FinalSceneViewer extends Canvas {
 				overImage = Registries.getInstance().getImage("over_"+finalInfo.getZone());
 				gc.drawImage(overImage, 0, 0, overImage.getBounds().width, overImage.getBounds().height, 100, 480, 760, 60);
 			}
-			//gc.drawImage(overImage, 0, 0);
 		}
 		
 		if(StringUtils.isNotBlank(getDecidedRate().getCancel())) {
 			drawStringCenterTitle(gc, new Font[]{Registries.getInstance().getFont("tv26"), Registries.getInstance().getFont("tv15")}, new Color[]{PINK, PINK}, MessageDef.FINAL_SCRATCHED, 120, 500);
 			gc.setFont(Registries.getInstance().getFont("tv28"));
 			gc.setForeground(WHITE);
-			gc.drawString(getDecidedRate().getCancel(), 230, 500);
+			gc.drawString(getDecidedRate().getCancel(), 230, 500, true);
 		}
 
 	}
 	
-	protected void drawStringPlace(GC gc, Font[] font, Color[] color, String[] message, int x, int y) {
+	private void drawStringPlace(GC gc, Font[] font, Color[] color, String[] message, int x, int y) {
 		gc.setFont(font[0]);
 		gc.setForeground(color[0]);
 
 		Point pt = gc.stringExtent(message[0]);
-		gc.drawString(message[0], x, y - pt.y);
+		gc.drawString(message[0], x, y - pt.y, true);
 
 		gc.setFont(font[1]);
 		gc.setForeground(color[1]);
 
 		pt = gc.stringExtent(message[1]);
-		gc.drawString(message[1].substring(0,  2), x + pt.x + 10, y - pt.y);
+		gc.drawString(message[1].substring(0,  2), x + pt.x + 10, y - pt.y, true);
 		
 		gc.setFont(font[2]);
-		gc.drawString(message[1].substring(2,  4), x + pt.x + 30, y - pt.y);
+		gc.drawString(message[1].substring(2,  4), x + pt.x + 30, y - pt.y, true);
 		
 		gc.setFont(font[1]);
-		gc.drawString(message[1].substring(4,  5), x + pt.x + 50, y - pt.y);
+		gc.drawString(message[1].substring(4,  5), x + pt.x + 50, y - pt.y, true);
 	}
 
 	private List<String[]> doubleData(RaceType raceType, Map<RaceType, String> results, boolean split) {
@@ -392,69 +388,69 @@ public class FinalSceneViewer extends Canvas {
 		return null;
 	}
 
-	protected void drawStringRight(GC gc, String str, int x, int y) {
+	private void drawStringRight(GC gc, String str, int x, int y) {
 		gc.setForeground(Registries.getInstance().getColor("white"));
 		if ((str != null) && (str.length() > 0)) {
 			Point pt = gc.stringExtent(str);
-			gc.drawString(str, x - pt.x, y - pt.y);
+			gc.drawString(str, x - pt.x, y - pt.y, true);
 		}
 	}
 	
-	protected void drawStringRight(GC gc, Color color, String str, int x, int y) {
+	private void drawStringRight(GC gc, Color color, String str, int x, int y) {
 		gc.setForeground(color);
 		if ((str != null) && (str.length() > 0)) {
 			Point pt = gc.stringExtent(str);
-			gc.drawString(str, x - pt.x, y - pt.y);
+			gc.drawString(str, x - pt.x, y - pt.y, true);
 		}
 	}
 
-	protected void drawStringRightTitle(GC gc, Font[] fonts, Color[] colors, String[] message, int x, int y) {
+	private void drawStringRightTitle(GC gc, Font[] fonts, Color[] colors, String[] message, int x, int y) {
 		gc.setFont(fonts[0]);
 		gc.setForeground(colors[0]);
 
 		Point pt = gc.stringExtent(message[0]);
-		gc.drawString(message[0], x - pt.x, y - pt.y);
+		gc.drawString(message[0], x - pt.x, y - pt.y, true);
 
 		if(StringUtils.isNotBlank(message[1])) {
 			gc.setFont(fonts[1]);
 			gc.setForeground(colors[1]);
 
 			pt = gc.stringExtent(message[1]);
-			gc.drawString(message[1], x, y - pt.y);
+			gc.drawString(message[1], x, y - pt.y, true);
 		}
 	}
 
-	protected void drawStringCenterTitle(GC gc, Font[] font, Color[] color, String[] message, int x, int y) {
+	private void drawStringCenterTitle(GC gc, Font[] font, Color[] color, String[] message, int x, int y) {
 		gc.setFont(font[0]);
 		gc.setForeground(color[0]);
 
 		Point pt = gc.stringExtent(message[0]);
-		gc.drawString(message[0], x - pt.x, y - pt.y);
+		gc.drawString(message[0], x - pt.x, y - pt.y, true);
 
 		gc.setFont(font[1]);
 		gc.setForeground(color[1]);
 
 		pt = gc.stringExtent(message[1]);
-		gc.drawString(message[1], x, y - pt.y);
+		gc.drawString(message[1], x, y - pt.y, true);
 	}
 	
-	protected void drawStringCenterTitle(GC gc, Font[] font, String[] message, int x, int y) {
+	private void drawStringCenterTitle(GC gc, Font[] font, String[] message, int x, int y) {
 		gc.setFont(font[0]);
 		gc.setForeground(Registries.getInstance().getColor("white"));
 
 		Point pt = gc.stringExtent(message[0]);
-		gc.drawString(message[0], x - pt.x, y - pt.y);
+		gc.drawString(message[0], x - pt.x, y - pt.y, true);
 
 		gc.setFont(font[1]);
 		gc.setForeground(Registries.getInstance().getColor("white"));
 
 		pt = gc.stringExtent(message[1]);
-		gc.drawString(message[1], x, y - pt.y);
+		gc.drawString(message[1], x, y - pt.y, true);
 	}
 
-	protected void drawStringCenter(GC gc, String message, int x, int y) {
+	private void drawStringCenter(GC gc, String message, int x, int y) {
 		Point pt = gc.stringExtent(message);
-		gc.drawString(message, x - pt.x , y - pt.y);
+		gc.drawString(message, x - pt.x , y - pt.y, true);
 	}
 
 }
