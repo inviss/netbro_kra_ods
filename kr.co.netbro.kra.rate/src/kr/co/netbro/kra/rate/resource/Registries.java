@@ -24,9 +24,6 @@ public class Registries {
 	private static Registries instance;
 	
 	private Registries() {
-		//colorReg = new ColorRegistry();
-		//fontReg = new FontRegistry();
-		//imgReg = new ImageRegistry();
 		colorReg = JFaceResources.getColorRegistry();
 		fontReg = JFaceResources.getFontRegistry();
 		imgReg = JFaceResources.getImageRegistry();

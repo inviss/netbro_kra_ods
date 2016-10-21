@@ -56,6 +56,7 @@ public class RateRegistriesConfiguration implements IRegistriesConfiguration {
 		r.putColor("color_gray", 128, 128, 128);
 		
 		r.putColor("bl", 0, 0, 0);
+		r.putColor("wh", 255, 255, 255);
 		r.putColor("cb", 100, 100, 255);
 		r.putColor("cr", 255, 100, 100);
 		r.putColor("cg", 0, 200, 0);
@@ -99,6 +100,7 @@ public class RateRegistriesConfiguration implements IRegistriesConfiguration {
 		r.putFont("tv48", new FontData("tvtest", 48, SWT.NONE));
 		r.putFont("tv50", new FontData("tvtest", 50, SWT.NONE));
 		r.putFont("tv52", new FontData("tvtest", 52, SWT.NONE));
+		
 		r.putFont("ts16", new FontData("tsTv95", 16, SWT.NONE));
 		r.putFont("ts18", new FontData("tsTv95", 18, SWT.NONE));
 		r.putFont("ts20", new FontData("tsTv95", 20, SWT.NONE));
