@@ -24,4 +24,5 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
 Import-Package: org.slf4j
 Service-Component: OSGI-INF/service.xml
 Bundle-ActivationPolicy: lazy
-Export-Package: kr.co.netbro.kra.socket
+Export-Package: kr.co.netbro.kra.database,
+ kr.co.netbro.kra.socket
