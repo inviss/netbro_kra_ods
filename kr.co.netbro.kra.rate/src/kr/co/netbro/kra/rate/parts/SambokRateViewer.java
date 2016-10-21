@@ -1,11 +1,10 @@
 package kr.co.netbro.kra.rate.parts;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Display;
 
 import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.kra.rate.resource.Registries;
 
 public class SambokRateViewer extends RateViewer {
 
@@ -75,11 +74,11 @@ public class SambokRateViewer extends RateViewer {
 			x = 40 + i / (this.row + 1) * (this.column * 35);
 			y = this.Y_POINT + vgap + i % (this.row + 1) * vgap;
 			for (int j = 0; j < rateData[i].length; j++) {
-				gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+				gc.setBackground(Registries.getInstance().getColor("wh"));
 				
 				boolean isRate = false;
 				if (!rateData[i][j].startsWith("#")) {
-					gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
+					gc.setForeground(Registries.getInstance().getColor("cb"));
 					gc.drawString(rateData[i][j], x, y);
 					isRate = true;
 				}
@@ -88,11 +87,11 @@ public class SambokRateViewer extends RateViewer {
 				j++;
 				String s = rateData[i][j];
 				if (s.equals(raceInfo.getMinimum())) {
-					gc.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW));
+					gc.setBackground(Registries.getInstance().getColor("cy"));
 					gc.fillRectangle(x - 7, y - 3, 40, vgap - 4);
 				}
 
-				gc.setForeground(isRate ? Display.getDefault().getSystemColor(SWT.COLOR_BLACK) : Display.getDefault().getSystemColor(SWT.COLOR_RED));
+				gc.setForeground(isRate ? Registries.getInstance().getColor("bl") : Registries.getInstance().getColor("cr"));
 				x += 45;
 				gc.drawString(s, x - fm.getAverageCharWidth() - 35, y);
 			}

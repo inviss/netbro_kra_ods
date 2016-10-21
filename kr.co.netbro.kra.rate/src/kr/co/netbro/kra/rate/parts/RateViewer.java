@@ -1,9 +1,7 @@
 package kr.co.netbro.kra.rate.parts;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +23,7 @@ public class RateViewer {
 
 	public void paintHeader(GC gc, RaceInfo raceInfo) {
 		if(raceInfo != null) {
-			gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+			gc.setForeground(Registries.getInstance().getColor("bl"));
 			gc.setFont(Registries.getInstance().getFont("dialog10"));
 			gc.drawString(raceInfo.getZoneName()+" 제 "+raceInfo.getRaceNum()+" 경주 "+raceInfo.getTypeName(), X_POINT, 30);
 			String timeStr = "";
@@ -52,25 +50,25 @@ public class RateViewer {
 			FontMetrics fm = gc.getFontMetrics();
 			for (int i = 0; i < rateData.length; i++) {
 				for(int j = 0; j < max; j++) {
-					gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+					gc.setBackground(Registries.getInstance().getColor("wh"));
 					String s = rateData[i][j];
 					if(s != null) {
 						if(i == 0 || j == 0 || (raceInfo.getGameType() > 2 && i == j)) {
 							if (i == 0) {
-								gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
+								gc.setForeground(Registries.getInstance().getColor("cb"));
 							} else if (j == 0) {
-								gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+								gc.setForeground(Registries.getInstance().getColor("cr"));
 							} else {
-								gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+								gc.setForeground(Registries.getInstance().getColor("cg"));
 							}
 							int tx = (hgap - fm.getAverageCharWidth()) / 2;
 							gc.drawString(s, X_POINT + i * hgap + tx, Y_POINT + j * vgap);
 						} else {
 							if(s.equals(raceInfo.getMinimum())) {
-								gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+								gc.setBackground(Registries.getInstance().getColor("cy"));
 								gc.fillRectangle(X_POINT + i * hgap - 7, Y_POINT + j * vgap - 3, hgap - 2, vgap - 2);
 							}
-							gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+							gc.setForeground(Registries.getInstance().getColor("bl"));
 							gc.drawString(s, X_POINT + i * hgap, Y_POINT + j * vgap);
 						}
 					}
