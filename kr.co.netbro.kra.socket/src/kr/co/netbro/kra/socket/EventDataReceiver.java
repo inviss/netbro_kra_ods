@@ -51,6 +51,7 @@ public class EventDataReceiver {
 			raceInfo.setZoneName(RaceZone.getZoneName(raceInfo.getZone()));
 			raceInfo.setGameType(toInt(c, 1, 2));
 			raceInfo.setRaceNum(toInt(c, 3, 2));
+			raceInfo.setTime(new String(c, 5, 2));
 			raceInfo.setHorseNum(toInt(c, 7, 2));
 			raceInfo.setMoney(Util.format(Long.parseLong(new String(c, 9, 11))));
 			raceInfo.setMinimum(toRate(c, 20, 5));
