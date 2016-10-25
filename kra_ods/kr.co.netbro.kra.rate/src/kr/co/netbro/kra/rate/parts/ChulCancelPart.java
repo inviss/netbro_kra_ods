@@ -1,5 +1,7 @@
 package kr.co.netbro.kra.rate.parts;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.eclipse.swt.widgets.Monitor;
@@ -17,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.kra.entity.Cancel;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
 
@@ -80,10 +83,9 @@ public class ChulCancelPart {
 	}
 
 	@Inject @Optional
-	public void  getEvent(@UIEventTopic("ODS_RACE/9") final RaceInfo raceInfo) {
-		int type = raceInfo.getGameType();
+	public void  getEvent(@UIEventTopic("ODS_RACE/cancel") final List<Cancel> cancels) {
 		if(logger.isDebugEnabled()) {
-			logger.debug("GisuChange->type: "+type);
+			logger.debug("cancels: "+cancels);
 		}
 	}
 }

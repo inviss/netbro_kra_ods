@@ -162,22 +162,22 @@ public class RaceInfoPart {
 	}
 
 	@Inject @Optional
-	public void  getResultsEvent(@UIEventTopic("ODS_DATE/RESULTS") final RaceInfo raceInfo) {
+	public void  getResultsEvent(@UIEventTopic("ODS_DATE/GRADE") final String gradeDate) {
 		if(logger.isDebugEnabled()) {
-			logger.debug("Rate Config ->type: "+raceInfo.getGameType());
+			logger.debug("gradeDate: "+gradeDate);
 		}
 
 		Calendar cal = Calendar.getInstance();
-
+		
 		resultCal.setYear(cal.get(Calendar.YEAR));
 		resultCal.setMonth((cal.get(Calendar.MONTH)));
 		resultCal.setDay(cal.get(Calendar.DAY_OF_MONTH));
 	}
 
 	@Inject @Optional
-	public void  getChangeEvent(@UIEventTopic("ODS_DATE/CHANGE") final RaceInfo raceInfo) {
+	public void  getChangeEvent(@UIEventTopic("ODS_DATE/CHANGE") final String chageDate) {
 		if(logger.isDebugEnabled()) {
-			logger.debug("Rate Config ->type: "+raceInfo.getGameType());
+			logger.debug("chageDate: "+chageDate);
 		}
 		Calendar cal = Calendar.getInstance();
 
