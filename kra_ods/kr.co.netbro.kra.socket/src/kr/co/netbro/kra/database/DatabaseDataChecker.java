@@ -63,26 +63,25 @@ public class DatabaseDataChecker {
 		@Override
 		public void run() {
 			while(true) {
-				System.out.println("111111");
 				// 현재일과 지난주 마지막 경기요일을 체크한다. 경마장별로 마지막 경기요일 체크 필요.
 				executeDateCheck();
-				System.out.println("22222");
+				
 				// 출전 취소
 				List<Cancel> cancels = raceInfoService.findCancels(String.format("%02d", zone.intValue()), changeDate);
 				eventTransfer("ODS_RACE/cancel", cancels);
-				System.out.println("33333");
+
 				// 선수 변경
 				List<Change> changes = raceInfoService.findChanges(String.format("%02d", zone.intValue()), changeDate);
 				eventTransfer("ODS_RACE/change", changes);
-				System.out.println("444444");
+
 				// 경주 성적
 				List<Final> finals = raceInfoService.findFinals(String.format("%02d", zone.intValue()), gradeDate);
 				eventTransfer("ODS_RACE/grade", finals);
-				System.out.println("555555");
+
 				// 동착 결과
 				List<Result> results = raceInfoService.findResults(String.format("%02d", zone.intValue()), gradeDate);
 				eventTransfer("ODS_RACE/heat", results);
-				System.out.println("666666");
+
 				try {
 					Thread.sleep(5000L);
 				} catch (Exception e) {}
