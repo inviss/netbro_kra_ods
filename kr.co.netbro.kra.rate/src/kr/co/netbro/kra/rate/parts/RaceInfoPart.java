@@ -1,14 +1,20 @@
 package kr.co.netbro.kra.rate.parts;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -26,17 +32,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.kra.model.RaceInfo;
+import kr.co.netbro.kra.rate.binding.DateTimeSelectionProperty;
+import kr.co.netbro.kra.rate.binding.VogellaProperties;
 import kr.co.netbro.kra.rate.resource.Registries;
 
 @SuppressWarnings("restriction")
 public class RaceInfoPart {
+	
 	final Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private DataBindingContext ctx = new DataBindingContext();
+	
 
 	@Inject @Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1;
 	
 	private RaceStatusWidget statusWidget;
 	private DateTime resultCal;
 	private DateTime changeCal;
+	
 
 	@PostConstruct
 	public void createControls(Composite parent) {
@@ -131,7 +144,19 @@ public class RaceInfoPart {
 	            System.out.println ("성적조회 time changed");
 	        }
 	    });
+		/*
+		IObservableValue dateTimeObservableValue = VogellaProperties.vogellaProperty().observe(resultCal);
+		ISWTObservableValue oldDateTimeObservable = WidgetProperties.selection().observe(resultCal);
+		
+		DateTimeSelectionProperty dateTimeSelectionProperty = new DateTimeSelectionProperty();
+        dateTimeObservableValue = dateTimeSelectionProperty.observe(dateTime);
+        
+        writableDateTimeModel = new WritableValue();
+        writableDateTimeModel.setValue(LocalDate.now());
 
+        // bind DateTime widget to a Java 8 TemporalAccessor observable
+        dbc.bindValue(dateTimeObservableValue, writableDateTimeModel);
+		 */
 		Label label_2 = new Label(g1comp1_1, SWT.NONE);
 		label_2.setFont(SWTResourceManager.getFont("\\맑은 고딕", 9, SWT.NORMAL));
 		label_2.setText("\uBCC0\uACBD\uC870\uD68C:"); //변경조회
