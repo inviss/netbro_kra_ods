@@ -17,7 +17,7 @@ public class TestConn {
 	
 	@Execute
     public void execute() {
-		List<Change> cancels = rateODSService.findChanges();
+		List<Change> cancels = rateODSService.findChanges("", "");
 		System.out.println(cancels.size());
 	}
 }

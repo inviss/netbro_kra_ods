@@ -1,5 +1,7 @@
 package kr.co.netbro.kra.rate.parts;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -17,6 +19,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.kra.entity.Final;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
 
@@ -158,10 +161,9 @@ public class RaceGradePart {
 	}
 
 	@Inject @Optional
-	public void  getEvent(@UIEventTopic("ODS_RACE/gisu") final RaceInfo raceInfo) {
-		int type = raceInfo.getGameType();
+	public void  getEvent(@UIEventTopic("ODS_RACE/grade") final List<Final> finals) {
 		if(logger.isDebugEnabled()) {
-			logger.debug("GisuChange->type: "+type);
+			logger.debug("RaceGrade->type: "+finals);
 		}
 	}
 }
