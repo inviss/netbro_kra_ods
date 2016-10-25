@@ -9,6 +9,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -19,6 +20,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.kra.entity.Cancel;
 import kr.co.netbro.kra.entity.Change;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
@@ -50,36 +52,78 @@ public class GisuChangePart {
 		column.getColumn().setText("\uACBD\uC8FC"); // 경주
 		column.getColumn().setWidth(150);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr01()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("");
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr02()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("");
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr03()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("\uBCC0\uACBD\uC804"); // 변경전
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr04()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("\uC911\uB7C9"); // 중량
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr05()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("\uBCC0\uACBD\uD6C4"); //변경후
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr06()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("\uC911\uB7C9"); //중량
 		column.getColumn().setWidth(100);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr07()+"";
+			}
+		});
 
 		Monitor monitor = Display.getCurrent().getPrimaryMonitor();
 		int screenWidth = monitor.getBounds().width;
@@ -87,6 +131,12 @@ public class GisuChangePart {
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("\uC0AC\uC720"); //사유
 		column.getColumn().setWidth(screenWidth - widths);
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Change) element).getStr14()+"";
+			}
+		});
 
 	}
 	
