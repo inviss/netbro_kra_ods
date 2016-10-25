@@ -68,19 +68,23 @@ public class DatabaseDataChecker {
 				
 				// 출전 취소
 				List<Cancel> cancels = raceInfoService.findCancels(String.format("%02d", zone.intValue()), changeDate);
-				eventTransfer("ODS_RACE/cancel", cancels);
+				if(!cancels.isEmpty())
+					eventTransfer("ODS_RACE/cancel", cancels);
 
 				// 선수 변경
 				List<Change> changes = raceInfoService.findChanges(String.format("%02d", zone.intValue()), changeDate);
-				eventTransfer("ODS_RACE/change", changes);
+				if(!changes.isEmpty())
+					eventTransfer("ODS_RACE/change", changes);
 
 				// 경주 성적
 				List<Final> finals = raceInfoService.findFinals(String.format("%02d", zone.intValue()), gradeDate);
-				eventTransfer("ODS_RACE/grade", finals);
+				if(!finals.isEmpty())
+					eventTransfer("ODS_RACE/grade", finals);
 
 				// 동착 결과
 				List<Result> results = raceInfoService.findResults(String.format("%02d", zone.intValue()), gradeDate);
-				eventTransfer("ODS_RACE/heat", results);
+				if(!results.isEmpty())
+					eventTransfer("ODS_RACE/heat", results);
 
 				try {
 					Thread.sleep(5000L);
@@ -90,7 +94,7 @@ public class DatabaseDataChecker {
 	}
 	
 	private void eventTransfer(String eventId, List<?> data) {
-		
+		eventBroker.post(eventId, data);
 	}
 
 	public void executeDateCheck() {
