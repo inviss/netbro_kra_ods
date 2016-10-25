@@ -7,9 +7,10 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -80,6 +81,11 @@ public class RaceInfoPart {
 
 		resultCal = new DateTime(g1comp1_1, SWT.DATE | SWT.DROP_DOWN);
 		resultCal.setBounds(55, 105, 88, 24);
+		resultCal.addSelectionListener (new SelectionAdapter () {
+	        public void widgetSelected (SelectionEvent e) {
+	            System.out.println ("성적조회 time changed");
+	        }
+	    });
 
 		Label label_2 = new Label(g1comp1_1, SWT.NONE);
 		label_2.setFont(SWTResourceManager.getFont("\\맑은 고딕", 9, SWT.NORMAL));
@@ -88,6 +94,12 @@ public class RaceInfoPart {
 
 		changeCal = new DateTime(g1comp1_1, SWT.DATE | SWT.DROP_DOWN);
 		changeCal.setBounds(55, 105, 88, 24);
+		changeCal.setBounds(55, 105, 88, 24);
+		changeCal.addSelectionListener (new SelectionAdapter () {
+	        public void widgetSelected (SelectionEvent e) {
+	            System.out.println ("변경조회 time changed");
+	        }
+	    });
 
 		Composite g1comp2 = new Composite(g1, SWT.NONE);
 		g1comp2.setLayout(new GridLayout(1, false));
