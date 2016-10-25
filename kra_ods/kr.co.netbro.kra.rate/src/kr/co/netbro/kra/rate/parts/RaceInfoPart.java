@@ -5,7 +5,9 @@ import java.util.Calendar;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -19,15 +21,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.osgi.service.prefs.BackingStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.rate.resource.Registries;
 
+@SuppressWarnings("restriction")
 public class RaceInfoPart {
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
+	@Inject @Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1;
+	
 	private RaceStatusWidget statusWidget;
 	private DateTime resultCal;
 	private DateTime changeCal;
@@ -54,17 +60,56 @@ public class RaceInfoPart {
 		g1tb1.setText("\uC11C \uC6B8");
 		minSize = g1tb1.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		GridDataFactory.fillDefaults().hint(Math.max(100, minSize.x), SWT.DEFAULT).applyTo(g1tb1);
+		g1tb1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pref1.remove("zone");
+				pref1.putInt("zone", 1);
+				if(logger.isDebugEnabled()) {
+					logger.debug("selected zone: 1");
+				}
+				try {
+					pref1.flush();
+				} catch (BackingStoreException ee) {}
+			}
+		});
 
 		
 		final Button g1tb2 = new Button(g1comp1, SWT.TOGGLE);
 		g1tb2.setText("\uBD80 \uACBD");
 		minSize = g1tb2.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		GridDataFactory.fillDefaults().hint(Math.max(100, minSize.x), SWT.DEFAULT).applyTo(g1tb2);
+		g1tb2.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pref1.remove("zone");
+				pref1.putInt("zone", 2);
+				if(logger.isDebugEnabled()) {
+					logger.debug("selected zone: 2");
+				}
+				try {
+					pref1.flush();
+				} catch (BackingStoreException ee) {}
+			}
+		});
 		
 		final Button g1tb3 = new Button(g1comp1, SWT.TOGGLE);
 		g1tb3.setText("\uC81C \uC8FC");
 		minSize = g1tb3.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		GridDataFactory.fillDefaults().hint(Math.max(100, minSize.x), SWT.DEFAULT).applyTo(g1tb3);
+		g1tb3.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pref1.remove("zone");
+				pref1.putInt("zone", 3);
+				if(logger.isDebugEnabled()) {
+					logger.debug("selected zone: 3");
+				}
+				try {
+					pref1.flush();
+				} catch (BackingStoreException ee) {}
+			}
+		});
 
 		Composite g1comp1_1 = new Composite(g1comp1, SWT.NONE);
 		g1comp1_1.setLayout(new GridLayout(4, false));
