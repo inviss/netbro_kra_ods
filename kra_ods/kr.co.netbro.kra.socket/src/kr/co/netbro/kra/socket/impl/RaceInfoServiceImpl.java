@@ -74,26 +74,22 @@ public class RaceInfoServiceImpl implements IRaceInfoService {
 
 	@Override
 	public List<Cancel> findCancels(String zone, String date) {
-		// TODO Auto-generated method stub
-		return null;
+		return raceODSService.findCancels(zone, date);
 	}
 
 	@Override
 	public List<Change> findChanges(String zone, String date) {
-		// TODO Auto-generated method stub
-		return null;
+		return raceODSService.findChanges(zone, date);
 	}
 
 	@Override
 	public List<Final> findFinals(String zone, String date) {
-		// TODO Auto-generated method stub
-		return null;
+		return raceODSService.findFinals(zone, date);
 	}
 
 	@Override
 	public List<Result> findResults(String zone, String date) {
-		// TODO Auto-generated method stub
-		return null;
+		return raceODSService.findResults(zone, date);
 	}
 	
 	

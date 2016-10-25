@@ -34,16 +34,16 @@ public class DatabaseDataChecker {
 	private ExecutorService serverThread = Executors.newSingleThreadExecutor();
 
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
+	@Inject @Preference(nodePath="kra.config.database", value="grade") String gradeDate;
+	@Inject @Preference(nodePath="kra.config.database", value="change") String changeDate;
 	
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
 	private IRaceInfoService raceInfoService;
 	
-	private String currentDate;
-	private String gradeDate;
-	private String changeDate;
-
+	private volatile String currentDate;
+	
 	@PostConstruct
 	public void serverConnect() {
 		try {
@@ -63,20 +63,26 @@ public class DatabaseDataChecker {
 		@Override
 		public void run() {
 			while(true) {
+				System.out.println("111111");
 				// 현재일과 지난주 마지막 경기요일을 체크한다. 경마장별로 마지막 경기요일 체크 필요.
 				executeDateCheck();
-				
+				System.out.println("22222");
 				// 출전 취소
 				List<Cancel> cancels = raceInfoService.findCancels(String.format("%02d", zone.intValue()), changeDate);
-				
+				eventTransfer("ODS_RACE/cancel", cancels);
+				System.out.println("33333");
 				// 선수 변경
 				List<Change> changes = raceInfoService.findChanges(String.format("%02d", zone.intValue()), changeDate);
-				
+				eventTransfer("ODS_RACE/change", changes);
+				System.out.println("444444");
 				// 경주 성적
 				List<Final> finals = raceInfoService.findFinals(String.format("%02d", zone.intValue()), gradeDate);
-				
+				eventTransfer("ODS_RACE/grade", finals);
+				System.out.println("555555");
 				// 동착 결과
 				List<Result> results = raceInfoService.findResults(String.format("%02d", zone.intValue()), gradeDate);
+				eventTransfer("ODS_RACE/heat", results);
+				System.out.println("666666");
 				try {
 					Thread.sleep(5000L);
 				} catch (Exception e) {}
@@ -84,7 +90,7 @@ public class DatabaseDataChecker {
 		}
 	}
 	
-	public void eventTransfer(String eventId, List<?> data) {
+	private void eventTransfer(String eventId, List<?> data) {
 		
 	}
 
@@ -115,10 +121,14 @@ public class DatabaseDataChecker {
 				break;
 			}
 			gradeDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
+			
+			eventBroker.post("ODS_DATE/CHANGE", changeDate);
+			eventBroker.post("ODS_DATE/GRADE", gradeDate);
 		} else {
 			// 사용자가 검색일을 조정했을경우
 			if(StringUtils.isBlank(changeDate)) {
 				changeDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
+				eventBroker.post("ODS_DATE/CHANGE", changeDate);
 			}
 			
 			if(StringUtils.isBlank(gradeDate)) {
@@ -138,6 +148,7 @@ public class DatabaseDataChecker {
 					break;
 				}
 				gradeDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
+				eventBroker.post("ODS_DATE/GRADE", gradeDate);
 			}
 		}
 	}
