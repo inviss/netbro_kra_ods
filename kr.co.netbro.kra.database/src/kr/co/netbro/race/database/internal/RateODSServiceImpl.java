@@ -43,26 +43,26 @@ public class RateODSServiceImpl implements IRateODSService {
 	}
 
 	@Override
-	public List<Cancel> findCancels() {
-		Query q = em.createNamedQuery("Rate.Cancel").setParameter(1, "20160906").setParameter(2, "1");
+	public List<Cancel> findCancels(String zone, String date) {
+		Query q = em.createNamedQuery("Rate.Cancel").setParameter(1, date).setParameter(2, zone);
         return q.getResultList(); 
 	}
 
 	@Override
-	public List<Change> findChanges() {
-		Query q = em.createNamedQuery("Rate.Change").setParameter(2, "20160906").setParameter(1, "1");
+	public List<Change> findChanges(String zone, String date) {
+		Query q = em.createNamedQuery("Rate.Change").setParameter(2, date).setParameter(1, zone);
         return q.getResultList(); 
 	}
 
 	@Override
-	public List<Final> findFinals() {
-		Query q = em.createNamedQuery("Rate.Final").setParameter(1, "20160906").setParameter(2, "1");
+	public List<Final> findFinals(String zone, String date) {
+		Query q = em.createNamedQuery("Rate.Final").setParameter(1, date).setParameter(2, zone);
         return q.getResultList(); 
 	}
 
 	@Override
-	public List<Result> findResults() {
-		Query q = em.createNamedQuery("Rate.Result").setParameter(1, "20160906").setParameter(2, "1");
+	public List<Result> findResults(String zone, String date) {
+		Query q = em.createNamedQuery("Rate.Result").setParameter(1, date).setParameter(2, zone);
         return q.getResultList(); 
 	}
 }
