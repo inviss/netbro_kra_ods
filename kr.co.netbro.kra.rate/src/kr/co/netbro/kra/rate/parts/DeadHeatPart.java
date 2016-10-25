@@ -9,6 +9,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -19,6 +20,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.kra.entity.Change;
 import kr.co.netbro.kra.entity.Result;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
@@ -51,41 +53,89 @@ public class DeadHeatPart {
 		column.getColumn().setText("마번");
 		column.getColumn().setWidth(50);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd01()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("복식");
 		column.getColumn().setWidth(80);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd02()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("쌍식");
 		column.getColumn().setWidth(80);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd03()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("복연식");
 		column.getColumn().setWidth(80);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd04()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("연식");
 		column.getColumn().setWidth(80);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd05()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("단식");
 		column.getColumn().setWidth(80);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd22()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("삼복");
 		column.getColumn().setWidth(80);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd44()+"";
+			}
+		});
 		
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("삼쌍");
 		column.getColumn().setWidth(80);
 		widths += column.getColumn().getWidth();
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getOrd55()+"";
+			}
+		});
 		
 		Monitor monitor = Display.getCurrent().getPrimaryMonitor();
 		int screenWidth = monitor.getBounds().width;
@@ -93,6 +143,12 @@ public class DeadHeatPart {
 		column = new TableViewerColumn(tableViewer, SWT.NONE);
 		column.getColumn().setText("");
 		column.getColumn().setWidth(screenWidth - widths);
+		column.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((Result) element).getExa()+"";
+			}
+		});
 
 	}
 	
