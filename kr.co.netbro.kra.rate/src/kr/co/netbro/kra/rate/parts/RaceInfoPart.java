@@ -45,6 +45,9 @@ public class RaceInfoPart {
 	private DateTime resultCal;
 	private DateTime changeCal;
 	
+	private Button g1tb1;
+	private Button g1tb2;
+	private Button g1tb3;
 
 	@PostConstruct
 	public void createControls(Composite parent) {
@@ -64,8 +67,8 @@ public class RaceInfoPart {
 		g1comp1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Point minSize = null;
-		final Button g1tb1 = new Button(g1comp1, SWT.TOGGLE);
-		g1tb1.setText("\uC11C \uC6B8");
+		g1tb1 = new Button(g1comp1, SWT.TOGGLE);
+		g1tb1.setText("\uC11C \uC6B8"); // 서울
 		minSize = g1tb1.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		GridDataFactory.fillDefaults().hint(Math.max(100, minSize.x), SWT.DEFAULT).applyTo(g1tb1);
 		g1tb1.addSelectionListener(new SelectionAdapter() {
@@ -79,12 +82,17 @@ public class RaceInfoPart {
 				try {
 					pref1.flush();
 				} catch (BackingStoreException ee) {}
+				
+				g1tb2.setSelection(false);
+				g1tb3.setSelection(false);
 			}
 		});
-
+		if(zone == 1) {
+			g1tb1.setSelection(true);
+		}
 		
-		final Button g1tb2 = new Button(g1comp1, SWT.TOGGLE);
-		g1tb2.setText("\uBD80 \uACBD");
+		g1tb2 = new Button(g1comp1, SWT.TOGGLE);
+		g1tb2.setText("\uC81C \uC8FC"); // 제주
 		minSize = g1tb2.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		GridDataFactory.fillDefaults().hint(Math.max(100, minSize.x), SWT.DEFAULT).applyTo(g1tb2);
 		g1tb2.addSelectionListener(new SelectionAdapter() {
@@ -98,11 +106,17 @@ public class RaceInfoPart {
 				try {
 					pref1.flush();
 				} catch (BackingStoreException ee) {}
+				
+				g1tb1.setSelection(false);
+				g1tb3.setSelection(false);
 			}
 		});
+		if(zone == 2) {
+			g1tb2.setSelection(true);
+		}
 		
-		final Button g1tb3 = new Button(g1comp1, SWT.TOGGLE);
-		g1tb3.setText("\uC81C \uC8FC");
+		g1tb3 = new Button(g1comp1, SWT.TOGGLE);
+		g1tb3.setText("\uBD80 \uACBD"); // 부경
 		minSize = g1tb3.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		GridDataFactory.fillDefaults().hint(Math.max(100, minSize.x), SWT.DEFAULT).applyTo(g1tb3);
 		g1tb3.addSelectionListener(new SelectionAdapter() {
@@ -116,9 +130,15 @@ public class RaceInfoPart {
 				try {
 					pref1.flush();
 				} catch (BackingStoreException ee) {}
+				
+				g1tb1.setSelection(false);
+				g1tb2.setSelection(false);
 			}
 		});
-
+		if(zone == 3) {
+			g1tb3.setSelection(true);
+		}
+		
 		Composite g1comp1_1 = new Composite(g1comp1, SWT.NONE);
 		g1comp1_1.setLayout(new GridLayout(4, false));
 
