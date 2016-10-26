@@ -71,8 +71,6 @@ public class SocketDataReceiver {
 			}
 		}
 
-		//if(rateODSService != null)
-			//rateODSService.findCancels();
 	}
 
 	public class SocketReceiver implements Runnable {
