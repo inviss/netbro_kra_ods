@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.eclipse.core.runtime.FileLocator;
@@ -20,6 +21,9 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import kr.co.netbro.common.exception.FileWriteException;
+import kr.co.netbro.common.exception.RequiredDataException;
 
 
 public class Utility {
@@ -419,5 +423,21 @@ public class Utility {
 		return tmp;
 	}
 
-
+	public static void stringToFile(String data, String fpath, String fname) throws Exception {
+		try {
+			File f = new File(fpath, fname);
+			if(f.exists()) {
+				FileUtils.forceDelete(f);
+			}
+			if(StringUtils.isBlank(fpath) || StringUtils.isBlank(fname)){
+				throw new RequiredDataException("파일관련 정보(path or name)가 없습니다.");
+			}
+			File tmp = new File(fpath, fname.substring(0, fname.indexOf("."))+".tmp");
+			FileUtils.writeStringToFile(tmp, data, "UTF-8");
+			
+			tmp.renameTo(f);
+		} catch (Exception e) {
+			throw new FileWriteException(fname+" File을 생성중 에러가 발생했습니다.", e);
+		}
+	}
 }
