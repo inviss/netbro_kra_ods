@@ -8,6 +8,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.common.utils.DateUtils;
 import kr.co.netbro.kra.model.DecidedRate;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.model.RaceInfo;
@@ -29,9 +30,10 @@ public class EventDataReceiver {
 	@Inject
 	private JSONDataMaker jsonDataMaker;
 
+	@Inject @Preference(nodePath="kra.config.socket", value="clientIP") String clientIP;
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
 	@Inject @Preference(nodePath="kra.config.socket", value="final_path") String finalPath;
-
+	
 	public void finalReceived(DecidedRate finalInfo) {
 		if(finalInfo != null) {
 			eventBroker.post("ODS_RACE/final", finalInfo);
@@ -68,6 +70,12 @@ public class EventDataReceiver {
 				logger.debug("game type: "+raceInfo.getGameType()+", typeName: "+raceInfo.getTypeName());
 			}
 
+			// 하나의 승식을 설정하여 최근변경일자 및 데이타 전송 클라이언트의 IP를 보여준다.
+			if(raceInfo.getZone() == zone && raceInfo.getGameType() == RaceType.BOK.getType()) {
+				raceInfo.setClientIP(clientIP);
+				raceInfo.setUpdateTime(DateUtils.getToday("yyyy.MM.dd HH:mm:ss"));
+			}
+			
 			logger.debug("config zone: "+zone+", race zone: "+raceInfo.getZone());
 			if(raceInfo.getZone() == zone) {
 				// 단승, 연승, 삼복TOP
