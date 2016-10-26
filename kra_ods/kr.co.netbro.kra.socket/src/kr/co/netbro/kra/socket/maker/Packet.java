@@ -3,6 +3,8 @@ package kr.co.netbro.kra.socket.maker;
 import kr.co.netbro.kra.model.DecidedRate;
 
 public class Packet {
+	public String clientIP = "";
+	public String receiveTime = "";
 	public int type = -1;
 	public int zone;
 	public int race;

@@ -18,11 +18,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.osgi.service.prefs.BackingStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,8 @@ public class SocketDataReceiver {
 	private ExecutorService serverThread = Executors.newSingleThreadExecutor();
 	private ExecutorService clientThread = Executors.newSingleThreadExecutor();
 
+	@Inject @Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1;
+	
 	@Inject @Preference(nodePath="kra.config.socket", value="port") 
 	private Integer port;
 	@Inject @Preference(nodePath="kra.config.socket", value="timeout") 
@@ -123,9 +127,18 @@ public class SocketDataReceiver {
 			try {
 				socket.setSoTimeout(timeout);
 				String ip = socket.getInetAddress().getHostAddress();        
+				
+				
+				// 최초 접속하는 클라이언트IP를 보여준다.
+				pref1.remove("clientIP");
+				pref1.put("clientIP", ip);
 				if(logger.isDebugEnabled()) {
 					logger.debug(ip+"로 부터 연결됨");
 				}
+				try {
+					pref1.flush();
+				} catch (BackingStoreException ee) {}
+				
 				//bis = new BufferedInputStream(socket.getInputStream());
 				bis = new BufferedInputStream(new FileInputStream("D:/tmp/netbro/20160702_133105.dat"));
 				int c = 0;
