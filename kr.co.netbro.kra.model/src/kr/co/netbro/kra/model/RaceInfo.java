@@ -1,6 +1,8 @@
 package kr.co.netbro.kra.model;
 
 public class RaceInfo {
+	String clientIP = "";
+	String updateTime = "";
 	int zone = 0;
 	String zoneName = "";
 	int gameType = 0;
@@ -25,6 +27,23 @@ public class RaceInfo {
 		this.money = money;
 		this.minimum = minimum;
 		this.typeName = typeName;
+	}
+
+	
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getClientIP() {
+		return clientIP;
+	}
+
+	public void setClientIP(String clientIP) {
+		this.clientIP = clientIP;
 	}
 
 	public int getZone() {
