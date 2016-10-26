@@ -5,9 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.common.utils.GSON;
+import kr.co.netbro.common.utils.Utility;
 import kr.co.netbro.kra.dto.KRARate;
 import kr.co.netbro.kra.model.RaceInfo;
-import kr.co.netbro.kra.model.RaceType;
 
 @Creatable
 public class JSONDataMaker {
@@ -25,7 +25,7 @@ public class JSONDataMaker {
 			rate.setMoney(raceInfo.getMoney());
 
 			rate.setData(makeData(raceInfo));
-
+			Utility.stringToFile(GSON.toString(rate), "X:/kra", "ssang.json");
 			logger.debug(GSON.toString(rate));
 		} catch (Exception e) {
 			logger.error("json create error", e.getMessage());
