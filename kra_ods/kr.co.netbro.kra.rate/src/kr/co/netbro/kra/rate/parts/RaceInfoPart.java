@@ -1,20 +1,15 @@
 package kr.co.netbro.kra.rate.parts;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,9 +26,8 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.common.utils.DateUtils;
 import kr.co.netbro.kra.model.RaceInfo;
-import kr.co.netbro.kra.rate.binding.DateTimeSelectionProperty;
-import kr.co.netbro.kra.rate.binding.VogellaProperties;
 import kr.co.netbro.kra.rate.resource.Registries;
 
 @SuppressWarnings("restriction")
@@ -45,6 +39,7 @@ public class RaceInfoPart {
 	
 
 	@Inject @Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1;
+	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
 	
 	private RaceStatusWidget statusWidget;
 	private DateTime resultCal;
@@ -137,6 +132,20 @@ public class RaceInfoPart {
 		label_1.setText("\uC131\uC801\uC870\uD68C:"); //성적조회
 		label_1.setBounds(10, 25, 100, 15);
 
+		Calendar cal = Calendar.getInstance();
+		switch(zone) {
+		case 1 : // 서울
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+			break;
+		case 2 : // 제주
+			cal.add(Calendar.DATE, -7);
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+			break;
+		case 3 : // 부경
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+			break;
+		}
+		
 		resultCal = new DateTime(g1comp1_1, SWT.DATE | SWT.DROP_DOWN);
 		resultCal.setBounds(55, 105, 88, 24);
 		resultCal.addSelectionListener (new SelectionAdapter () {
@@ -144,6 +153,12 @@ public class RaceInfoPart {
 	            System.out.println ("성적조회 time changed");
 	        }
 	    });
+		String gradeDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
+		resultCal.setDate(
+				Integer.parseInt(gradeDate.substring(0, 4)), 
+				Integer.parseInt(gradeDate.substring(4, 6)) -1, 
+				Integer.parseInt(gradeDate.substring(6))
+		);
 		/*
 		IObservableValue dateTimeObservableValue = VogellaProperties.vogellaProperty().observe(resultCal);
 		ISWTObservableValue oldDateTimeObservable = WidgetProperties.selection().observe(resultCal);
