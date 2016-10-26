@@ -133,11 +133,8 @@ public class SocketDataReceiver {
 				int offset = 0;
 				boolean loop = true;
 				
-				boolean test = false;
 				while(loop) {
-					if(test) {
-						Thread.sleep(10000L);
-					}
+					
 					int type = 0;
 					try {
 						if(bufIndex == 0 || c <= 0) {
@@ -177,7 +174,6 @@ public class SocketDataReceiver {
 
 							if(pType == 9) {
 								dataReceiver.finalReceived(p.getDecidedRate());
-								test = true;
 							} else
 								dataReceiver.eventReceived(p.getData());
 						} else if (pType == 222) {

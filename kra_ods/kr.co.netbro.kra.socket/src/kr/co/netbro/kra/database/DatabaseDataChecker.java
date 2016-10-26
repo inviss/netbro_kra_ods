@@ -10,15 +10,18 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.osgi.service.prefs.BackingStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.common.utils.DateUtils;
+import kr.co.netbro.common.utils.Utility;
 import kr.co.netbro.kra.entity.Cancel;
 import kr.co.netbro.kra.entity.Change;
 import kr.co.netbro.kra.entity.Final;
@@ -33,9 +36,11 @@ public class DatabaseDataChecker {
 
 	private ExecutorService serverThread = Executors.newSingleThreadExecutor();
 
+	@Inject @Preference(nodePath = "kra.config.race") IEclipsePreferences pref3;
+	
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
-	@Inject @Preference(nodePath="kra.config.database", value="grade") String gradeDate;
-	@Inject @Preference(nodePath="kra.config.database", value="change") String changeDate;
+	@Inject @Preference(nodePath="kra.config.race", value="grade") String gradeDate;
+	@Inject @Preference(nodePath="kra.config.race", value="change") String changeDate;
 	
 	@Inject
 	private IEventBroker eventBroker;
@@ -98,6 +103,7 @@ public class DatabaseDataChecker {
 	}
 
 	public void executeDateCheck() {
+		
 		Calendar cal = Calendar.getInstance();
 		/*
 		 * 현재일이 설정이 안되어 있거나
@@ -108,6 +114,10 @@ public class DatabaseDataChecker {
 			currentDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
 			
 			changeDate = currentDate;
+			
+			try {
+				pref3.flush();
+			} catch (BackingStoreException ee) {}
 			if(zone == null && zone == 0) {
 				zone = 1;
 			}
@@ -127,6 +137,17 @@ public class DatabaseDataChecker {
 			
 			eventBroker.post("ODS_DATE/CHANGE", changeDate);
 			eventBroker.post("ODS_DATE/GRADE", gradeDate);
+			
+			pref3.remove("grade");
+			pref3.put("grade", gradeDate);
+			pref3.remove("change");
+			pref3.put("change", changeDate);
+			if(logger.isDebugEnabled()) {
+				logger.debug("변경.성적조회 일자 초기화: 성적일자- "+gradeDate+", 변경일자- "+changeDate);
+			}
+			try {
+				pref3.flush();
+			} catch (BackingStoreException ee) {}
 		} else {
 			// 사용자가 검색일을 조정했을경우
 			if(StringUtils.isBlank(changeDate)) {

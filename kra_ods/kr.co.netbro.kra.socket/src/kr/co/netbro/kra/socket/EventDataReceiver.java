@@ -86,8 +86,11 @@ public class EventDataReceiver {
 			// UI에서 화면 탭 클릭시 사용할 데이타를 맵에 저장함.
 			raceInfoService.putRaceInfo(raceInfo);
 			
-			if(raceInfo.getGameType() == 4) {
+			if(raceInfo.getZone() == zone && raceInfo.getGameType() == 4) {
 				jsonDataMaker.makeRaceFile(raceInfo);
+				try {
+					Thread.sleep(1000L);
+				} catch (Exception e) {}
 			}
 		}
 	}
