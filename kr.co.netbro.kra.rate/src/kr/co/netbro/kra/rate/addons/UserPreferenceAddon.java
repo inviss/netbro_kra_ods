@@ -32,12 +32,16 @@ public class UserPreferenceAddon {
 	@Inject @Preference(nodePath="kra.config.socket", value="port") Integer port;
 	@Inject @Preference(nodePath="kra.config.socket", value="timeout") Integer timeout;
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
-	@Inject @Preference(nodePath="kra.config.socket", value="capture") String capture;
+	@Inject @Preference(nodePath="kra.config.race", value="capture") String capture;
+	
+	@Inject @Preference(nodePath="kra.config.race", value="grade") String grade;
+	@Inject @Preference(nodePath="kra.config.race", value="change") String change;
 	
 	@PostConstruct
 	public void setPreference(
 			@Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1, 
-			@Preference(nodePath = "kra.config.screen") IEclipsePreferences pref2) {
+			@Preference(nodePath = "kra.config.screen") IEclipsePreferences pref2,
+			@Preference(nodePath = "kra.config.race") IEclipsePreferences pref3) {
 		pref1.putInt("port", (port == null || port == 0) ? 8000 : port);
 		pref1.putInt("timeout", (timeout == null || timeout == 0) ? 25000 : timeout);
 		pref1.putInt("zone", (zone == null || zone == 0) ? 1 : zone);

@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.common.utils.DateUtils;
+import kr.co.netbro.common.utils.Utility;
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.rate.resource.Registries;
 
@@ -39,6 +40,8 @@ public class RaceInfoPart {
 	
 
 	@Inject @Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1;
+	@Inject @Preference(nodePath = "kra.config.race") IEclipsePreferences pref3;
+	
 	@Inject @Preference(nodePath="kra.config.socket", value="zone") Integer zone;
 	
 	private RaceStatusWidget statusWidget;
@@ -170,7 +173,14 @@ public class RaceInfoPart {
 		resultCal.setBounds(55, 105, 88, 24);
 		resultCal.addSelectionListener (new SelectionAdapter () {
 	        public void widgetSelected (SelectionEvent e) {
-	            System.out.println ("성적조회 time changed");
+	        	pref3.remove("grade");
+				pref3.put("grade", resultCal.getYear()+(Utility.padLeft(String.valueOf(resultCal.getMonth()+1), "0", 2))+resultCal.getDay());
+				if(logger.isDebugEnabled()) {
+					logger.debug("성적조회 일자변경: "+resultCal.getYear()+"."+(resultCal.getMonth()+1)+"."+resultCal.getDay());
+				}
+				try {
+					pref3.flush();
+				} catch (BackingStoreException ee) {}
 	        }
 	    });
 		String gradeDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
@@ -202,7 +212,14 @@ public class RaceInfoPart {
 		changeCal.setBounds(55, 105, 88, 24);
 		changeCal.addSelectionListener (new SelectionAdapter () {
 	        public void widgetSelected (SelectionEvent e) {
-	            System.out.println ("변경조회 time changed");
+	        	pref3.remove("change");
+				pref3.put("change", changeCal.getYear()+(Utility.padLeft(String.valueOf(changeCal.getMonth()+1), "0", 2))+changeCal.getDay());
+				if(logger.isDebugEnabled()) {
+					logger.debug("변경조회 일자변경: "+changeCal.getYear()+"."+(changeCal.getMonth()+1)+"."+changeCal.getDay());
+				}
+				try {
+					pref3.flush();
+				} catch (BackingStoreException ee) {}
 	        }
 	    });
 

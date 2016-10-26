@@ -20,10 +20,8 @@ import org.eclipse.swt.widgets.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.co.netbro.kra.entity.Cancel;
 import kr.co.netbro.kra.entity.Change;
 import kr.co.netbro.kra.model.IRaceInfoService;
-import kr.co.netbro.kra.model.RaceInfo;
 
 public class GisuChangePart {
 	final Logger logger = LoggerFactory.getLogger(getClass());
