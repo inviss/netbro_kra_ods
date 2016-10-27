@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,17 +26,15 @@ public class RaceInfoServiceImpl implements IRaceInfoService {
 	
 	private volatile Map<Integer, RaceInfo> infoMap = new HashMap<Integer, RaceInfo>();
 	
+	//@Inject
 	private IRateODSService raceODSService;
-	
 	
 	public void setRaceODSService(IRateODSService raceODSService) {
 		this.raceODSService = raceODSService;
 	}
 	
-	public void unSetRateODSService(IRateODSService raceODSService) {
-		if(this.raceODSService != null && (this.raceODSService == raceODSService)) {
-			this.raceODSService = null;
-		}
+	public void unRaceODSService(IRateODSService raceODSService) {
+		this.raceODSService = null;
 	}
 
 	@Override

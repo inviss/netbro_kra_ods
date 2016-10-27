@@ -40,7 +40,6 @@ public class UserPreferenceAddon {
 	@PostConstruct
 	public void setPreference(
 			@Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1, 
-			@Preference(nodePath = "kra.config.screen") IEclipsePreferences pref2,
 			@Preference(nodePath = "kra.config.race") IEclipsePreferences pref3) {
 		pref1.putInt("port", (port == null || port == 0) ? 8000 : port);
 		pref1.putInt("timeout", (timeout == null || timeout == 0) ? 25000 : timeout);
@@ -48,6 +47,7 @@ public class UserPreferenceAddon {
 		pref1.putBoolean("capture", false);
 		
 		flushNode(pref1);
+		flushNode(pref3);
 		
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
 		Registries.getInstance(bundle).init(new RateRegistriesConfiguration());
