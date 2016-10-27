@@ -96,9 +96,6 @@ public class EventDataReceiver {
 			
 			if(raceInfo.getZone() == zone && raceInfo.getGameType() == 4) {
 				jsonDataMaker.makeRaceFile(raceInfo);
-				try {
-					Thread.sleep(1000L);
-				} catch (Exception e) {}
 			}
 		}
 	}

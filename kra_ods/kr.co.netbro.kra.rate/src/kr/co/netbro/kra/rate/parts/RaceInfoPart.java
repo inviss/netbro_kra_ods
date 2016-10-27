@@ -306,6 +306,14 @@ public class RaceInfoPart {
 			
 			String timeStr = "";
 			if(raceInfo.getTime().equals("xx")) {
+				timeStr = "종료";
+			} else if(raceInfo.getTime().equals("xx")) {
+				timeStr = "준비";
+			} else {
+				timeStr = "경기중";
+			}
+			/*
+			if(raceInfo.getTime().equals("xx")) {
 				timeStr = "마감";
 			} else {
 				if(raceInfo.getTime().equals("yy")) {
@@ -314,11 +322,10 @@ public class RaceInfoPart {
 					timeStr = "마감 "+raceInfo.getTime()+"분전";
 				}
 			}
-			
+			*/
 			String rInfo = raceInfo.getZoneName()+" 제"+raceInfo.getRaceNum()+"경기 "+timeStr;
 			attributesMap.put(raceInfo.getZone()+"_status", rInfo);
 			
-			logger.debug("==============================================>"+raceInfo.getClientIP());
 			if(StringUtils.isNotBlank(raceInfo.getClientIP())) {
 				attributesMap.put("ip_status", "연결IP: "+raceInfo.getClientIP());
 				attributesMap.put("latest_status", "최근 업데이트: "+raceInfo.getUpdateTime());

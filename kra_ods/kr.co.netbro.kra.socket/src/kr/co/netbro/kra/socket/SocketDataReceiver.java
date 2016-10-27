@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +29,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.common.utils.DateUtils;
 import kr.co.netbro.kra.model.RaceInfo;
 import kr.co.netbro.kra.socket.maker.Packet;
 
@@ -43,7 +45,7 @@ public class SocketDataReceiver {
 	private ExecutorService clientThread = Executors.newSingleThreadExecutor();
 
 	@Inject @Preference(nodePath = "kra.config.socket") IEclipsePreferences pref1;
-	
+
 	@Inject @Preference(nodePath="kra.config.socket", value="port") 
 	private Integer port;
 	@Inject @Preference(nodePath="kra.config.socket", value="timeout") 
@@ -56,11 +58,8 @@ public class SocketDataReceiver {
 	@Inject
 	private IEventBroker eventBroker;
 
-	//@Optional
-	//@Inject
-	//private IRateODSService rateODSService;
-
 	private FileOutputStream fos = null;
+	private String currentDate;
 
 	@PostConstruct
 	public void serverConnect() {
@@ -127,8 +126,8 @@ public class SocketDataReceiver {
 			try {
 				socket.setSoTimeout(timeout);
 				String ip = socket.getInetAddress().getHostAddress();        
-				
-				
+
+
 				// 최초 접속하는 클라이언트IP를 보여준다.
 				pref1.remove("clientIP");
 				pref1.put("clientIP", ip);
@@ -138,18 +137,22 @@ public class SocketDataReceiver {
 				try {
 					pref1.flush();
 				} catch (BackingStoreException ee) {}
-				
+
 				//bis = new BufferedInputStream(socket.getInputStream());
 				bis = new BufferedInputStream(new FileInputStream("D:/tmp/netbro/20160702_133105.dat"));
 				int c = 0;
 				int bufIndex = 0;
 				int offset = 0;
 				boolean loop = true;
-				
+
 				while(loop) {
+					try {
+						Thread.sleep(1000L);
+					} catch (Exception e) {}
 					
 					int type = 0;
 					try {
+						createOutputStream();
 						if(bufIndex == 0 || c <= 0) {
 							c = bis.read(buf);
 
@@ -167,9 +170,6 @@ public class SocketDataReceiver {
 							/*
 							 * 수신받은 데이타를 모두 저장한다.
 							 */
-							if(fos == null) {
-								createOutputStream();
-							}
 							fos.write(buf, 0, c);
 						}
 
@@ -229,7 +229,6 @@ public class SocketDataReceiver {
 							}
 							if(logger.isInfoEnabled()) {
 								logger.info("bufIndex: "+bufIndex+", "+plen+" byte 사용, 남은 버퍼: "+c+" byte");
-								System.out.println("test");
 							}
 						}
 
@@ -296,16 +295,34 @@ public class SocketDataReceiver {
 	}
 
 	private void createOutputStream() {
+		Calendar cal = Calendar.getInstance();
+		String nowDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
+		logger.debug("==================>"+nowDate);
 		if(fos == null) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-			String filename = sdf.format(new Date(System.currentTimeMillis()));
-
-			File f = new File("D:/tmp/netbro", filename+".dat");
+			currentDate = nowDate;
+			File f = new File("D:/tmp/netbro", currentDate+".dat");
 			if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
 			try {
 				fos = new FileOutputStream(f);
 			} catch (FileNotFoundException e) {
 				logger.error("capture file create error", e);
+			}
+		} else {
+			if(currentDate != null && !nowDate.equals(currentDate)) {
+				try {
+					fos.close();
+				} catch (IOException e) {}
+				fos = null;
+
+				currentDate = nowDate;
+				File f = new File("D:/tmp/netbro", currentDate+".dat");
+				if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
+				try {
+					if(f.exists()) f.delete();
+					fos = new FileOutputStream(f);
+				} catch (FileNotFoundException e) {
+					logger.error("capture file create error", e);
+				}
 			}
 		}
 	}
