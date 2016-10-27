@@ -14,8 +14,9 @@ public enum RaceType {
 	private String name;
 	private static Map<Integer, String> mMap;
 	
-	public static final String[] SHORT_TYPE_NAME = { "단", "연", "복연", "쌍", "복", "삼복", "삼쌍", "삼복T", "삼쌍T" };
-	
+	// "단", "연", "복연", "쌍", "복", "삼복", "삼쌍", "삼복T", "삼쌍T"
+	public static final String[] SHORT_TYPE_NAME = { "\uB2E8", "\uC5F0", "\uBCF5\uC5F0", "\uC30D", "\uBCF5", "\uC0BC\uBCF5", "\uC0BC\uC30D", "\uC0BC\uBCF5T", "\uC0BC\uC30DT" };
+		
 	private RaceType(int type, String name) {
 		this.type = type;
 		this.name = name;
