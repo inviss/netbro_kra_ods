@@ -25,7 +25,6 @@
     <mainMenu xmi:id="_bFOl4F-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.menu.0">
       <children xsi:type="menu:Menu" xmi:id="_sl7cgF-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.menu.1" label="&#xd658;&#xacbd;&#xc124;&#xc815;">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_ullnIF-BEea8Er8dt13xEA" elementId="kr.co.netbro.kra.rate.handledmenuitem.0" label="&#xd1b5;&#xc2e0;&#xc124;&#xc815;" command="_hE5CQF-BEea8Er8dt13xEA"/>
-        <children xsi:type="menu:DirectMenuItem" xmi:id="_Z-UfMG6KEeaAWoiELYPoXQ" elementId="kr.co.netbro.kra.rate.directmenuitem." label="&#xd14c;&#xc2a4;&#xd2b8;" contributionURI="bundleclass://kr.co.netbro.kra.rate/kr.co.netbro.kra.rate.directs.TestConn"/>
       </children>
     </mainMenu>
   </children>
