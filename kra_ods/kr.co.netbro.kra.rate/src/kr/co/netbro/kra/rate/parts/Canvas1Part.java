@@ -38,20 +38,20 @@ public class Canvas1Part {
 	private KraRateWidget widget1;
 	private KraRateWidget widget2;
 	private KraRateWidget widget3;
-    
+
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
-		
+
 		Composite composite = new Composite(parent, SWT.NONE);
-		
+
 		FillLayout fillLayout = new FillLayout();
 		//fillLayout.marginHeight = 5;
 		//fillLayout.marginWidth = 5;
 		composite.setLayout(fillLayout);
-		
+
 		Composite outer = new Composite(composite, SWT.NONE );
 		//outer.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		
+
 		FormLayout formLayout = new FormLayout();
 		//formLayout.marginHeight = 5;
 		//formLayout.marginWidth = 5;
@@ -94,20 +94,21 @@ public class Canvas1Part {
 			widget2 = new KraRateWidget(innerLeft2);
 		if(widget3 == null)
 			widget3 = new KraRateWidget(innerRight);
-		
-		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.DAN.getType());
-		if(raceInfo != null) {
-			eventBroker.post("ODS_RACE/1252", raceInfo);
-		}
-		raceInfo = raceInfoService.getRaceInfo(RaceType.YON.getType());
-		if(raceInfo != null) {
-			eventBroker.post("ODS_RACE/1252", raceInfo);
-		}
-		raceInfo = raceInfoService.getRaceInfo(RaceType.SAMBOK_TOP60.getType());
-		if(raceInfo != null) {
-			eventBroker.post("ODS_RACE/1252", raceInfo);
-		}
 
+		if(raceInfoService != null) {
+			RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.DAN.getType());
+			if(raceInfo != null) {
+				eventBroker.post("ODS_RACE/1252", raceInfo);
+			}
+			raceInfo = raceInfoService.getRaceInfo(RaceType.YON.getType());
+			if(raceInfo != null) {
+				eventBroker.post("ODS_RACE/1252", raceInfo);
+			}
+			raceInfo = raceInfoService.getRaceInfo(RaceType.SAMBOK_TOP60.getType());
+			if(raceInfo != null) {
+				eventBroker.post("ODS_RACE/1252", raceInfo);
+			}
+		}
 	}
 
 	@Focus
@@ -128,6 +129,6 @@ public class Canvas1Part {
 		} else if(RaceType.SAMBOK_TOP60.getType() == raceInfo.getGameType()) {
 			widget3.setRaceInfo(raceInfo);
 		}
-		
+
 	}
 }

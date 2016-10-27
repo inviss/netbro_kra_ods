@@ -4,5 +4,4 @@
    <service>
       <provide interface="kr.co.netbro.kra.model.IRaceInfoService"/>
    </service>
-   <reference bind="setRaceODSService" cardinality="1..1" interface="kr.co.netbro.race.database.IRateODSService" name="IRateODSService" policy="static" unbind="unRaceODSService"/>
 </scr:component>

@@ -33,7 +33,8 @@ public class ChConfigPart {
 		Composite comp1 = new Composite(container, SWT.NONE );
 		comp1.setLayout( formLayout );
 		
-		String[] odsNames = {"삼쌍TOP", "단복승식", "연복연승식", "삼복승식", "삼복TOP", "쌍승식", "경주결과", "변경사항", "테스트"};
+		//String[] odsNames = {"삼쌍TOP", "단복승식", "연복연승식", "삼복승식", "삼복TOP", "쌍승식", "경주결과", "변경사항", "테스트"};
+		String[] odsNames = {"\uC0BC\uC30DTOP", "\uB2E8\uBCF5\uC2B9\uC2DD", "\uC5F0\uBCF5\uC5F0\uC2B9\uC2DD", "\uC0BC\uBCF5\uC2B9\uC2DD", "\uC0BC\uBCF5TOP", "\uC30D\uC2B9\uC2DD", "\uACBD\uC8FC\uACB0\uACFC", "\uBCC0\uACBD\uC0AC\uD56D", "\uD14C\uC2A4\uD2B8"};
 		
 		int top = 10;
 		int left = 0;

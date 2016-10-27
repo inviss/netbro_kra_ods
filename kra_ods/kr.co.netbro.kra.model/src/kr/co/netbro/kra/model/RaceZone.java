@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum RaceZone {
-	SEOUL(1, "서울"), JEJU(2, "제주"), BUSAN(3, "부경");
+	//SEOUL(1, "서울"), JEJU(2, "제주"), BUSAN(3, "부경");
+	SEOUL(1, "\uC11C\uC6B8"), JEJU(2, "\uC81C\uC8FC"), BUSAN(3, "\uBD80\uACBD");
 	
 	private static Map<Integer, String> mMap;
 	private int zone;

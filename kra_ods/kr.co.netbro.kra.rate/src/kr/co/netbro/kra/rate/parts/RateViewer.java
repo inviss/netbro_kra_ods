@@ -25,19 +25,19 @@ public class RateViewer {
 		if(raceInfo != null) {
 			gc.setForeground(Registries.getInstance().getColor("bl"));
 			gc.setFont(Registries.getInstance().getFont("dialog10"));
-			gc.drawString(raceInfo.getZoneName()+" 제 "+raceInfo.getRaceNum()+" 경주 "+raceInfo.getTypeName(), X_POINT, 30);
+			gc.drawString(raceInfo.getZoneName()+" \uC81C "+raceInfo.getRaceNum()+" \uACBD\uC8FC "+raceInfo.getTypeName(), X_POINT, 30);
 			String timeStr = "";
 			if(raceInfo.getTime().equals("xx")) {
-				timeStr = "마감";
+				timeStr = "\uB9C8\uAC10";
 			} else {
 				if(raceInfo.getTime().equals("yy")) {
-					timeStr = "분전";
+					timeStr = "\uBD84\uC804";
 				} else {
-					timeStr = "마감 "+raceInfo.getTime()+"분전";
+					timeStr = "\uB9C8\uAC10 "+raceInfo.getTime()+"\uBD84\uC804";
 				}
 			}
 			gc.drawString(timeStr, X_POINT, 50);
-			gc.drawString("매출 "+raceInfo.getMoney()+"원", X_POINT, 70);
+			gc.drawString("\uB9E4\uCD9C "+raceInfo.getMoney()+"\uC6D0", X_POINT, 70);
 		}
 	}
 

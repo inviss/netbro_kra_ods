@@ -147,8 +147,8 @@ public class PreferenceDialog extends TitleAreaDialog {
 			public void widgetSelected(SelectionEvent event) {
 				DirectoryDialog dlg = new DirectoryDialog(serverSocketGroup.getShell());
 				dlg.setFilterPath(watcherDirTxt.getText());
-				dlg.setText("Watcher Folder Select");
-				dlg.setMessage("Select a directory");
+				dlg.setText("Watcher Folder \uC120\uD0DD"); // Watcher Folder 선택
+				dlg.setMessage("\uD3F4\uB354\uB97C \uC120\uD0DD\uD558\uC138\uC694"); // 폴더를 선택하세요
 				String dir = dlg.open();
 				if (dir != null) {
 					watcherDirTxt.setText(dir);
