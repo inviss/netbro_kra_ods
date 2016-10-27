@@ -37,9 +37,6 @@ public class EventDataReceiver {
 	public void finalReceived(DecidedRate finalInfo) {
 		if(finalInfo != null) {
 			eventBroker.post("ODS_RACE/final", finalInfo);
-
-			// After the cursor seek until the end of file and append the data.
-			//raceInfoService.saveFinalRace(finalPath+"/"+finalInfo.getReqDate()+".dat", data); // need a final path
 		}
 	}
 
@@ -94,7 +91,9 @@ public class EventDataReceiver {
 			// UI에서 화면 탭 클릭시 사용할 데이타를 맵에 저장함.
 			raceInfoService.putRaceInfo(raceInfo);
 			
-			if(raceInfo.getZone() == zone && raceInfo.getGameType() == 4) {
+			if(raceInfo.getZone() == zone && (
+					raceInfo.getGameType() == 1 || raceInfo.getGameType() == 2 || raceInfo.getGameType() == 3|| raceInfo.getGameType() == 4
+			)) {
 				jsonDataMaker.makeRaceFile(raceInfo);
 			}
 		}

@@ -1,5 +1,11 @@
 package kr.co.netbro.kra.rate.parts;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Calendar;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -21,15 +27,19 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.netbro.common.utils.DateUtils;
 import kr.co.netbro.kra.model.DecidedRate;
 import kr.co.netbro.kra.model.IRaceInfoService;
 import kr.co.netbro.kra.rate.dialogs.FinalSceneDialog;
+import kr.co.netbro.kra.socket.SocketDataReceiver;
+import kr.co.netbro.kra.socket.maker.ODSRateMaker;
 
 public class FixedResultPart {
 
@@ -180,13 +190,14 @@ public class FixedResultPart {
 				buttonPane.setLayout(new FillLayout());
 
 				final Button button = new Button(buttonPane, SWT.NONE);
-				//final DecidedRate[] decideRate = new DecidedRate[1];
+
 				button.setText("\uB370\uC774\uD130\uBCF4\uAE30"); // 데이터보기
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						Dialog dialog = new FinalSceneDialog(shell);
-						dialog.open();
+						MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION);
+					    messageBox.setMessage("준비중입니다.");
+					    int rc = messageBox.open();
 					}
 				});
 
@@ -242,16 +253,39 @@ public class FixedResultPart {
 				return "";
 			}
 		});
-	}
 
-	private void openDialogBox(int type, final DecidedRate DecidedRate) {
-		Dialog dialog = null;
-		if(type == 0) { // 수신내용
-			dialog = new FinalSceneDialog(shell);
-		} else {		// 확정 배당률
-			dialog = new FinalSceneDialog(shell, DecidedRate);
+		/*
+		 * 화면 활성화가 나중에 되었을 때 확정 데이타를 이미 받은 상태라면
+		 * 읽어와서 리스트에 표시한다.
+		 * 확정 데이타는 현재일을 기준으로 처리하도록 한다. 과거 데이타는 불러오지 않는다.
+		 */
+		Calendar cal = Calendar.getInstance();
+		String nowDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
+
+		File f = new File(SocketDataReceiver.APP_ROOT+File.separator+"files"+File.separator+"final"+File.separator+nowDate);
+		if(f.exists() && f.isDirectory() && f.list().length > 0) {
+			File[] finals = f.listFiles();
+			BufferedInputStream bis = null;
+			for(File fData : finals) {
+				try {
+					bis = new BufferedInputStream(new FileInputStream(fData.getAbsolutePath()));
+					byte[] buf = new byte[bis.available()];
+					 
+					int c = bis.read(buf);
+					
+					DecidedRate decidedRate = ODSRateMaker.makeFinal(buf, 0, c);
+					tableViewer.add(decidedRate);
+				} catch (Exception e) {
+					logger.error("final data read error", e);
+				} finally {
+					if(bis != null) {
+						try {
+							bis.close();
+						} catch (IOException e) {}
+					}
+				}
+			}
 		}
-		dialog.open();
 	}
 
 	@Focus

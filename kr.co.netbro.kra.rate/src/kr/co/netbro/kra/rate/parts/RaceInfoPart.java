@@ -237,7 +237,11 @@ public class RaceInfoPart {
 		Group g2 = new Group(container, SWT.NONE);
 		g2.setText("\uACBD\uAE30\uC815\uBCF4");   // 경기정보
 		g2.setLayout(new GridLayout(1, false));
-		g2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		GridData g2_grid = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		g2_grid.widthHint = 500;
+		g2_grid.heightHint = 90;
+		g2.setLayoutData(g2_grid);
 
 		Composite g2comp1 = new Composite(g2, SWT.NONE);
 		g2comp1.setLayout(new GridLayout(3, false));
@@ -307,8 +311,8 @@ public class RaceInfoPart {
 			String timeStr = "";
 			if(raceInfo.getTime().equals("xx")) {
 				timeStr = "종료";
-			} else if(raceInfo.getTime().equals("xx")) {
-				timeStr = "준비";
+			} else if(raceInfo.getTime().equals("yy")) {
+				timeStr = "대기중";
 			} else {
 				timeStr = "경기중";
 			}

@@ -19,6 +19,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.core.di.annotations.Optional;
@@ -60,6 +62,7 @@ public class SocketDataReceiver {
 
 	private FileOutputStream fos = null;
 	private String currentDate;
+	public static String APP_ROOT;
 
 	@PostConstruct
 	public void serverConnect() {
@@ -74,6 +77,8 @@ public class SocketDataReceiver {
 			}
 		}
 
+		IWorkspace workspace = ResourcesPlugin.getWorkspace(); 
+		APP_ROOT = workspace.getRoot().getLocation().toFile().getPath().toString(); 
 	}
 
 	public class SocketReceiver implements Runnable {
@@ -147,7 +152,7 @@ public class SocketDataReceiver {
 
 				while(loop) {
 					try {
-						Thread.sleep(1000L);
+						Thread.sleep(500L);
 					} catch (Exception e) {}
 					
 					int type = 0;
@@ -182,8 +187,8 @@ public class SocketDataReceiver {
 							raceInfo.setGameType(0);
 							eventBroker.post("ODS_RACE/STATUS", raceInfo);
 						} else if (p.isRate() || pType == 9) {
-							byte[] raceinfo = new byte[(plen+bufIndex-(bufIndex+48))];
-							System.arraycopy(buf, bufIndex+48, raceinfo, 0, (plen+bufIndex-(bufIndex+48)));
+							//byte[] raceinfo = new byte[(plen+bufIndex-(bufIndex+48))];
+							//System.arraycopy(buf, bufIndex+48, raceinfo, 0, (plen+bufIndex-(bufIndex+48)));
 
 							if(pType == 9) {
 								dataReceiver.finalReceived(p.getDecidedRate());
@@ -295,12 +300,15 @@ public class SocketDataReceiver {
 	}
 
 	private void createOutputStream() {
+		
 		Calendar cal = Calendar.getInstance();
 		String nowDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
-		logger.debug("==================>"+nowDate);
 		if(fos == null) {
 			currentDate = nowDate;
-			File f = new File("D:/tmp/netbro", currentDate+".dat");
+			File f = new File(APP_ROOT+File.separator+"files"+File.separator+"sources", currentDate+".dat");
+			if(logger.isDebugEnabled()) {
+				logger.debug("stream file location: "+f.getAbsolutePath());
+			}
 			if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
 			try {
 				fos = new FileOutputStream(f);
@@ -315,7 +323,7 @@ public class SocketDataReceiver {
 				fos = null;
 
 				currentDate = nowDate;
-				File f = new File("D:/tmp/netbro", currentDate+".dat");
+				File f = new File(APP_ROOT+File.separator+"files"+File.separator+"sources", currentDate+".dat");
 				if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
 				try {
 					if(f.exists()) f.delete();

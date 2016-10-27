@@ -1,10 +1,18 @@
 package kr.co.netbro.kra.socket.maker;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import kr.co.netbro.common.utils.DateUtils;
 import kr.co.netbro.kra.model.DecidedRate;
@@ -12,20 +20,43 @@ import kr.co.netbro.kra.model.Pool;
 import kr.co.netbro.kra.model.RaceFinal;
 import kr.co.netbro.kra.model.RaceType;
 import kr.co.netbro.kra.model.RaceZone;
+import kr.co.netbro.kra.socket.SocketDataReceiver;
 
 public class ODSRateMaker {
-	
+	final static Logger logger = LoggerFactory.getLogger(ODSRateMaker.class);
+
 	public static final int HEADER_SIZE = 25;
 	private static final char[] MAX_RATE = { '9', '9', '9', '9', '9' };
 	private static final char[] NULL_RATE = { '-', '-', '-', '-', '-' };
 	public static final String HORSE_MARKER = "##";
 	private static char[] topDataLen;
 
+	private static void finalDataWriter(byte[] data, String fname) {
+		Calendar cal = Calendar.getInstance();
+		String nowDate = DateUtils.getFmtDateString(cal.getTime(), "yyyyMMdd");
+		File f = new File(SocketDataReceiver.APP_ROOT+File.separator+"files"+File.separator+"final"+File.separator+nowDate, fname+".dat");
+		if(logger.isDebugEnabled()) {
+			logger.debug("stream file location: "+f.getAbsolutePath());
+		}
+		if(!f.getParentFile().exists()) f.getParentFile().mkdirs();
+		
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(f);
+			fos.write(data);
+		} catch (IOException e) {
+			logger.error("final cata write error", e);
+		} finally {
+			if(fos != null)
+				try {
+					fos.close();
+				} catch (IOException e) {}
+		}
+	}
+
 	public static DecidedRate makeFinal(byte[] source, int offset, int len) {
 		char[] c = new String(source, offset, len).toCharArray();
 
-		//List<FinalInfo> finals = new ArrayList<FinalInfo>();
-		
 		RaceFinal f = new RaceFinal();
 		f.zone = c[2];
 		f.race = ((c[7] - '0') * 10 + (c[8] - '0'));
@@ -33,6 +64,15 @@ public class ODSRateMaker {
 		f.isForce = (c[18] == '1');
 		f.isFinal = (c[26] == '1');
 
+		try {
+			byte[] nbuf = new byte[65536];
+			System.arraycopy(source, offset, nbuf, 0, len);
+			finalDataWriter(nbuf, f.zone+"_"+f.date+"_"+f.race+"_"+(f.isFinal ? "0" : "1"));
+		} catch (Exception e) {
+			logger.error("final copy error", e);
+		}
+		
+		
 		System.arraycopy(c, 27, f.poolMap, 0, 10);
 
 		int index = 37;
@@ -52,21 +92,21 @@ public class ODSRateMaker {
 			Pool p = new Pool();
 			index = writePool(c, index, p);
 			f.pool[(p.type - '1')] = p;
-			
+
 			result.put(RaceType.getType((p.type - '0')), p.getValue());
-			
+
 			if ((c[index] == '9') && (c[(index + 1)] == '1')) {
 				break;
 			}
 		}
-		
+
 		f.canID = (c[(index++)] + "" + c[(index++)]);
 		int canSize = c[(index++)] - '0';
 		f.can = new int[canSize];
 		for (int i = 0; i < canSize; i++) {
 			f.can[i] = ((c[(index++)] - '0') * 10 + (c[(index++)] - '0'));
 		}
-		
+
 		DecidedRate info = new DecidedRate();
 		info.setZone(f.zone - '0');
 		info.setResult(result);
@@ -74,7 +114,7 @@ public class ODSRateMaker {
 		info.setReqTime(DateUtils.getToday("HH:mm:ss"));
 		info.setZoneName(RaceZone.getZoneName(f.zone - '0'));
 		info.setFinal(f.isFinal);
-		
+
 		//List<String> list = new ArrayList<String>();
 		//String prefix = f.isFinal ? "FINAL" : "FWAIT";
 		info.setStatus(f.isFinal ? "확정" : "확정전");
@@ -82,7 +122,7 @@ public class ODSRateMaker {
 		info.setDelayTime(delayTime);
 
 		//list.add(prefix + f.zone + "_" + delayTime);
-		
+
 		info.setRace(f.race);
 		for (int i = 0; i < 3; i++) {
 			int j = 0;
@@ -96,20 +136,20 @@ public class ODSRateMaker {
 			} else {
 				//list.add("0");
 			}
-			
+
 			switch(i) {
 			case 0 :
 				info.setFirstDone(s);	
-					break;
+				break;
 			case 1 :
 				info.setSecondDone(s);
-					break;
+				break;
 			case 2 :
 				info.setThirdDone(s);
-					break;
+				break;
 			}
 		}
-		
+
 		/*
 		 * [4] : 1|2|32.9  						<= 단승식
 		 * [5] : 2|2|14.73|1.6					<= 연승식
@@ -119,7 +159,7 @@ public class ODSRateMaker {
 		 */
 		for (int i = 0; i <= 4; i++) {
 			Pool p = f.getPool(i);
-			
+
 			String s = "0";
 			if (p != null) {
 				s = p.getValue();
@@ -142,13 +182,13 @@ public class ODSRateMaker {
 				break;
 			}
 		}
-		
+
 		String s = String.valueOf(f.can.length);
 		for (int i = 0; i < f.can.length; i++) {
 			s = s + "|" + f.can[i];
 		}
 		info.setCanString(s);
-		
+
 		//list.add(s);
 
 		//list.add(String.valueOf(f.race) + "|" + f.getMaxInt() + "|" + (f.getMaxInt() > 1000 ? "1" : "0"));
@@ -164,12 +204,12 @@ public class ODSRateMaker {
 				info.setCancel(info.getCancel()+", "+ss[i]);
 			}
 		}
-			
+
 		if(f.getMaxInt() > 1000) {
 			info.setMessage(true);
 		}
-		
-		
+
+
 		/*
 		 * [13] : 1|2|3|4|38.0		<= 삼복승식
 		 * [14] : 1|2|3|4|186.0		<= 삼쌍승식
@@ -189,7 +229,7 @@ public class ODSRateMaker {
 				break;
 			}
 		}
-		
+
 		return info;
 	}
 
@@ -203,7 +243,7 @@ public class ODSRateMaker {
 		p.num3 = new int[size];
 		p.rate = new String[size];
 		p.rateInt = new int[size];
-		
+
 		for (int i = 0; i < size; i++) {
 			p.num1[i] = ((c[(k++)] - '0') * 10 + (c[(k++)] - '0'));
 			if (p.type >= '3') {
