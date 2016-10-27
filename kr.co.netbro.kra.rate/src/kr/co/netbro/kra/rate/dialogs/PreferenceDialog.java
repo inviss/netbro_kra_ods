@@ -4,21 +4,21 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.services.IServiceConstants;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -31,13 +31,15 @@ public class PreferenceDialog extends TitleAreaDialog {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Inject @Preference(nodePath = "kra.config.socket")
-	private IEclipsePreferences prefs;
 	
 	@Inject @Preference(nodePath="kra.config.socket", value="port") 
 	private Integer port;
 	@Inject @Preference(nodePath="kra.config.socket", value="timeout") 
 	private Integer timeout;
+	@Inject @Preference(nodePath="kra.config.socket", value="watcherDir") 
+	private String watcherDir;
+	
+	private Text watcherDirTxt;
 	
 	@Inject
 	public PreferenceDialog(@Optional @Named(IServiceConstants.ACTIVE_SHELL) Shell parentShell) {
@@ -46,33 +48,42 @@ public class PreferenceDialog extends TitleAreaDialog {
 	
 	@Inject
 	public void setup() {
-		
+		if(port == null || port == 0) {
+			port = 8000;
+		}
+		if(timeout == null || timeout == 0) {
+			timeout = 25000;
+		}
+		if(StringUtils.isBlank(watcherDir)) {
+			watcherDir = "";
+		}
+	}
+	
+	public Integer getPort() {
+		return port;
+	}
+	
+	public Integer getTimeout() {
+		return timeout;
+	}
+	
+	public String getWatcherDir() {
+		return watcherDir;
 	}
 	
 	@Override
 	protected void okPressed() {
 		if(StringUtils.isNotBlank(serverPortText.getText())) {
 			logger.debug("port: "+serverPortText.getText());
-			prefs.remove("port");
-			prefs.putInt("port", Integer.parseInt(serverPortText.getText()));
+			this.port = Integer.parseInt(serverPortText.getText());
 		}
 		if(StringUtils.isNotBlank(timeoutText.getText())) {
-			prefs.remove("timeout");
-			prefs.putInt("timeout", Integer.parseInt(timeoutText.getText()));
+			this.timeout = Integer.parseInt(timeoutText.getText());
 		}
-		try {
-			prefs.flush();
-			prefs.sync();
-			super.okPressed();
-		} catch (Exception e) {
-			logger.error("PreferenceHandler set error", e);
-			ErrorDialog.openError(
-					getShell(),
-					"Error",
-					"Something happened while a socket is setting configration.",
-					new Status(IStatus.ERROR, "kra.config.socket", e.getMessage(), e));
+		if(StringUtils.isNotBlank(watcherDirTxt.getText())) {
+			watcherDir = watcherDirTxt.getText();
 		}
-		
+		super.okPressed();
 	}
 	
 	private Text serverPortText;
@@ -81,6 +92,7 @@ public class PreferenceDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		setMessage("\uD3EC\uD2B8 \uC124\uC815 \uBC0F \uD074\uB77C\uC774\uC5B8\uD2B8\uC640\uC758 \uC5F0\uACB0 \uB300\uAE30\uC2DC\uAC04\uC744 \uC124\uC815\uD569\uB2C8\uB2E4.");
 		setTitle("\uC11C\uBC84 \uC18C\uCF13 \uC124\uC815\uAD00\uB9AC");
+		
 		Composite area = (Composite) super.createDialogArea(parent);
 		
 		Composite container = new Composite(area, SWT.NONE);
@@ -120,6 +132,29 @@ public class PreferenceDialog extends TitleAreaDialog {
 		timeoutText = new Text(serverSocketGroup, SWT.BORDER);
 		timeoutText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		timeoutText.setText(String.valueOf(timeout));
+		
+		Label watcherFolderLabel = new Label(serverSocketGroup, SWT.NONE);
+		watcherFolderLabel.setText("Watcher Folder");
+		
+		watcherDirTxt = new Text(serverSocketGroup, SWT.SINGLE | SWT.BORDER);
+		watcherDirTxt.setText(watcherDir);
+		GridData watcherDirGrid = new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1);
+		watcherDirTxt.setLayoutData(watcherDirGrid);
+		
+		Button watcherDirButton = new Button(serverSocketGroup, SWT.PUSH);
+		watcherDirButton.setText("Browse...");
+		watcherDirButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent event) {
+				DirectoryDialog dlg = new DirectoryDialog(serverSocketGroup.getShell());
+				dlg.setFilterPath(watcherDirTxt.getText());
+				dlg.setText("Watcher Folder Select");
+				dlg.setMessage("Select a directory");
+				String dir = dlg.open();
+				if (dir != null) {
+					watcherDirTxt.setText(dir);
+				}
+			}
+		});
 		
 		return area;
 	}
