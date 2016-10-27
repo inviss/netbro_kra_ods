@@ -36,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import kr.co.netbro.common.utils.DateUtils;
 import kr.co.netbro.common.utils.Utility;
 import kr.co.netbro.kra.model.RaceInfo;
-import kr.co.netbro.kra.model.RaceZone;
 import kr.co.netbro.kra.rate.resource.Registries;
 
 @SuppressWarnings("restriction")
@@ -310,11 +309,11 @@ public class RaceInfoPart {
 			
 			String timeStr = "";
 			if(raceInfo.getTime().equals("xx")) {
-				timeStr = "종료";
+				timeStr = "\uC885\uB8CC";
 			} else if(raceInfo.getTime().equals("yy")) {
-				timeStr = "대기중";
+				timeStr = "\uB300\uAE30\uC911";
 			} else {
-				timeStr = "경기중";
+				timeStr = "\uACBD\uAE30\uC911";
 			}
 			/*
 			if(raceInfo.getTime().equals("xx")) {
@@ -327,12 +326,12 @@ public class RaceInfoPart {
 				}
 			}
 			*/
-			String rInfo = raceInfo.getZoneName()+" 제"+raceInfo.getRaceNum()+"경기 "+timeStr;
+			String rInfo = raceInfo.getZoneName()+" \uC81C"+raceInfo.getRaceNum()+"\uACBD\uAE30 "+timeStr;
 			attributesMap.put(raceInfo.getZone()+"_status", rInfo);
 			
 			if(StringUtils.isNotBlank(raceInfo.getClientIP())) {
-				attributesMap.put("ip_status", "연결IP: "+raceInfo.getClientIP());
-				attributesMap.put("latest_status", "최근 업데이트: "+raceInfo.getUpdateTime());
+				attributesMap.put("ip_status", "\uC5F0\uACB0IP: "+raceInfo.getClientIP());
+				attributesMap.put("latest_status", "\uCD5C\uADFC \uC5C5\uB370\uC774\uD2B8: "+raceInfo.getUpdateTime());
 			}
 		}
 	}

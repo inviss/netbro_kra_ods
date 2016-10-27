@@ -143,8 +143,8 @@ public class SocketDataReceiver {
 					pref1.flush();
 				} catch (BackingStoreException ee) {}
 
-				bis = new BufferedInputStream(socket.getInputStream());
-				//bis = new BufferedInputStream(new FileInputStream("D:/tmp/netbro/20160702_133105.dat"));
+				//bis = new BufferedInputStream(socket.getInputStream());
+				bis = new BufferedInputStream(new FileInputStream("D:/tmp/netbro/20160702_133105.dat"));
 				int c = 0;
 				int bufIndex = 0;
 				int offset = 0;
@@ -152,7 +152,7 @@ public class SocketDataReceiver {
 
 				while(loop) {
 					try {
-						Thread.sleep(500L);
+						Thread.sleep(1000L);
 					} catch (Exception e) {}
 					
 					int type = 0;

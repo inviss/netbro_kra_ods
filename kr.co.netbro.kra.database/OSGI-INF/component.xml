@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" enabled="true" immediate="true" name="de.morannon.e4JPA.database.person">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" enabled="false" immediate="false" name="de.morannon.e4JPA.database.person">
    <implementation class="kr.co.netbro.race.database.internal.RateODSServiceImpl"/>
    <service>
       <provide interface="kr.co.netbro.race.database.IRateODSService"/>

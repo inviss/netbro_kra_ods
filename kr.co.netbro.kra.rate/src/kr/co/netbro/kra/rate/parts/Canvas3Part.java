@@ -9,9 +9,6 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +29,7 @@ public class Canvas3Part extends RateViewer{
 	private IRaceInfoService raceInfoService;
 
 	private KraRateWidget widget3;
-	
+
 	@PostConstruct
 	public void createPartControl(final Composite parent) {
 
@@ -41,10 +38,11 @@ public class Canvas3Part extends RateViewer{
 
 		if(widget3 == null)
 			widget3 = new KraRateWidget(composite);
-		
-		RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.SSANG.getType());
-		if(raceInfo != null) {
-			eventBroker.post("ODS_RACE/4", raceInfo);
+		if(raceInfoService != null) {
+			RaceInfo raceInfo = raceInfoService.getRaceInfo(RaceType.SSANG.getType());
+			if(raceInfo != null) {
+				eventBroker.post("ODS_RACE/4", raceInfo);
+			}
 		}
 	}
 

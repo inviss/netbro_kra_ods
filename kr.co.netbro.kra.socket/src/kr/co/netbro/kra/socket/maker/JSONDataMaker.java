@@ -1,6 +1,10 @@
 package kr.co.netbro.kra.socket.maker;
 
+import javax.inject.Inject;
+
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.e4.core.di.annotations.Creatable;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +19,8 @@ public class JSONDataMaker {
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
+	@Inject @Preference(nodePath="kra.config.socket", value="watcherDir") String watcherDir;
+	
 	public void makeRaceFile(RaceInfo raceInfo) {
 		try {
 			KRARate rate = new KRARate();
@@ -34,8 +40,12 @@ public class JSONDataMaker {
 					jsonName = type.name();
 				}
 			}
-			Utility.stringToFile(GSON.toString(rate), "X:/kra", jsonName+".json");
-			logger.debug(GSON.toString(rate));
+			if(StringUtils.isNotBlank(watcherDir)) {
+				Utility.stringToFile(GSON.toString(rate), watcherDir, jsonName+".json");
+				logger.debug(GSON.toString(rate));
+			} else {
+				logger.info("watcher folder 설정이 필요합니다");
+			}
 		} catch (Exception e) {
 			logger.error("json create error", e.getMessage());
 		}
