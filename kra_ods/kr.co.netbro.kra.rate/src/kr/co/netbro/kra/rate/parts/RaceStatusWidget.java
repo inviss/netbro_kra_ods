@@ -69,9 +69,9 @@ public class RaceStatusWidget extends Canvas {
 			x = 0;
 			for(int j=0; j < raceTypes[i].length; j++) {
 				if(raceTypes[i][j]) {
-					gc.drawString("★", x, y);
+					gc.drawString("\u2605", x, y); // ★
 				} else {
-					gc.drawString("☆", x, y);
+					gc.drawString("\u2606", x, y); // ☆
 				}
 				x += 30;
 			}
